@@ -90,7 +90,7 @@ const Login = () => {
         
         // Redirect to dashboard after short delay
         setTimeout(() => {
-          navigate('/chatBot');
+          navigate('/patient-dashboard');
         }, 1500);
       } else {
         setError(data.error || 'Login failed. Please try again.');

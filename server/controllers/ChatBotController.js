@@ -5,7 +5,7 @@ import { pool } from "../config/db.js";
 
 dotenv.config();
 
-const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
+const GROQ_API_KEY = process.env.GROQ_API_KEY;
 
 // Middleware to extract user info from token
 const getUserInfo = async (req) => {
@@ -207,11 +207,12 @@ Important: This is for informational purposes only and not a substitute for prof
 
     // Define models to try in order (fallback strategy)
     const models = [
-      "google/gemini-flash-1.5",
-      "microsoft/wizardlm-2-8x22b",
-      "meta-llama/llama-3-8b-instruct",
-      "openai/gpt-3.5-turbo"
+      "mixtral-8x7b-32768",      
+      "llama3-70b-8192",           
+      "llama3-8b-8192",           
+      "gemma-7b-it",               
     ];
+
     
     let botResponse = null;
     let lastError = null;
@@ -221,7 +222,7 @@ Important: This is for informational purposes only and not a substitute for prof
       try {
         console.log(`Trying model: ${model}`);
         
-        const response = await axios.post("https://openrouter.ai/api/v1/chat/completions", {
+        const response = await axios.post("https://api.groq.com/openai/v1/chat/completions", {
           model: model,
           messages: [
             { 
@@ -235,7 +236,7 @@ Important: This is for informational purposes only and not a substitute for prof
         }, {
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${OPENROUTER_API_KEY}`,
+            "Authorization": `Bearer ${GROQ_API_KEY}`,
             "HTTP-Referer": "http://localhost:5000",
             "X-Title": "Symptom Checker App"
           },
