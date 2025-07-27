@@ -1,0 +1,533 @@
+/* Doctor Registration - Modern Professional Theme */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  color: #2d3748;
+  line-height: 1.6;
+}
+
+/* Container Styles */
+.doctor-registration-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Header Styles */
+.doctor-registration-header {
+  background: #ffffff;
+  border-radius: 16px 16px 0 0;
+  padding: 2.5rem 2rem 2rem;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.doctor-registration-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #4299e1, #3182ce, #2b77cb);
+}
+
+.doctor-registration-header h1 {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #2d3748;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.025em;
+}
+
+.doctor-registration-header p {
+  color: #718096;
+  font-size: 1.1rem;
+  margin-bottom: 0;
+}
+
+.doctor-registration-note {
+  background: #ebf8ff;
+  border: 1px solid #bee3f8;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-top: 1.5rem;
+}
+
+.doctor-registration-note p {
+  color: #2c5282;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+/* Success Icon */
+.doctor-registration-success-icon {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #48bb78, #38a169);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+  color: white;
+  box-shadow: 0 8px 25px rgba(72, 187, 120, 0.3);
+}
+
+/* Form Styles */
+.doctor-registration-form,
+.doctor-registration-otp-form {
+  background: #ffffff;
+  border-radius: 0 0 16px 16px;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.doctor-registration-form-section {
+  margin-bottom: 2.5rem;
+}
+
+.doctor-registration-form-section h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #2d3748;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e2e8f0;
+  position: relative;
+}
+
+.doctor-registration-form-section h2::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(90deg, #4299e1, #3182ce);
+}
+
+/* Form Row */
+.doctor-registration-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .doctor-registration-form-row {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+/* Form Groups */
+.doctor-registration-form-group {
+  margin-bottom: 1.5rem;
+}
+
+.doctor-registration-form-group label {
+  display: block;
+  font-weight: 500;
+  color: #4a5568;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+/* Input Styles */
+.doctor-registration-form-input,
+.doctor-registration-form-select,
+.doctor-registration-form-textarea,
+.doctor-registration-otp-input {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.2s ease-in-out;
+  background-color: #ffffff;
+  color: #2d3748;
+}
+
+.doctor-registration-form-input:focus,
+.doctor-registration-form-select:focus,
+.doctor-registration-form-textarea:focus,
+.doctor-registration-otp-input:focus {
+  outline: none;
+  border-color: #4299e1;
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+  transform: translateY(-1px);
+}
+
+.doctor-registration-form-input:disabled,
+.doctor-registration-form-select:disabled,
+.doctor-registration-form-textarea:disabled,
+.doctor-registration-otp-input:disabled {
+  background-color: #f7fafc;
+  color: #a0aec0;
+  cursor: not-allowed;
+}
+
+.doctor-registration-form-textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.doctor-registration-otp-input {
+  font-size: 1.25rem;
+  letter-spacing: 0.5rem;
+  text-align: center;
+  font-weight: 600;
+}
+
+/* OTP Specific Styles */
+.doctor-registration-otp-group {
+  margin-bottom: 1.5rem;
+}
+
+.doctor-registration-timer-section {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.doctor-registration-timer-section p {
+  color: #718096;
+  font-size: 0.95rem;
+}
+
+/* Terms Section */
+.doctor-registration-terms {
+  background: #f7fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.doctor-registration-terms h3 {
+  color: #2d3748;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.doctor-registration-terms ul {
+  list-style: none;
+  padding: 0;
+}
+
+.doctor-registration-terms li {
+  padding: 0.5rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  color: #4a5568;
+  font-size: 0.95rem;
+}
+
+.doctor-registration-terms li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: #48bb78;
+  font-weight: bold;
+}
+
+/* Button Styles */
+.doctor-registration-register-button,
+.doctor-registration-verify-button,
+.doctor-registration-home-button,
+.doctor-registration-login-button,
+.doctor-registration-login-redirect-button,
+.doctor-registration-back-button,
+.doctor-registration-resend-button {
+  padding: 0.875rem 2rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+}
+
+/* Primary Buttons */
+.doctor-registration-register-button,
+.doctor-registration-verify-button,
+.doctor-registration-login-button {
+  background: linear-gradient(135deg, #4299e1, #3182ce);
+  color: white;
+  box-shadow: 0 4px 15px rgba(66, 153, 225, 0.3);
+}
+
+.doctor-registration-register-button:hover:not(:disabled),
+.doctor-registration-verify-button:hover:not(:disabled),
+.doctor-registration-login-button:hover:not(:disabled) {
+  background: linear-gradient(135deg, #3182ce, #2c5282);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(66, 153, 225, 0.4);
+}
+
+/* Secondary Buttons */
+.doctor-registration-home-button,
+.doctor-registration-login-redirect-button,
+.doctor-registration-back-button {
+  background: #ffffff;
+  color: #4a5568;
+  border: 2px solid #e2e8f0;
+}
+
+.doctor-registration-home-button:hover,
+.doctor-registration-login-redirect-button:hover,
+.doctor-registration-back-button:hover {
+  background: #f7fafc;
+  border-color: #cbd5e0;
+  transform: translateY(-1px);
+}
+
+/* Resend Button */
+.doctor-registration-resend-button {
+  background: transparent;
+  color: #4299e1;
+  border: 1px solid #4299e1;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+}
+
+.doctor-registration-resend-button:hover:not(:disabled) {
+  background: #4299e1;
+  color: white;
+  transform: translateY(-1px);
+}
+
+/* Disabled Buttons */
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* Form Actions */
+.doctor-registration-form-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+
+.doctor-registration-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+
+/* Message Styles */
+.doctor-registration-error-message,
+.doctor-registration-success-message {
+  padding: 1rem 1.25rem;
+  border-radius: 8px;
+  margin: 1rem 0;
+  font-weight: 500;
+}
+
+.doctor-registration-error-message {
+  background-color: #fed7d7;
+  border: 1px solid #feb2b2;
+  color: #c53030;
+}
+
+.doctor-registration-success-message {
+  background-color: #c6f6d5;
+  border: 1px solid #9ae6b4;
+  color: #276749;
+}
+
+/* Pending Message Styles */
+.doctor-registration-pending-message {
+  background: #ffffff;
+  border-radius: 0 0 16px 16px;
+  padding: 2.5rem 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.doctor-registration-pending-message h2 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #2d3748;
+  margin-bottom: 1rem;
+}
+
+.doctor-registration-pending-message > p {
+  color: #718096;
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+}
+
+.doctor-registration-status-info,
+.doctor-registration-contact-info {
+  background: #f7fafc;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+.doctor-registration-status-info h3,
+.doctor-registration-contact-info h3 {
+  color: #2d3748;
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.doctor-registration-status-info ul {
+  list-style: none;
+  padding: 0;
+}
+
+.doctor-registration-status-info li {
+  padding: 0.5rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  color: #4a5568;
+}
+
+.doctor-registration-status-info li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: #4299e1;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.doctor-registration-contact-info p {
+  color: #718096;
+  margin: 0;
+}
+
+/* Footer */
+.doctor-registration-form-footer {
+  text-align: center;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+.doctor-registration-form-footer p {
+  color: #718096;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* Responsive Design */
+@media (max-width: 640px) {
+  .doctor-registration-container {
+    padding: 1rem;
+  }
+  
+  .doctor-registration-header {
+    padding: 2rem 1.5rem;
+  }
+  
+  .doctor-registration-header h1 {
+    font-size: 1.875rem;
+  }
+  
+  .doctor-registration-form,
+  .doctor-registration-otp-form,
+  .doctor-registration-pending-message {
+    padding: 1.5rem;
+  }
+  
+  .doctor-registration-form-actions,
+  .doctor-registration-actions {
+    flex-direction: column;
+  }
+  
+  .doctor-registration-register-button,
+  .doctor-registration-verify-button,
+  .doctor-registration-home-button,
+  .doctor-registration-login-button,
+  .doctor-registration-login-redirect-button,
+  .doctor-registration-back-button {
+    width: 100%;
+  }
+}
+
+/* Loading States */
+button:disabled {
+  position: relative;
+}
+
+button:disabled::after {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  margin: auto;
+  border: 2px solid transparent;
+  border-top-color: currentColor;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  right: 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Accessibility Improvements */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Focus styles for better accessibility */
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid #4299e1;
+  outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .doctor-registration-form-input,
+  .doctor-registration-form-select,
+  .doctor-registration-form-textarea {
+    border-width: 2px;
+  }
+  
+  .doctor-registration-register-button,
+  .doctor-registration-verify-button,
+  .doctor-registration-login-button {
+    border: 2px solid transparent;
+  }
+}

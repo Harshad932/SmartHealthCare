@@ -1,10 +1,20 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import SymptomChecker from './components/SymptomChecker';
-import Registration from './components/Registration';
-import Login from './components/Login';
+
 import Home from './components/Home';
-import PatientDashboard from './components/PatientDashboard';
+
+import PatientSymptomChecker from './components/patient/PatientSymptomChecker';
+import PatientRegistration from './components/patient/PatientRegistration';
+import PatientLogin from './components/patient/PatientLogin';
+import PatientDashboard from './components/patient/PatientDashboard';
+import AppointmentBooking from './components/patient/AppointmentBooking';
+
+import DoctorRegistration from './components/doctor/DoctorRegistration';
+import DoctorLogin from './components/doctor/DoctorLogin';
+import DoctorDashboard from './components/doctor/DoctorDashboard';
+
+import AdminLogin from './components/admin/AdminLogin';
+import AdminDashboard from './components/admin/AdminDashboard';
 
 function App() {
   return (
@@ -12,10 +22,19 @@ function App() {
       <Routes>
 
         <Route path="/" element={<Home />} />
-        <Route path="/register" element={<Registration />} />
-        <Route path="/chatBot" element={<SymptomChecker />} />
-        <Route path="/login" element={<Login />} />
+
+        <Route path="/register" element={<PatientRegistration />} />
+        <Route path="/chatBot" element={<PatientSymptomChecker />} />
+        <Route path="/login" element={<PatientLogin />} />
         <Route path="/patient-dashboard" element={<PatientDashboard />} />
+        <Route path="/appointment-booking" element={<AppointmentBooking />} />
+
+        <Route path="/doctor-registration" element={<DoctorRegistration />} />
+        <Route path="/doctor-login" element={<DoctorLogin />} />
+        <Route path="/doctor-dashboard" element={<DoctorDashboard />} />
+        
+        <Route path="/admin-login" element={<AdminLogin />} />
+        <Route path="/admin-dashboard" element={<AdminDashboard />} />
 
       </Routes>
     </Router>

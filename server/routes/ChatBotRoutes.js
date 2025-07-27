@@ -1,5 +1,5 @@
 import express from 'express';
-import { chatBot, getSymptomHistory, getUserAnalytics } from '../controllers/ChatBotController.js';
+import { chatBot, getSymptomHistory, getUserAnalytics } from '../controllers/patient/ChatBotController.js';
 import { authenticateToken, requirePatient } from '../middleware/auth.js';
 
 const router = express.Router();

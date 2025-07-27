@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, Mail, Lock, Heart, AlertCircle, CheckCircle } from 'lucide-react';
-import '../assets/styles/Login.css';
+import '../../assets/styles/patient/Login.css';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -70,7 +70,7 @@ const Login = () => {
     setSuccess('');
     
     try {
-      const response = await fetch(`${API_BASE_URL}/login`, {
+      const response = await fetch(`${API_BASE_URL}/admin/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -90,7 +90,7 @@ const Login = () => {
         
         // Redirect to dashboard after short delay
         setTimeout(() => {
-          navigate('/patient-dashboard');
+          navigate('/admin-dashboard');
         }, 1500);
       } else {
         setError(data.error || 'Login failed. Please try again.');

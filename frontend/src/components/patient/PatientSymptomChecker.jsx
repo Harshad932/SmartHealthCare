@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import '../assets/styles/SymptomChecker.css';
+import '../../assets/styles/patient/SymptomChecker.css';
 import { useNavigate } from 'react-router-dom';
 
-const SymptomChecker = () => {
+const PatientSymptomChecker = () => {
   const [symptoms, setSymptoms] = useState('');
   const [severity, setSeverity] = useState(5);
   const [duration, setDuration] = useState('');
@@ -482,4 +482,4 @@ useEffect(() => {
   );
 };
 
-export default SymptomChecker;
+export default PatientSymptomChecker;

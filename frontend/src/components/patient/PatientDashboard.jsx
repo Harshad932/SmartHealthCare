@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../assets/styles/PatientDashboard.css';
+import '../../assets/styles/patient/PatientDashboard.css';
 import { 
   User, Calendar, FileText, Upload, Download, Trash2, Eye, MessageCircle, Activity, Clock, Phone, Mail, MapPin, Heart, 
   AlertCircle, Plus, Search, Bell, Settings, LogOut, Stethoscope, FileImage, File, X
@@ -58,6 +58,21 @@ const PatientDashboard = () => {
       loadSymptomHistory();
     }
   }, [activeTab]);
+
+  const getProperDownloadUrl = (document) => {
+  if (document.download_url) {
+    return document.download_url;
+  }
+  
+  // Fallback: construct download URL
+  if (document.file_type === 'application/pdf' || 
+      document.file_type.includes('application/') ||
+      document.file_type.includes('text/')) {
+    return `${document.cloudinary_url}?fl_attachment:${encodeURIComponent(document.file_name)}`;
+  }
+  
+  return document.cloudinary_url;
+};
 
   const getAuthHeaders = () => {
     const token = localStorage.getItem('token');
@@ -561,7 +576,7 @@ const PatientDashboard = () => {
             <div className="patient-dashboard-appointments">
               <div className="patient-dashboard-section-header">
                 <h2>My Appointments</h2>
-                <button className="patient-dashboard-primary-btn">
+                <button className="patient-dashboard-primary-btn" onClick={() => navigate('/appointment-booking')}>
                   <Plus className="patient-dashboard-btn-icon" />
                   Book New Appointment
                 </button>
@@ -704,7 +719,17 @@ const PatientDashboard = () => {
                       </button>
                       <button 
                         className="patient-dashboard-action-btn"
-                        onClick={() => window.open(document.cloudinary_url, '_blank')}
+                        onClick={() => {
+                          const downloadUrl = getProperDownloadUrl(document);
+                          const link = window.document.createElement('a'); // Use window.document explicitly
+                          link.href = downloadUrl;
+                          link.download = document.file_name;
+                          link.target = '_blank';
+                          link.rel = 'noopener noreferrer';
+                          window.document.body.appendChild(link);
+                          link.click();
+                          window.document.body.removeChild(link);
+                        }}
                       >
                         <Download className="patient-dashboard-action-icon" />
                       </button>
@@ -1081,70 +1106,127 @@ const PatientDashboard = () => {
       )}
 
       {/* Document View Modal */}
-      {documentViewModal && selectedDocument && (
-        <div className="patient-dashboard-modal-overlay">
-          <div className="patient-dashboard-modal patient-dashboard-document-modal">
-            <div className="patient-dashboard-modal-header">
-              <h3>{selectedDocument.file_name}</h3>
-              <button 
-                className="patient-dashboard-modal-close"
-                onClick={() => setDocumentViewModal(false)}
-              >
-                <X />
-              </button>
-            </div>
-            
-            <div className="patient-dashboard-modal-content">
-              <div className="patient-dashboard-document-preview-large">
-                {getFileIcon(selectedDocument.file_type)}
-                <div className="patient-dashboard-document-details">
-                  <p><strong>Category:</strong> {selectedDocument.category}</p>
-                  <p><strong>Uploaded by:</strong> {selectedDocument.uploaded_by}</p>
-                  <p><strong>Upload Date:</strong> {formatDateTime(selectedDocument.created_at)}</p>
-                  <p><strong>File Type:</strong> {selectedDocument.file_type}</p>
-                  {selectedDocument.appointment_id && (
-                    <p><strong>Related Appointment:</strong> #{selectedDocument.appointment_id}</p>
-                  )}
-                </div>
-                {selectedDocument.file_type?.includes('image') && (
-                  <div className="patient-dashboard-image-preview">
-                    <img 
-                      src={selectedDocument.cloudinary_url} 
-                      alt={selectedDocument.file_name}
-                      style={{ maxWidth: '100%', maxHeight: '400px', objectFit: 'contain' }}
-                    />
-                  </div>
-                )}
-                {selectedDocument.file_type === 'application/pdf' && (
-                  <div className="patient-dashboard-pdf-preview">
-                    <iframe
-                      src={selectedDocument.cloudinary_url}
-                      width="100%"
-                      height="500px"
-                      title={selectedDocument.file_name}
-                      style={{ border: 'none' }}
-                    />
-                    <p><small>If PDF doesn't load, <a href={selectedDocument.cloudinary_url} target="_blank" rel="noopener noreferrer">click here to open in new tab</a></small></p>
-                  </div>
+     {documentViewModal && selectedDocument && (
+      <div className="patient-dashboard-modal-overlay">
+        <div className="patient-dashboard-modal patient-dashboard-document-modal">
+          <div className="patient-dashboard-modal-header">
+            <h3>{selectedDocument.file_name}</h3>
+            <button 
+              className="patient-dashboard-modal-close"
+              onClick={() => setDocumentViewModal(false)}
+            >
+              <X />
+            </button>
+          </div>
+          
+          <div className="patient-dashboard-modal-content">
+            <div className="patient-dashboard-document-preview-large">
+              {getFileIcon(selectedDocument.file_type)}
+              <div className="patient-dashboard-document-details">
+                <p><strong>Category:</strong> {selectedDocument.category}</p>
+                <p><strong>Uploaded by:</strong> {selectedDocument.uploaded_by}</p>
+                <p><strong>Upload Date:</strong> {formatDateTime(selectedDocument.created_at)}</p>
+                <p><strong>File Type:</strong> {selectedDocument.file_type}</p>
+                {selectedDocument.appointment_id && (
+                  <p><strong>Related Appointment:</strong> #{selectedDocument.appointment_id}</p>
                 )}
               </div>
-            </div>
-
-            <div className="patient-dashboard-modal-actions">
-              <button 
-                className="patient-dashboard-secondary-btn"
-                onClick={() => window.open(selectedDocument.cloudinary_url, '_blank')}
-              >
-                <Download className="patient-dashboard-btn-icon" />
-                Download
-              </button>
-              <button className="patient-dashboard-primary-btn">
-                Share with Doctor
-              </button>
+              
+              {/* Image Preview */}
+              {selectedDocument.file_type?.includes('image') && (
+                <div className="patient-dashboard-image-preview">
+                  <img 
+                    src={selectedDocument.cloudinary_url} 
+                    alt={selectedDocument.file_name}
+                    style={{ maxWidth: '100%', maxHeight: '400px', objectFit: 'contain' }}
+                  />
+                </div>
+              )}
+              
+              {/* PDF Preview */}
+              {selectedDocument.file_type === 'application/pdf' && (
+                <div className="patient-dashboard-pdf-preview">
+                  <iframe
+                    src={`${selectedDocument.cloudinary_url}#toolbar=1&navpanes=1&scrollbar=1`}
+                    width="100%"
+                    height="500px"
+                    title={selectedDocument.file_name}
+                    style={{ border: '1px solid #ddd', borderRadius: '4px' }}
+                  />
+                  <p style={{ marginTop: '10px', fontSize: '12px', color: '#666' }}>
+                    <small>
+                      If PDF doesn't load properly, {' '}
+                      <a 
+                        href={getProperDownloadUrl(selectedDocument)} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        style={{ color: '#007bff', textDecoration: 'underline' }}
+                      >
+                        click here to download
+                      </a>
+                    </small>
+                  </p>
+                </div>
+              )}
+              
+              {/* Other file types */}
+              {!selectedDocument.file_type?.includes('image') && 
+              selectedDocument.file_type !== 'application/pdf' && (
+                <div className="patient-dashboard-file-preview">
+                  <div style={{ textAlign: 'center', padding: '40px' }}>
+                    {getFileIcon(selectedDocument.file_type)}
+                    <p style={{ marginTop: '20px' }}>
+                      This file type cannot be previewed. Please download to view.
+                    </p>
+                    <button 
+                      className="patient-dashboard-primary-btn"
+                      onClick={() => {
+                        const downloadUrl = getProperDownloadUrl(selectedDocument);
+                        const link = document.createElement('a');
+                        link.href = downloadUrl;
+                        link.download = selectedDocument.file_name;
+                        link.target = '_blank';
+                        link.rel = 'noopener noreferrer';
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                      }}
+                      style={{ marginTop: '10px' }}
+                    >
+                      <Download className="patient-dashboard-btn-icon" />
+                      Download File
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
+
+          <div className="patient-dashboard-modal-actions">
+            <button 
+              className="patient-dashboard-secondary-btn"
+              onClick={() => {
+                const downloadUrl = getProperDownloadUrl(selectedDocument);
+                const link = document.createElement('a');
+                link.href = downloadUrl;
+                link.download = selectedDocument.file_name;
+                link.target = '_blank';
+                link.rel = 'noopener noreferrer';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+              }}
+            >
+              <Download className="patient-dashboard-btn-icon" />
+              Download
+            </button>
+            <button className="patient-dashboard-primary-btn">
+              Share with Doctor
+            </button>
+          </div>
         </div>
-      )}
+      </div>
+    )}
     </div>
   );
 };

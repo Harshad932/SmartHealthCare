@@ -1,7 +1,7 @@
 import axios from 'axios';
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
-import { pool } from "../config/db.js";
+import { pool } from "../../config/db.js";
 
 dotenv.config();
 

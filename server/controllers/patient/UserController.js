@@ -2,7 +2,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import nodemailer from 'nodemailer';
-import {pool}  from "../config/db.js";
+import {pool}  from "../../config/db.js";
 import { v2 as cloudinary } from 'cloudinary';
 import multer from 'multer';
 import { CloudinaryStorage } from 'multer-storage-cloudinary';
@@ -451,49 +451,6 @@ export const loginPatient = async (req, res) => {
   }
 };
 
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
-
-// Configure Cloudinary storage for multer
-const storage = new CloudinaryStorage({
-  cloudinary: cloudinary,
-  params: {
-    folder: 'medical-documents',
-    allowed_formats: ['jpg', 'jpeg', 'png', 'pdf', 'doc', 'docx'],
-    resource_type: 'image', // Use 'image' for all files
-    format: (req, file) => {
-      // Preserve original format
-      if (file.mimetype === 'application/pdf') return 'pdf';
-      return undefined; // Let Cloudinary auto-detect
-    },
-    public_id: (req, file) => {
-      const timestamp = Date.now();
-      const originalName = file.originalname.split('.')[0];
-      return `${req.user.userId}_${originalName}_${timestamp}`;
-    },
-    flags: 'attachment', // This helps with proper download behavior
-  },
-});
-
-export const upload = multer({
-  storage: storage,
-  limits: {
-    fileSize: 10 * 1024 * 1024, // 10MB limit
-  },
-  fileFilter: (req, file, cb) => {
-    const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'application/pdf', 
-                         'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
-    if (allowedTypes.includes(file.mimetype)) {
-      cb(null, true);
-    } else {
-      cb(new Error('Invalid file type. Only JPEG, PNG, PDF, DOC, and DOCX files are allowed.'));
-    }
-  },
-});
-
 // Get patient dashboard overview data
 export const getDashboardOverview = async (req, res) => {
   try {
@@ -650,6 +607,89 @@ export const getPatientAppointments = async (req, res) => {
   }
 };
 
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+// Helper function to get file extension
+const getFileExtension = (filename) => {
+  return filename.split('.').pop().toLowerCase();
+};
+
+// Helper function to sanitize filename for Cloudinary
+const sanitizeFilename = (filename) => {
+  // Remove file extension for the public_id, keep only alphanumeric, hyphens, and underscores
+  const nameWithoutExt = filename.substring(0, filename.lastIndexOf('.')) || filename;
+  return nameWithoutExt.replace(/[^a-zA-Z0-9_-]/g, '_');
+};
+
+// Configure Cloudinary storage for multer
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: async (req, file) => {
+    const fileExtension = getFileExtension(file.originalname);
+    const timestamp = Date.now();
+    const sanitizedName = sanitizeFilename(file.originalname);
+    
+    // Determine resource type and format based on file type
+    let resourceType = 'image';
+    let format = undefined;
+    
+    if (file.mimetype === 'application/pdf') {
+      resourceType = 'raw';
+      format = 'pdf';
+    } else if (file.mimetype.includes('application/') || 
+               file.mimetype.includes('text/') ||
+               ['doc', 'docx', 'txt', 'rtf'].includes(fileExtension)) {
+      resourceType = 'raw';
+      format = fileExtension;
+    } else if (file.mimetype.startsWith('image/')) {
+      resourceType = 'image';
+      // Let Cloudinary auto-detect image format
+      format = undefined;
+    } else {
+      resourceType = 'raw';
+      format = fileExtension;
+    }
+
+    return {
+      folder: 'medical-documents',
+      resource_type: resourceType,
+      format: format,
+      public_id: `${req.user.userId}_${sanitizedName}_${timestamp}`,
+      // For raw files, preserve original filename in metadata
+      context: resourceType === 'raw' ? `original_filename=${file.originalname}` : undefined,
+    };
+  },
+});
+
+export const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 10 * 1024 * 1024, // 10MB limit
+  },
+  fileFilter: (req, file, cb) => {
+    const allowedTypes = [
+      'image/jpeg', 
+      'image/png', 
+      'image/jpg', 
+      'image/gif',
+      'application/pdf', 
+      'application/msword', 
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      'text/plain'
+    ];
+    
+    if (allowedTypes.includes(file.mimetype)) {
+      cb(null, true);
+    } else {
+      cb(new Error('Invalid file type. Only JPEG, PNG, GIF, PDF, DOC, DOCX, and TXT files are allowed.'));
+    }
+  },
+});
+
 // Get patient medical documents
 export const getPatientDocuments = async (req, res) => {
   try {
@@ -659,6 +699,7 @@ export const getPatientDocuments = async (req, res) => {
     let query = `
       SELECT file_id, file_name, cloudinary_public_id, cloudinary_url,
              file_type, category, uploaded_by_patient, created_at,
+             appointment_id,
              CASE 
                WHEN uploaded_by_doctor_id IS NOT NULL 
                THEN (SELECT CONCAT(first_name, ' ', last_name) FROM doctors WHERE doctor_id = uploaded_by_doctor_id)
@@ -707,10 +748,20 @@ export const getPatientDocuments = async (req, res) => {
     const countResult = await pool.query(countQuery, countParams);
     const totalCount = parseInt(countResult.rows[0].count);
 
+    // Process the documents to ensure proper URLs
+    const processedDocuments = result.rows.map(doc => ({
+      ...doc,
+      // Ensure proper download URL for raw files (PDFs, DOCs, etc.)
+      download_url: doc.file_type === 'application/pdf' || 
+                   doc.file_type.includes('application/') ?
+                   `${doc.cloudinary_url}?fl_attachment:${encodeURIComponent(doc.file_name)}` :
+                   doc.cloudinary_url
+    }));
+
     res.status(200).json({
       message: 'Documents retrieved successfully',
       data: {
-        documents: result.rows,
+        documents: processedDocuments,
         pagination: {
           currentPage: parseInt(page),
           totalPages: Math.ceil(totalCount / limit),
@@ -760,7 +811,7 @@ export const uploadDocuments = async (req, res) => {
           patient_id, file_name, cloudinary_public_id, cloudinary_url,
           file_type, category, uploaded_by_patient
         ) VALUES ($1, $2, $3, $4, $5, $6, $7)
-        RETURNING file_id, file_name, cloudinary_url, created_at`,
+        RETURNING file_id, file_name, cloudinary_url, file_type, created_at`,
         [
           fileData.patient_id,
           fileData.file_name,
@@ -772,7 +823,15 @@ export const uploadDocuments = async (req, res) => {
         ]
       );
 
-      uploadedFiles.push(result.rows[0]);
+      const uploadedFile = result.rows[0];
+      
+      // Add proper download URL for raw files
+      uploadedFile.download_url = uploadedFile.file_type === 'application/pdf' || 
+                                 uploadedFile.file_type.includes('application/') ?
+                                 `${uploadedFile.cloudinary_url}?fl_attachment:${encodeURIComponent(uploadedFile.file_name)}` :
+                                 uploadedFile.cloudinary_url;
+
+      uploadedFiles.push(uploadedFile);
     }
 
     // Create notification for successful upload
@@ -821,7 +880,7 @@ export const deleteDocument = async (req, res) => {
 
     // Get document details first
     const documentResult = await pool.query(
-      `SELECT file_id, cloudinary_public_id, file_name 
+      `SELECT file_id, cloudinary_public_id, file_name, file_type
        FROM medical_files 
        WHERE file_id = $1 AND patient_id = $2`,
       [documentId, patientId]
@@ -837,7 +896,14 @@ export const deleteDocument = async (req, res) => {
 
     // Delete from Cloudinary
     try {
-      await cloudinary.uploader.destroy(document.cloudinary_public_id);
+      // For raw files, we need to specify the resource_type
+      const resourceType = document.file_type === 'application/pdf' || 
+                          document.file_type.includes('application/') ||
+                          document.file_type.includes('text/') ? 'raw' : 'image';
+      
+      await cloudinary.uploader.destroy(document.cloudinary_public_id, {
+        resource_type: resourceType
+      });
     } catch (cloudinaryError) {
       console.error('Cloudinary deletion error:', cloudinaryError);
       // Continue with database deletion even if Cloudinary deletion fails
@@ -865,6 +931,14 @@ export const deleteDocument = async (req, res) => {
       error: 'Internal server error while deleting document',
     });
   }
+};
+
+// Helper function to get proper download URL
+export const getDownloadUrl = (cloudinaryUrl, fileName, fileType) => {
+  if (fileType === 'application/pdf' || fileType.includes('application/')) {
+    return `${cloudinaryUrl}?fl_attachment:${encodeURIComponent(fileName)}`;
+  }
+  return cloudinaryUrl;
 };
 
 export const getSymptomHistory = async (req, res) => {

@@ -1,5 +1,5 @@
 import express from 'express';
-import { registerPatient,verifyOTP,resendOTP,loginPatient} from '../controllers/UserController.js';
+import { registerPatient,verifyOTP,resendOTP,loginPatient} from '../controllers/patient/UserController.js';
 import { authenticateToken ,requirePatient} from '../middleware/auth.js';
 
 import {
@@ -15,7 +15,16 @@ import {
   getPatientProfile,
   updatePatientProfile,
   upload,
-} from '../controllers/UserController.js';
+} from '../controllers/patient/UserController.js';
+
+import {
+  getDoctors,
+  getSpecializations,
+  getDoctorAvailability,
+  bookAppointment,
+  getAppointmentDetails,
+  cancelAppointment,
+} from '../controllers/patient/AppointmentBookingController.js';
 
 const router = express.Router();
 
@@ -29,6 +38,17 @@ router.get('/patient/overview',authenticateToken,requirePatient, getDashboardOve
 
 // Appointments routes
 router.get('/patient/appointments', authenticateToken, requirePatient, getPatientAppointments);
+
+router.get('/doctors', authenticateToken, requirePatient, getDoctors);
+// Appointments routes
+router.get('/patient/appointments', authenticateToken, requirePatient, getPatientAppointments);
+router.get('/appointments/:appointmentId', authenticateToken, requirePatient, getAppointmentDetails);
+router.patch('/appointments/:appointmentId/cancel', authenticateToken, requirePatient, cancelAppointment);
+
+// Appointment booking routes
+router.get('/doctors/specializations', authenticateToken, requirePatient, getSpecializations);
+router.get('/doctors/:doctorId/availability', authenticateToken, requirePatient, getDoctorAvailability);
+router.post('/appointments/book', authenticateToken, requirePatient, bookAppointment);
 
 // Documents routes
 router.get('/patient/documents', authenticateToken, requirePatient, getPatientDocuments);
@@ -46,5 +66,7 @@ router.patch('/patient/notifications/read-all', authenticateToken, requirePatien
 // Profile routes
 router.get('/patient/profile', authenticateToken, requirePatient, getPatientProfile);
 router.patch('/patient/profile', authenticateToken, requirePatient, updatePatientProfile);
+
+
 
 export default router;

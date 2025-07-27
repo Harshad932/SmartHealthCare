@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../assets/styles/Registration.css';
+import '../../assets/styles/patient/Registration.css';
 
-const Registration = () => {
+const PatientRegistration = () => {
   const [currentStep, setCurrentStep] = useState(1); // 1: Registration Form, 2: OTP Verification
   const [formData, setFormData] = useState({
     email: '',
@@ -552,4 +552,4 @@ const Registration = () => {
   );
 };
 
-export default Registration;
+export default PatientRegistration;

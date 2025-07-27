@@ -3,6 +3,8 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import ChatBotRoutes from './routes/ChatBotRoutes.js';
 import UserRoutes from './routes/UserRoutes.js';
+import DoctorRoutes from './routes/DoctorRoutes.js';
+import AdminRoutes from './routes/AdminRoutes.js';
 
 dotenv.config();
 
@@ -19,6 +21,8 @@ app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 // Routes
 app.use('/api', ChatBotRoutes);
 app.use('/api', UserRoutes);
+app.use('/api', DoctorRoutes);
+app.use('/api', AdminRoutes);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
