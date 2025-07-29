@@ -24,7 +24,7 @@ useEffect(() => {
     if (token) {
       try {
         // Verify token by making a test request to backend
-        const response = await fetch(`${API_BASE_URL}/symptom-history`, {
+        const response = await fetch(`${API_BASE_URL}/chatbot/symptom-history`, {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
@@ -67,7 +67,7 @@ useEffect(() => {
       return;
     }
 
-    const response = await fetch(`${API_BASE_URL}/symptom-history`, {
+    const response = await fetch(`${API_BASE_URL}/chatbot/symptom-history`, {
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
@@ -106,7 +106,7 @@ useEffect(() => {
         headers['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
       }
 
-      const response = await fetch(`${API_BASE_URL}/analyze-symptoms`, {
+      const response = await fetch(`${API_BASE_URL}/chatbot/analyze-symptoms`, {
         method: 'POST',
         headers,
         body: JSON.stringify({

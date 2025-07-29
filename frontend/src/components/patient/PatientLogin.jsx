@@ -70,7 +70,7 @@ const PatientLogin = () => {
     setSuccess('');
     
     try {
-      const response = await fetch(`${API_BASE_URL}/login`, {
+      const response = await fetch(`${API_BASE_URL}/patient/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

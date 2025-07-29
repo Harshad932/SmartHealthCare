@@ -58,7 +58,7 @@ const AppointmentBooking = () => {
   const loadDoctors = async (page = 1) => {
     try {
       setLoading(true);
-      const response = await fetch(`${API_BASE_URL}/doctors?page=${page}&limit=12&status=approved`, {
+      const response = await fetch(`${API_BASE_URL}/patient/doctors?page=${page}&limit=12&status=approved`, {
         headers: getAuthHeaders()
       });
 
@@ -78,7 +78,7 @@ const AppointmentBooking = () => {
 
   const loadSpecializations = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/doctors/specializations`, {
+      const response = await fetch(`${API_BASE_URL}/patient/doctors/specializations`, {
         headers: getAuthHeaders()
       });
 
@@ -96,7 +96,7 @@ const AppointmentBooking = () => {
   const loadAvailableSlots = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`${API_BASE_URL}/doctors/${selectedDoctor.doctor_id}/availability?date=${selectedDate}`, {
+      const response = await fetch(`${API_BASE_URL}/patient/doctors/${selectedDoctor.doctor_id}/availability?date=${selectedDate}`, {
         headers: getAuthHeaders()
       });
 
@@ -141,7 +141,8 @@ const AppointmentBooking = () => {
   };
 
   const handleDateSelect = (date) => {
-    setSelectedDate(date);
+    const dateString = typeof date === 'string' ? date : date.toISOString().split('T')[0];
+    setSelectedDate(dateString);
     setSelectedSlot(null);
   };
 
@@ -169,7 +170,7 @@ const AppointmentBooking = () => {
         isUrgent: bookingDetails.isUrgent
       };
 
-      const response = await fetch(`${API_BASE_URL}/appointments/book`, {
+      const response = await fetch(`${API_BASE_URL}/patient/appointments/book`, {
         method: 'POST',
         headers: getAuthHeaders(),
         body: JSON.stringify(appointmentData)
@@ -206,13 +207,19 @@ const AppointmentBooking = () => {
       const date = new Date(startDate);
       date.setDate(startDate.getDate() + i);
       
+      // Fix: Use local date string without timezone conversion
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      const dateString = `${year}-${month}-${day}`;
+      
       const isCurrentMonth = date.getMonth() === currentMonth.getMonth();
       const isPast = date < today;
-      const isSelected = selectedDate === date.toISOString().split('T')[0];
+      const isSelected = selectedDate === dateString;
       
       days.push({
         date: date,
-        dateString: date.toISOString().split('T')[0],
+        dateString: dateString, // Use the manually created dateString
         day: date.getDate(),
         isCurrentMonth,
         isPast,

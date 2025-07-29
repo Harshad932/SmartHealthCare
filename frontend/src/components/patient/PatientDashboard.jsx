@@ -24,6 +24,11 @@ const PatientDashboard = () => {
   const [appointmentsPagination, setAppointmentsPagination] = useState({});
   const [documentsPagination, setDocumentsPagination] = useState({});
   const [documentFilters, setDocumentFilters] = useState({ category: '', search: '' });
+  const [rescheduleModal, setRescheduleModal] = useState(false);
+  const [cancelModal, setCancelModal] = useState(false);
+  const [selectedAppointment, setSelectedAppointment] = useState(null);
+  const [rescheduleForm, setRescheduleForm] = useState({ date: '', time: '', reason: '' });
+  const [cancelReason, setCancelReason] = useState('');
 
   const API_BASE_URL = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
@@ -81,6 +86,81 @@ const PatientDashboard = () => {
       'Content-Type': 'application/json'
     };
   };
+
+  const canRescheduleAppointment = (status) => {
+  return status === 'pending';
+};
+
+const canCancelAppointment = (status) => {
+  return ['pending'].includes(status);
+};
+
+// Reschedule appointment function
+const handleRescheduleAppointment = async (appointmentId, currentAppointment) => {
+  setSelectedAppointment(currentAppointment);
+  setRescheduleModal(true);
+};
+
+const submitReschedule = async () => {
+  if (!rescheduleForm.date || !rescheduleForm.time) {
+    alert('Date and time are required');
+    return;
+  }
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/patient/appointments/${selectedAppointment.appointment_id}/reschedule`, {
+      method: 'PATCH',
+      headers: getAuthHeaders(),
+      body: JSON.stringify({
+        newDate: rescheduleForm.date,
+        newTime: rescheduleForm.time,
+        reason: rescheduleForm.reason
+      })
+    });
+
+    if (response.ok) {
+      alert('Appointment rescheduled successfully!');
+      setRescheduleModal(false);
+      setRescheduleForm({ date: '', time: '', reason: '' });
+      loadAppointments();
+    } else {
+      const error = await response.json();
+      alert(`Reschedule failed: ${error.error || 'Unknown error'}`);
+    }
+  } catch (error) {
+    console.error('Error rescheduling appointment:', error);
+    alert('Reschedule failed. Please try again.');
+  }
+};
+
+// Updated cancel appointment function
+const handleCancelAppointment = async (appointmentId, appointment) => {
+  setSelectedAppointment(appointment);
+  setCancelModal(true);
+};
+
+const submitCancellation = async () => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/patient/appointments/${selectedAppointment.appointment_id}/cancel`, {
+      method: 'PATCH',
+      headers: getAuthHeaders(),
+      body: JSON.stringify({ reason: cancelReason })
+    });
+
+    if (response.ok) {
+      alert('Appointment cancelled successfully!');
+      setCancelModal(false);
+      setCancelReason('');
+      loadAppointments();
+    } else {
+      const error = await response.json();
+      alert(`Cancellation failed: ${error.error || 'Unknown error'}`);
+    }
+  } catch (error) {
+    console.error('Error cancelling appointment:', error);
+    alert('Cancellation failed. Please try again.');
+  }
+};
 
   const loadDashboardData = async () => {
     try {
@@ -607,14 +687,31 @@ const PatientDashboard = () => {
                       )}
                     </div>
                     <div className="patient-dashboard-appointment-actions">
-                      {appointment.status === 'pending' && (
-                        <>
-                          <button className="patient-dashboard-secondary-btn">Reschedule</button>
-                          <button className="patient-dashboard-danger-btn">Cancel</button>
-                        </>
+                      {canRescheduleAppointment(appointment.status) && (
+                        <button 
+                          className="patient-dashboard-secondary-btn"
+                          onClick={() => handleRescheduleAppointment(appointment.appointment_id, appointment)}
+                        >
+                          Reschedule
+                        </button>
                       )}
-                      {appointment.status === 'confirmed' && (
-                        <button className="patient-dashboard-secondary-btn">Reschedule</button>
+                      {canCancelAppointment(appointment.status) && (
+                        <button 
+                          className="patient-dashboard-danger-btn"
+                          onClick={() => handleCancelAppointment(appointment.appointment_id, appointment)}
+                        >
+                          Cancel
+                        </button>
+                      )}
+                      {appointment.status === 'completed' && (
+                        <button className="patient-dashboard-primary-btn">
+                          View Report
+                        </button>
+                      )}
+                      {appointment.status === 'cancelled' && (
+                        <span className="patient-dashboard-cancelled-text">
+                          Cancelled: {appointment.cancellation_reason || 'No reason provided'}
+                        </span>
                       )}
                     </div>
                   </div>
@@ -1227,6 +1324,162 @@ const PatientDashboard = () => {
         </div>
       </div>
     )}
+
+    {rescheduleModal && (
+  <div className="patient-dashboard-modal-overlay">
+    <div className="patient-dashboard-modal reschedule-modal">
+      <div className="patient-dashboard-modal-header">
+        <h3>Reschedule Appointment</h3>
+        <button 
+          className="patient-dashboard-modal-close"
+          onClick={() => {
+            setRescheduleModal(false);
+            setRescheduleForm({ date: '', time: '', reason: '' });
+          }}
+        >
+          <X />
+        </button>
+      </div>
+      
+      <div className="patient-dashboard-modal-content">
+        {selectedAppointment && (
+          <div className="appointment-details">
+            <h4>Current Appointment</h4>
+            <p><strong>Doctor:</strong> Dr. {selectedAppointment.doctor_name}</p>
+            <p><strong>Date:</strong> {formatDate(selectedAppointment.appointment_date)}</p>
+            <p><strong>Time:</strong> {selectedAppointment.appointment_time}</p>
+          </div>
+        )}
+        
+        <div className="reschedule-form">
+          <h4>New Appointment Details</h4>
+          
+          <div className="patient-dashboard-form-group">
+            <label>New Date</label>
+            <input
+              type="date"
+              className="patient-dashboard-input"
+              value={rescheduleForm.date}
+              min={new Date().toISOString().split('T')[0]}
+              onChange={(e) => setRescheduleForm(prev => ({ ...prev, date: e.target.value }))}
+              required
+            />
+          </div>
+
+          <div className="patient-dashboard-form-group">
+            <label>New Time</label>
+            <input
+              type="time"
+              className="patient-dashboard-input"
+              value={rescheduleForm.time}
+              onChange={(e) => setRescheduleForm(prev => ({ ...prev, time: e.target.value }))}
+              required
+            />
+          </div>
+
+          <div className="patient-dashboard-form-group">
+            <label>Reason for Rescheduling (Optional)</label>
+            <textarea
+              className="patient-dashboard-textarea"
+              placeholder="Please provide a reason for rescheduling..."
+              value={rescheduleForm.reason}
+              onChange={(e) => setRescheduleForm(prev => ({ ...prev, reason: e.target.value }))}
+              rows="3"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div className="patient-dashboard-modal-actions">
+        <button 
+          className="patient-dashboard-secondary-btn"
+          onClick={() => {
+            setRescheduleModal(false);
+            setRescheduleForm({ date: '', time: '', reason: '' });
+          }}
+        >
+          Cancel
+        </button>
+        <button 
+          className="patient-dashboard-primary-btn"
+          onClick={submitReschedule}
+          disabled={!rescheduleForm.date || !rescheduleForm.time}
+        >
+          <Calendar className="patient-dashboard-btn-icon" />
+          Reschedule Appointment
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
+{/* Cancel Modal */}
+{cancelModal && (
+  <div className="patient-dashboard-modal-overlay">
+    <div className="patient-dashboard-modal cancel-modal">
+      <div className="patient-dashboard-modal-header">
+        <h3>Cancel Appointment</h3>
+        <button 
+          className="patient-dashboard-modal-close"
+          onClick={() => {
+            setCancelModal(false);
+            setCancelReason('');
+          }}
+        >
+          <X />
+        </button>
+      </div>
+      
+      <div className="patient-dashboard-modal-content">
+        {selectedAppointment && (
+          <div className="appointment-details">
+            <h4>Appointment to Cancel</h4>
+            <p><strong>Doctor:</strong> Dr. {selectedAppointment.doctor_name}</p>
+            <p><strong>Date:</strong> {formatDate(selectedAppointment.appointment_date)}</p>
+            <p><strong>Time:</strong> {selectedAppointment.appointment_time}</p>
+            <p><strong>Specialization:</strong> {selectedAppointment.specialization}</p>
+          </div>
+        )}
+        
+        <div className="cancel-warning">
+          <AlertCircle className="warning-icon" />
+          <p>Are you sure you want to cancel this appointment? This action cannot be undone.</p>
+        </div>
+
+        <div className="patient-dashboard-form-group">
+          <label>Reason for Cancellation (Optional)</label>
+          <textarea
+            className="patient-dashboard-textarea"
+            placeholder="Please provide a reason for cancelling..."
+            value={cancelReason}
+            onChange={(e) => setCancelReason(e.target.value)}
+            rows="3"
+          />
+        </div>
+      </div>
+
+      <div className="patient-dashboard-modal-actions">
+        <button 
+          className="patient-dashboard-secondary-btn"
+          onClick={() => {
+            setCancelModal(false);
+            setCancelReason('');
+          }}
+        >
+          Keep Appointment
+        </button>
+        <button 
+          className="patient-dashboard-danger-btn"
+          onClick={submitCancellation}
+        >
+          <X className="patient-dashboard-btn-icon" />
+          Cancel Appointment
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
     </div>
   );
 };

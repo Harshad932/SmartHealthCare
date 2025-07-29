@@ -16,39 +16,72 @@ import {
   updateDoctorSchedule,
   updateAvailabilityStatus,
   getDoctorNotifications,
-  markNotificationAsRead
+  markNotificationAsRead,
+  getDoctorAvailabilitySlots
 } from '../controllers/doctor/DoctorDashboardController.js';
+
+import {
+  processVoiceTranscript,
+  testGeminiConnection,
+  detectLanguage,
+  getConsultationSummary
+} from '../controllers/doctor/VoiceConsultation.js';
+
 import { authenticateToken, requireDoctor } from '../middleware/auth.js';
 
 const router = express.Router();
 
-// Public routes (no authentication required)
-router.post('/doctor/register', registerDoctor);
-router.post('/doctor/verify-otp', verifyDoctorOTP);
-router.post('/doctor/resend-otp', resendDoctorOTP);
-router.post('/doctor/login', loginDoctor);
+// =============================================
+// PUBLIC ROUTES (No authentication required)
+// =============================================
+router.post('/register', registerDoctor);
+router.post('/verify-otp', verifyDoctorOTP);
+router.post('/resend-otp', resendDoctorOTP);
+router.post('/login', loginDoctor);
 
+// Public route for patients to view doctor availability
+router.get('/:doctorId/availability', getDoctorAvailabilitySlots);
+router.post('/process-transcript', processVoiceTranscript);
+router.get('/test-connection', testGeminiConnection);
+router.post('/detect-language', detectLanguage);
+router.post('/summary', getConsultationSummary);
+
+// =============================================
+// APPLY AUTHENTICATION MIDDLEWARE
+// All routes below this line require authentication
+// =============================================
 router.use(authenticateToken, requireDoctor);
 
-router.get('/doctor/profile', getDoctorProfile);
-router.put('/doctor/profile', updateDoctorProfile);
+// =============================================
+// PROTECTED ROUTES (Authentication required)
+// =============================================
 
-router.get('/doctor/dashboard/stats',  getDashboardStats);
+// Profile management
+router.get('/profile', getDoctorProfile);
+router.put('/profile', updateDoctorProfile);
+
+// Dashboard
+router.get('/dashboard/stats', getDashboardStats);
 
 // Appointments management
-router.get('/doctor/appointments', getDoctorAppointments);
-router.put('/doctor/appointments/:appointmentId/:action', updateAppointmentStatus);
+router.get('/appointments', getDoctorAppointments);
+router.put('/appointments/:appointmentId/:action', updateAppointmentStatus);
 
 // Patients management
-router.get('/doctor/patients', getDoctorPatients);
+router.get('/patients', getDoctorPatients);
 
 // Schedule/Availability management
-router.get('/doctor/availability', getDoctorAvailability);
-router.put('/doctor/availability/schedule',  updateDoctorSchedule);
-router.put('/doctor/availability/status',updateAvailabilityStatus);
+router.get('/availability', getDoctorAvailability);
+router.put('/availability/schedule', updateDoctorSchedule);
+router.put('/availability/status', updateAvailabilityStatus);
 
 // Notifications
-router.get('/doctor/notifications',getDoctorNotifications);
-router.put('/doctor/notifications/:notificationId/read', markNotificationAsRead);
+router.get('/notifications', getDoctorNotifications);
+router.put('/notifications/:notificationId/read', markNotificationAsRead);
+
+// =============================================
+// VOICE CONSULTATION ROUTES (All protected)
+// =============================================
+
 
 export default router;

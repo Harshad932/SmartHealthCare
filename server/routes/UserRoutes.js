@@ -15,6 +15,8 @@ import {
   getPatientProfile,
   updatePatientProfile,
   upload,
+  rescheduleAppointment,        // Add this
+  cancelAppointmentUpdated,
 } from '../controllers/patient/UserController.js';
 
 import {
@@ -22,8 +24,7 @@ import {
   getSpecializations,
   getDoctorAvailability,
   bookAppointment,
-  getAppointmentDetails,
-  cancelAppointment,
+  getAppointmentDetails,     // Add this 
 } from '../controllers/patient/AppointmentBookingController.js';
 
 const router = express.Router();
@@ -34,16 +35,14 @@ router.post('/verify-otp', verifyOTP);
 router.post('/resend-otp', resendOTP);
 router.post('/login', loginPatient);
 
-router.get('/patient/overview',authenticateToken,requirePatient, getDashboardOverview);
-
-// Appointments routes
-router.get('/patient/appointments', authenticateToken, requirePatient, getPatientAppointments);
+router.get('/overview',authenticateToken,requirePatient, getDashboardOverview);
 
 router.get('/doctors', authenticateToken, requirePatient, getDoctors);
 // Appointments routes
-router.get('/patient/appointments', authenticateToken, requirePatient, getPatientAppointments);
+router.patch('/appointments/:appointmentId/reschedule', authenticateToken, requirePatient, rescheduleAppointment);
+router.patch('/appointments/:appointmentId/cancel', authenticateToken, requirePatient, cancelAppointmentUpdated);
+router.get('/appointments', authenticateToken, requirePatient, getPatientAppointments);
 router.get('/appointments/:appointmentId', authenticateToken, requirePatient, getAppointmentDetails);
-router.patch('/appointments/:appointmentId/cancel', authenticateToken, requirePatient, cancelAppointment);
 
 // Appointment booking routes
 router.get('/doctors/specializations', authenticateToken, requirePatient, getSpecializations);
@@ -51,21 +50,21 @@ router.get('/doctors/:doctorId/availability', authenticateToken, requirePatient,
 router.post('/appointments/book', authenticateToken, requirePatient, bookAppointment);
 
 // Documents routes
-router.get('/patient/documents', authenticateToken, requirePatient, getPatientDocuments);
-router.post('/patient/documents/upload', authenticateToken, requirePatient, upload.array('documents', 10), uploadDocuments);
-router.delete('/patient/documents/:documentId', authenticateToken, requirePatient, deleteDocument);
+router.get('/documents', authenticateToken, requirePatient, getPatientDocuments);
+router.post('/documents/upload', authenticateToken, requirePatient, upload.array('documents', 10), uploadDocuments);
+router.delete('/documents/:documentId', authenticateToken, requirePatient, deleteDocument);
 
 // Symptom history routes
-router.get('/patient/symptoms', authenticateToken, requirePatient, getSymptomHistory);
+router.get('/symptoms', authenticateToken, requirePatient, getSymptomHistory);
 
 // Notifications routes
-router.get('/patient/notifications', authenticateToken, requirePatient, getPatientNotifications);
-router.patch('/patient/notifications/:notificationId/read', authenticateToken, requirePatient, markNotificationAsRead);
-router.patch('/patient/notifications/read-all', authenticateToken, requirePatient, markAllNotificationsAsRead);
+router.get('/notifications', authenticateToken, requirePatient, getPatientNotifications);
+router.patch('/notifications/:notificationId/read', authenticateToken, requirePatient, markNotificationAsRead);
+router.patch('/notifications/read-all', authenticateToken, requirePatient, markAllNotificationsAsRead);
 
 // Profile routes
-router.get('/patient/profile', authenticateToken, requirePatient, getPatientProfile);
-router.patch('/patient/profile', authenticateToken, requirePatient, updatePatientProfile);
+router.get('/profile', authenticateToken, requirePatient, getPatientProfile);
+router.patch('/profile', authenticateToken, requirePatient, updatePatientProfile);
 
 
 

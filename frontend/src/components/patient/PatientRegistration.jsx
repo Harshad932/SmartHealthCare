@@ -83,7 +83,7 @@ const PatientRegistration = () => {
     }
 
     try {
-      const response = await fetch(`${API_BASE_URL}/register`, {
+      const response = await fetch(`${API_BASE_URL}/patient/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -122,7 +122,7 @@ const PatientRegistration = () => {
     }
 
     try {
-      const response = await fetch(`${API_BASE_URL}/verify-otp`, {
+      const response = await fetch(`${API_BASE_URL}/patient/verify-otp`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -158,7 +158,7 @@ const PatientRegistration = () => {
     setSuccess('');
 
     try {
-      const response = await fetch(`${API_BASE_URL}/resend-otp`, {
+      const response = await fetch(`${API_BASE_URL}/patient/resend-otp`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

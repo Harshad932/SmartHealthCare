@@ -1,0 +1,807 @@
+/* frontend/components/VoiceConsultation.css */
+
+.aura-voice-consultation {
+  padding: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+}
+
+/* Header Styles */
+.aura-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 25px;
+  border-radius: 15px;
+  color: white;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.aura-header-info {
+  flex: 1;
+}
+
+.aura-title {
+  margin: 0 0 8px 0;
+  font-size: 28px;
+  font-weight: 600;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.aura-subtitle {
+  margin: 0 0 15px 0;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 16px;
+  font-weight: 300;
+}
+
+.aura-connection-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 8px 15px;
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+}
+
+.aura-status-indicator {
+  font-size: 14px;
+}
+
+.aura-status-indicator.connected {
+  animation: aura-pulse-success 2s infinite;
+}
+
+.aura-status-indicator.disconnected {
+  animation: aura-pulse-error 2s infinite;
+}
+
+.aura-status-text {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.aura-close-btn {
+  padding: 12px 24px;
+  background: rgba(244, 67, 54, 0.9);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.aura-close-btn:hover {
+  background: rgba(244, 67, 54, 1);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(244, 67, 54, 0.3);
+}
+
+/* Recording Section */
+.aura-recording-section {
+  background: white;
+  padding: 40px;
+  border-radius: 20px;
+  margin-bottom: 30px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e9ecef;
+}
+
+.aura-section-title {
+  margin-bottom: 30px;
+  font-size: 24px;
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+.aura-recording-controls {
+  margin-bottom: 25px;
+}
+
+.aura-record-btn {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  border: none;
+  font-size: 56px;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+  color: white;
+  box-shadow: 0 8px 25px rgba(76, 175, 80, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.aura-record-btn:disabled {
+  background: #cccccc;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.aura-record-btn:not(:disabled):hover {
+  transform: scale(1.05);
+  box-shadow: 0 12px 35px rgba(76, 175, 80, 0.4);
+}
+
+.aura-record-btn.recording {
+  background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+  animation: aura-recording-pulse 2s infinite;
+  box-shadow: 0 0 30px rgba(244, 67, 54, 0.6);
+}
+
+.aura-recording-status {
+  margin-top: 20px;
+}
+
+.aura-recording-text {
+  margin: 8px 0;
+  font-size: 18px;
+  font-weight: 500;
+  color: #2c3e50;
+}
+
+.aura-recording-duration {
+  margin: 8px 0;
+  font-size: 24px;
+  color: #f44336;
+  font-weight: 700;
+  font-family: 'Courier New', monospace;
+}
+
+.aura-language-info {
+  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+  padding: 18px;
+  border-radius: 12px;
+  margin-bottom: 25px;
+  border-left: 4px solid #2196F3;
+}
+
+.aura-language-info p {
+  margin: 0;
+  font-size: 16px;
+  color: #1565c0;
+  font-weight: 500;
+}
+
+.aura-action-buttons {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* Button Styles */
+.aura-btn {
+  padding: 14px 28px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 160px;
+  justify-content: center;
+}
+
+.aura-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.aura-btn-primary {
+  background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
+}
+
+.aura-btn-primary:not(:disabled):hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(33, 150, 243, 0.4);
+}
+
+.aura-btn-secondary {
+  background: linear-gradient(135deg, #9C27B0 0%, #7B1FA2 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(156, 39, 176, 0.3);
+}
+
+.aura-btn-secondary:not(:disabled):hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(156, 39, 176, 0.4);
+}
+
+.aura-btn-warning {
+  background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(255, 152, 0, 0.3);
+}
+
+.aura-btn-warning:not(:disabled):hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(255, 152, 0, 0.4);
+}
+
+.aura-btn-success {
+  background: linear-gradient(135deg, #4CAF50 0%, #388E3C 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+}
+
+.aura-btn-success:not(:disabled):hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(76, 175, 80, 0.4);
+}
+
+.aura-btn-info {
+  background: linear-gradient(135deg, #00BCD4 0%, #0097A7 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(0, 188, 212, 0.3);
+}
+
+.aura-btn-info:not(:disabled):hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 188, 212, 0.4);
+}
+
+.aura-btn-edit {
+  background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+  color: white;
+  padding: 8px 16px;
+  font-size: 14px;
+  min-width: auto;
+}
+
+.aura-btn-save {
+  background: linear-gradient(135deg, #4CAF50 0%, #388E3C 100%);
+  color: white;
+  padding: 8px 16px;
+  font-size: 14px;
+  min-width: auto;
+}
+
+.aura-btn-cancel {
+  background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+  color: white;
+  padding: 8px 16px;
+  font-size: 14px;
+  min-width: auto;
+}
+
+.aura-btn-add {
+  background: linear-gradient(135deg, #4CAF50 0%, #388E3C 100%);
+  color: white;
+  padding: 6px 12px;
+  font-size: 12px;
+  min-width: auto;
+  margin-top: 8px;
+}
+
+.aura-btn-remove {
+  background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+  color: white;
+  padding: 4px 8px;
+  font-size: 12px;
+  min-width: auto;
+  border-radius: 4px;
+}
+
+/* Error Styles */
+.aura-error {
+  background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+  color: #c62828;
+  padding: 18px;
+  border-radius: 10px;
+  margin-bottom: 25px;
+  border-left: 4px solid #f44336;
+  box-shadow: 0 4px 15px rgba(244, 67, 54, 0.1);
+}
+
+/* Transcript Section */
+.aura-transcript-section {
+  margin-bottom: 30px;
+}
+
+.aura-transcript-header {
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-size: 20px;
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+.aura-language-tag {
+  font-size: 12px;
+  background: linear-gradient(135deg, #4CAF50 0%, #388E3C 100%);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 15px;
+  font-weight: 500;
+}
+
+.aura-transcript-box {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  min-height: 180px;
+  max-height: 350px;
+  overflow-y: auto;
+  border: 2px solid #e9ecef;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.aura-transcript-text {
+  margin: 0;
+  white-space: pre-wrap;
+  color: #2c3e50;
+}
+
+.aura-transcript-placeholder {
+  margin: 0;
+  color: #6c757d;
+  font-style: italic;
+  text-align: center;
+  padding: 40px 20px;
+}
+
+/* Reports Section */
+.aura-reports-section {
+  margin-top: 40px;
+}
+
+.aura-reports-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 3px solid #e9ecef;
+}
+
+.aura-reports-header h2 {
+  margin: 0;
+  font-size: 26px;
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+.aura-report-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.aura-reports-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+}
+
+@media (max-width: 1200px) {
+  .aura-reports-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Report Cards */
+.aura-report-card {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  border: 1px solid #e9ecef;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.aura-report-card:hover {
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+}
+
+.aura-patient-report {
+  border-left: 5px solid #4CAF50;
+}
+
+.aura-doctor-report {
+  border-left: 5px solid #2196F3;
+}
+
+.aura-report-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #f8f9fa;
+}
+
+.aura-report-header h3 {
+  margin: 0;
+  color: #2c3e50;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.aura-patient-report .aura-report-header h3 {
+  color: #4CAF50;
+}
+
+.aura-doctor-report .aura-report-header h3 {
+  color: #2196F3;
+}
+
+.aura-edit-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+/* Report Content */
+.aura-report-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.aura-report-item {
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 3px solid #dee2e6;
+}
+
+.aura-report-item strong {
+  color: #495057;
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.aura-report-item ul {
+  margin: 8px 0 0 0;
+  padding-left: 20px;
+}
+
+.aura-report-item li {
+  margin-bottom: 4px;
+  color: #6c757d;
+}
+
+.aura-prescription {
+  background: white;
+  border: 1px solid #dee2e6;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.aura-prescription div {
+  margin-bottom: 6px;
+  color: #495057;
+}
+
+.aura-prescription div:first-child {
+  font-size: 16px;
+  color: #2c3e50;
+}
+
+/* Clinical Notes */
+.aura-clinical-notes {
+  margin-bottom: 25px;
+}
+
+.aura-clinical-notes h4 {
+  color: #2196F3;
+  margin-bottom: 15px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.aura-soap-item {
+  background: #f8f9fa;
+  padding: 15px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  border-left: 4px solid #2196F3;
+}
+
+.aura-soap-item strong {
+  color: #2196F3;
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+/* Behavioral Analysis */
+.aura-behavioral-analysis {
+  margin-bottom: 25px;
+}
+
+.aura-behavioral-analysis h4 {
+  color: #9C27B0;
+  margin-bottom: 15px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.aura-analysis-item {
+  background: #f3e5f5;
+  padding: 15px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  border-left: 4px solid #9C27B0;
+}
+
+.aura-analysis-item strong {
+  color: #9C27B0;
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.aura-red-flags {
+  background: #ffebee;
+  border-left-color: #f44336;
+}
+
+.aura-red-flags strong {
+  color: #f44336;
+}
+
+.aura-red-flags ul {
+  margin: 8px 0 0 0;
+  padding-left: 20px;
+}
+
+.aura-red-flags li {
+  color: #d32f2f;
+  font-weight: 500;
+}
+
+/* Therapy Considerations */
+.aura-therapy-considerations {
+  margin-bottom: 25px;
+}
+
+.aura-therapy-considerations h4 {
+  color: #FF9800;
+  margin-bottom: 15px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.aura-therapy-item {
+  background: #fff3e0;
+  padding: 15px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  border-left: 4px solid #FF9800;
+}
+
+.aura-therapy-item strong {
+  color: #FF9800;
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+/* Additional Notes */
+.aura-additional-notes {
+  margin-bottom: 20px;
+}
+
+.aura-note-item {
+  background: #e8f5e8;
+  padding: 15px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  border-left: 4px solid #4CAF50;
+}
+
+.aura-note-item strong {
+  color: #4CAF50;
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+/* Edit Form Styles */
+.aura-edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.aura-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.aura-form-group label {
+  font-weight: 600;
+  color: #495057;
+  font-size: 14px;
+}
+
+.aura-input, .aura-textarea {
+  padding: 12px;
+  border: 2px solid #dee2e6;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+.aura-input:focus, .aura-textarea:focus {
+  outline: none;
+  border-color: #4CAF50;
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+}
+
+.aura-textarea {
+  resize: vertical;
+  min-height: 80px;
+  line-height: 1.5;
+}
+
+.aura-array-item {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.aura-array-item .aura-input {
+  flex: 1;
+}
+
+/* Animations */
+@keyframes aura-recording-pulse {
+  0% {
+    box-shadow: 0 0 30px rgba(244, 67, 54, 0.6);
+  }
+  50% {
+    box-shadow: 0 0 50px rgba(244, 67, 54, 0.8);
+  }
+  100% {
+    box-shadow: 0 0 30px rgba(244, 67, 54, 0.6);
+  }
+}
+
+@keyframes aura-pulse-success {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes aura-pulse-error {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .aura-voice-consultation {
+    padding: 15px;
+  }
+
+  .aura-header {
+    flex-direction: column;
+    gap: 20px;
+    text-align: center;
+  }
+
+  .aura-title {
+    font-size: 24px;
+  }
+
+  .aura-recording-section {
+    padding: 25px;
+  }
+
+  .aura-record-btn {
+    width: 120px;
+    height: 120px;
+    font-size: 48px;
+  }
+
+  .aura-action-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .aura-btn {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .aura-reports-header {
+    flex-direction: column;
+    gap: 15px;
+    align-items: flex-start;
+  }
+
+  .aura-report-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .aura-report-card {
+    padding: 20px;
+  }
+
+  .aura-edit-buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .aura-voice-consultation {
+    padding: 10px;
+  }
+
+  .aura-header {
+    padding: 20px;
+  }
+
+  .aura-title {
+    font-size: 20px;
+  }
+
+  .aura-subtitle {
+    font-size: 14px;
+  }
+
+  .aura-recording-section {
+    padding: 20px;
+  }
+
+  .aura-record-btn {
+    width: 100px;
+    height: 100px;
+    font-size: 40px;
+  }
+
+  .aura-report-card {
+    padding: 15px;
+  }
+
+  .aura-connection-status {
+    flex-direction: column;
+    gap: 5px;
+    text-align: center;
+  }
+}

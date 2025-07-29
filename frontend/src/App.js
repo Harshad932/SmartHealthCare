@@ -12,6 +12,7 @@ import AppointmentBooking from './components/patient/AppointmentBooking';
 import DoctorRegistration from './components/doctor/DoctorRegistration';
 import DoctorLogin from './components/doctor/DoctorLogin';
 import DoctorDashboard from './components/doctor/DoctorDashboard';
+import Aura from './components/doctor/Aura';
 
 import AdminLogin from './components/admin/AdminLogin';
 import AdminDashboard from './components/admin/AdminDashboard';
@@ -34,6 +35,7 @@ function App() {
         <Route path="/doctor-registration" element={<DoctorRegistration />} />
         <Route path="/doctor-login" element={<DoctorLogin />} />
         <Route path="/doctor-dashboard" element={<DoctorDashboard />} />
+        <Route path="/aura" element={<Aura />} />
         
         <Route path="/admin-login" element={<AdminLogin />} />
         <Route path="/admin-dashboard" element={<AdminDashboard />} />

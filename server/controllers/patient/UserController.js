@@ -607,6 +607,172 @@ export const getPatientAppointments = async (req, res) => {
   }
 };
 
+export const rescheduleAppointment = async (req, res) => {
+  try {
+    const { appointmentId } = req.params;
+    const { newDate, newTime, reason } = req.body;
+    const patientId = req.user.userId;
+
+    // Validate input
+    if (!newDate || !newTime) {
+      return res.status(400).json({
+        success: false,
+        error: 'New date and time are required'
+      });
+    }
+
+    // Check if appointment exists and belongs to patient
+    const appointmentQuery = `
+      SELECT a.*, d.first_name as doctor_first_name, d.last_name as doctor_last_name 
+      FROM appointments a 
+      JOIN doctors d ON a.doctor_id = d.doctor_id 
+      WHERE a.appointment_id = $1 AND a.patient_id = $2
+    `;
+    const appointmentResult = await pool.query(appointmentQuery, [appointmentId, patientId]);
+
+    if (appointmentResult.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        error: 'Appointment not found'
+      });
+    }
+
+    const appointment = appointmentResult.rows[0];
+
+    // Check if appointment can be rescheduled (only pending and confirmed appointments)
+    if (!['pending', 'confirmed'].includes(appointment.status)) {
+      return res.status(400).json({
+        success: false,
+        error: 'This appointment cannot be rescheduled'
+      });
+    }
+
+    // Check if the new time slot is available
+    const availabilityQuery = `
+      SELECT * FROM appointments 
+      WHERE doctor_id = $1 AND appointment_date = $2 AND appointment_time = $3 
+      AND status IN ('pending', 'confirmed') AND appointment_id != $4
+    `;
+    const availabilityResult = await pool.query(availabilityQuery, [
+      appointment.doctor_id, 
+      newDate, 
+      newTime, 
+      appointmentId
+    ]);
+
+    if (availabilityResult.rows.length > 0) {
+      return res.status(400).json({
+        success: false,
+        error: 'The selected time slot is not available'
+      });
+    }
+
+    // Update appointment with new date/time and reset status to pending
+    const updateQuery = `
+      UPDATE appointments 
+      SET appointment_date = $1, 
+          appointment_time = $2, 
+          status = 'pending',
+          updated_at = CURRENT_TIMESTAMP
+      WHERE appointment_id = $3 AND patient_id = $4
+      RETURNING *
+    `;
+    const updateResult = await pool.query(updateQuery, [newDate, newTime, appointmentId, patientId]);
+
+    // Create notification for doctor about rescheduling
+    const notificationQuery = `
+      INSERT INTO doctor_notifications (doctor_id, type, title, message)
+      VALUES ($1, 'appointment_rescheduled', 'Appointment Rescheduled', $2)
+    `;
+    const notificationMessage = `Patient has rescheduled appointment to ${newDate} at ${newTime}. ${reason ? 'Reason: ' + reason : ''}`;
+    await pool.query(notificationQuery, [appointment.doctor_id, notificationMessage]);
+
+    res.json({
+      success: true,
+      message: 'Appointment rescheduled successfully',
+      data: {
+        appointment: updateResult.rows[0]
+      }
+    });
+
+  } catch (error) {
+    console.error('Error rescheduling appointment:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to reschedule appointment'
+    });
+  }
+};
+
+// Update the existing cancelAppointment function to handle both pending and confirmed appointments
+export const cancelAppointmentUpdated = async (req, res) => {
+  try {
+    const { appointmentId } = req.params;
+    const { reason } = req.body;
+    const patientId = req.user.userId;
+
+    // Check if appointment exists and belongs to patient
+    const appointmentQuery = `
+      SELECT a.*, d.first_name as doctor_first_name, d.last_name as doctor_last_name 
+      FROM appointments a 
+      JOIN doctors d ON a.doctor_id = d.doctor_id 
+      WHERE a.appointment_id = $1 AND a.patient_id = $2
+    `;
+    const appointmentResult = await pool.query(appointmentQuery, [appointmentId, patientId]);
+
+    if (appointmentResult.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        error: 'Appointment not found'
+      });
+    }
+
+    const appointment = appointmentResult.rows[0];
+
+    // Check if appointment can be cancelled
+    if (!['pending'].includes(appointment.status)) {
+      return res.status(400).json({
+        success: false,
+        error: 'This appointment cannot be cancelled'
+      });
+    }
+
+    // Update appointment status to cancelled
+    const updateQuery = `
+      UPDATE appointments 
+      SET status = 'cancelled', 
+          cancellation_reason = $1,
+          updated_at = CURRENT_TIMESTAMP
+      WHERE appointment_id = $2 AND patient_id = $3
+      RETURNING *
+    `;
+    const updateResult = await pool.query(updateQuery, [reason, appointmentId, patientId]);
+
+    // Create notification for doctor about cancellation
+    const notificationQuery = `
+      INSERT INTO doctor_notifications (doctor_id, type, title, message)
+      VALUES ($1, 'appointment_cancelled', 'Appointment Cancelled', $2)
+    `;
+    const notificationMessage = `Patient has cancelled appointment scheduled for ${appointment.appointment_date} at ${appointment.appointment_time}. ${reason ? 'Reason: ' + reason : ''}`;
+    await pool.query(notificationQuery, [appointment.doctor_id, notificationMessage]);
+
+    res.json({
+      success: true,
+      message: 'Appointment cancelled successfully',
+      data: {
+        appointment: updateResult.rows[0]
+      }
+    });
+
+  } catch (error) {
+    console.error('Error cancelling appointment:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to cancel appointment'
+    });
+  }
+};
+
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,

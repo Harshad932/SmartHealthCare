@@ -127,23 +127,27 @@ export const getDoctorAvailability = async (req, res) => {
       });
     }
 
-    // Validate date format
-    const appointmentDate = new Date(date);
+    // Validate date format and convert to local date
+    const appointmentDate = new Date(date + 'T00:00:00'); // Add time to prevent timezone issues
     if (isNaN(appointmentDate.getTime())) {
       return res.status(400).json({
         error: 'Invalid date format',
       });
     }
 
-    // Check if the date is in the past
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    if (appointmentDate < today) {
-      return res.status(400).json({
-        error: 'Cannot book appointments for past dates',
-      });
-    }
+    // Check if the date is in the past (compare dates only, not time)
+    // Check if slot is in the past (for today's appointments)
+    const now = new Date();
+    const appointmentDateOnly = new Date(appointmentDate.getFullYear(), appointmentDate.getMonth(), appointmentDate.getDate());
+    const todayDateOnly = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
+    let isPast = false;
+    if (appointmentDateOnly.getTime() === todayDateOnly.getTime()) {
+      // Only check time if it's today
+      const slotDateTime = new Date();
+      slotDateTime.setHours(currentSlot.getHours(), currentSlot.getMinutes(), 0, 0);
+      isPast = slotDateTime <= now;
+    }
     // Get day of week (0 = Sunday, 1 = Monday, etc.)
     const dayOfWeek = appointmentDate.getDay();
 

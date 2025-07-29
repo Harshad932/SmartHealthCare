@@ -141,13 +141,14 @@ export const getDashboardStats = async (req, res) => {
       [doctorId]
     );
 
+    // In getDashboardStats function, replace the res.json part with:
     res.json({
-      pending_appointments: parseInt(pendingResult.rows[0].count),
-      today_appointments: parseInt(todayResult.rows[0].count),
-      total_patients: parseInt(patientsResult.rows[0].count),
-      monthly_revenue: parseFloat(revenueResult.rows[0].revenue) || 0,
-      completed_appointments: parseInt(completedResult.rows[0].count),
-      average_rating: parseFloat(ratingResult.rows[0].avg_rating).toFixed(1)
+      pendingAppointments: parseInt(pendingResult.rows[0].count),
+      todayAppointments: parseInt(todayResult.rows[0].count),
+      totalPatients: parseInt(patientsResult.rows[0].count),
+      monthlyRevenue: parseFloat(revenueResult.rows[0].revenue) || 0,
+      completedAppointments: parseInt(completedResult.rows[0].count),
+      averageRating: parseFloat(ratingResult.rows[0].avg_rating).toFixed(1)
     });
 
   } catch (error) {
@@ -352,11 +353,11 @@ export const getDoctorAvailability = async (req, res) => {
     // Create default schedule if none exists
     let schedule = daysOfWeek.map((day, index) => ({
       day,
-      startTime: index >= 1 && index <= 5 ? '09:00' : '', // Mon-Fri default
-      endTime: index >= 1 && index <= 5 ? '17:00' : '',
-      breakStart: index >= 1 && index <= 5 ? '12:00' : '',
-      breakEnd: index >= 1 && index <= 5 ? '13:00' : '',
-      isActive: index >= 1 && index <= 5 // Mon-Fri active by default
+      start_time: index >= 1 && index <= 5 ? '09:00' : '', // Mon-Fri default
+      end_time: index >= 1 && index <= 5 ? '17:00' : '',
+      break_start_time: index >= 1 && index <= 5 ? '12:00' : '',
+      break_end_time: index >= 1 && index <= 5 ? '13:00' : '',
+      is_active: index >= 1 && index <= 5 // Mon-Fri active by default
     }));
 
     // Override with database data if exists
@@ -365,11 +366,11 @@ export const getDoctorAvailability = async (req, res) => {
       if (dayIndex >= 0 && dayIndex < 7) {
         schedule[dayIndex] = {
           day: daysOfWeek[dayIndex],
-          startTime: row.start_time || '',
-          endTime: row.end_time || '',
-          breakStart: row.break_start_time || '',
-          breakEnd: row.break_end_time || '',
-          isActive: row.is_active
+          start_time: row.start_time || '',
+          end_time: row.end_time || '',
+          break_start_time: row.break_start_time || '',
+          break_end_time: row.break_end_time || '',
+          is_active: row.is_active
         };
       }
     });
@@ -396,22 +397,23 @@ export const updateDoctorSchedule = async (req, res) => {
     await pool.query('DELETE FROM doctor_availability WHERE doctor_id = $1', [doctorId]);
 
     // Insert new schedule
+    // In updateDoctorSchedule function, replace the schedule insertion loop with:
     for (let i = 0; i < schedule.length; i++) {
       const day = schedule[i];
       
-      if (day.isActive && day.startTime && day.endTime) {
+      if (day.is_active && day.start_time && day.end_time) {
         await pool.query(
           `INSERT INTO doctor_availability 
-           (doctor_id, day_of_week, start_time, end_time, break_start_time, break_end_time, is_active)
-           VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+          (doctor_id, day_of_week, start_time, end_time, break_start_time, break_end_time, is_active)
+          VALUES ($1, $2, $3, $4, $5, $6, $7)`,
           [
             doctorId,
             i,
-            day.startTime,
-            day.endTime,
-            day.breakStart || null,
-            day.breakEnd || null,
-            day.isActive
+            day.start_time,
+            day.end_time,
+            day.break_start_time || null,
+            day.break_end_time || null,
+            day.is_active
           ]
         );
       }
@@ -493,6 +495,80 @@ export const markNotificationAsRead = async (req, res) => {
 
   } catch (error) {
     console.error('Mark notification as read error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+// Add this new function to DoctorDashboardController.js
+export const getDoctorAvailabilitySlots = async (req, res) => {
+  try {
+    const { doctorId } = req.params;
+    const { date } = req.query;
+
+    if (!date) {
+      return res.status(400).json({ error: 'Date is required' });
+    }
+
+    const selectedDate = new Date(date);
+    const dayOfWeek = selectedDate.getDay();
+
+    // Get doctor's availability for the specific day
+    const availabilityResult = await pool.query(
+      `SELECT start_time, end_time, break_start_time, break_end_time, is_active
+       FROM doctor_availability
+       WHERE doctor_id = $1 AND day_of_week = $2 AND is_active = true`,
+      [doctorId, dayOfWeek]
+    );
+
+    if (availabilityResult.rows.length === 0) {
+      return res.json({ data: { slots: [] } });
+    }
+
+    const availability = availabilityResult.rows[0];
+    
+    // Get existing appointments for this date
+    const appointmentsResult = await pool.query(
+      `SELECT appointment_time FROM appointments 
+       WHERE doctor_id = $1 AND appointment_date = $2 AND status IN ('confirmed', 'pending')`,
+      [doctorId, date]
+    );
+
+    const bookedSlots = appointmentsResult.rows.map(apt => apt.appointment_time);
+
+    // Generate time slots (30-minute intervals)
+    const slots = [];
+    const startTime = new Date(`2000-01-01T${availability.start_time}`);
+    const endTime = new Date(`2000-01-01T${availability.end_time}`);
+    const breakStart = availability.break_start_time ? new Date(`2000-01-01T${availability.break_start_time}`) : null;
+    const breakEnd = availability.break_end_time ? new Date(`2000-01-01T${availability.break_end_time}`) : null;
+
+    let currentTime = new Date(startTime);
+    const slotDuration = 30; // 30 minutes
+
+    while (currentTime < endTime) {
+      const timeString = currentTime.toTimeString().slice(0, 5); // HH:MM format
+      
+      // Skip break time slots
+      const isBreakTime = breakStart && breakEnd && 
+        currentTime >= breakStart && currentTime < breakEnd;
+      
+      if (!isBreakTime) {
+        const isBooked = bookedSlots.includes(timeString);
+        
+        slots.push({
+          time: timeString,
+          isBooked: isBooked,
+          isAvailable: !isBooked
+        });
+      }
+
+      currentTime.setMinutes(currentTime.getMinutes() + slotDuration);
+    }
+
+    res.json({ data: { slots } });
+
+  } catch (error) {
+    console.error('Get doctor availability slots error:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 };

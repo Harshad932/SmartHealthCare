@@ -20,11 +20,11 @@ app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
 // Routes
+app.use('/api/patient', UserRoutes);  
 app.use('/api/dosha', doshaRoutes);
-app.use('/api', AdminRoutes);
-app.use('/api', ChatBotRoutes);
-app.use('/api', UserRoutes);
-app.use('/api', DoctorRoutes);
+app.use('/api/admin', AdminRoutes);
+app.use('/api/chatbot', ChatBotRoutes);
+app.use('/api/doctor', DoctorRoutes);
 
 
 // Health check endpoint

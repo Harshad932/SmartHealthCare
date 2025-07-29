@@ -416,7 +416,7 @@ const DoctorDashboard = () => {
             
             {appointment.status === 'confirmed' && (
               <div className="doctor-dashboard-appointment-actions">
-                <button className="doctor-dashboard-start-consultation-btn">
+                <button className="doctor-dashboard-start-consultation-btn" onClick={() => navigate(`/aura?appointmentId=${appointment.appointment_id}`)}>
                   Start Consultation
                 </button>
                 <button className="doctor-dashboard-cancel-btn">
