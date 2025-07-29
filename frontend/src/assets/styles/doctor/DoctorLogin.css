@@ -26,18 +26,18 @@
 }
 
 /* Reset and Base Styles */
-* {
+/* * {
   box-sizing: border-box;
-}
+} */
 
-body {
+/* body {
   font-family: var(--font-family);
   line-height: 1.6;
   color: var(--text-primary);
   background-color: var(--background-color);
   margin: 0;
   padding: 0;
-}
+} */
 
 /* Main Container */
 .doctor-login-container {
@@ -48,6 +48,13 @@ body {
   justify-content: center;
   padding: 20px;
   position: relative;
+  font-family: var(--font-family);
+  line-height: 1.6;
+  color: var(--text-primary);
+  background-color: var(--background-color);
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 .doctor-login-container::before {

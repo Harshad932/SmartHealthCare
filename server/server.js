@@ -5,6 +5,7 @@ import ChatBotRoutes from './routes/ChatBotRoutes.js';
 import UserRoutes from './routes/UserRoutes.js';
 import DoctorRoutes from './routes/DoctorRoutes.js';
 import AdminRoutes from './routes/AdminRoutes.js';
+import doshaRoutes from './routes/doshaRoutes.js';
 
 dotenv.config();
 
@@ -19,10 +20,12 @@ app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
 // Routes
+app.use('/api/dosha', doshaRoutes);
+app.use('/api', AdminRoutes);
 app.use('/api', ChatBotRoutes);
 app.use('/api', UserRoutes);
 app.use('/api', DoctorRoutes);
-app.use('/api', AdminRoutes);
+
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {

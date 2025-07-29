@@ -16,6 +16,8 @@ import DoctorDashboard from './components/doctor/DoctorDashboard';
 import AdminLogin from './components/admin/AdminLogin';
 import AdminDashboard from './components/admin/AdminDashboard';
 
+import Dosha from './components/dosha/Dosha'; // Import Dosha component
+
 function App() {
   return (
     <Router>
@@ -35,6 +37,8 @@ function App() {
         
         <Route path="/admin-login" element={<AdminLogin />} />
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
+
+        <Route path="/dosha" element={<Dosha />} />
 
       </Routes>
     </Router>

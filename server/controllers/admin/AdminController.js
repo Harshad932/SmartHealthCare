@@ -5,52 +5,11 @@ import { pool } from "../../config/db.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
-// Login admin (enhanced version of your existing code)
+
 export const loginAdmin = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-
-    console.log(email);
-
-      const saltRounds = 10;
-      const hashedPassword = await bcrypt.hash(password, saltRounds);
-
-      // Create admin with all permissions
-      const insertQuery = `
-        INSERT INTO admins (email, password_hash, first_name, last_name, phone, role_level, permissions, is_active)
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-        RETURNING admin_id, email, first_name, last_name, role_level, permissions, created_at;
-      `;
-      
-      // Full permissions for super admin
-      const fullPermissions = {
-        "manage_users": true,
-        "manage_doctors": true,
-        "manage_patients": true,
-        "view_analytics": true,
-        "manage_appointments": true,
-        "manage_system_settings": true,
-        "manage_admins": true,
-        "view_logs": true,
-        "manage_notifications": true,
-        "approve_doctors": true,
-        "delete_records": true
-      };
-
-      const insertValues = [
-        email,
-        hashedPassword,
-        "HMV",
-        "Admin",
-        "+1234567890",
-        "super_admin",
-        JSON.stringify(fullPermissions),
-        true
-      ];
-
-      result = await pool.query(insertQuery, insertValues);
-      admin = result.rows[0];
 
     const query = "SELECT * FROM admins WHERE email = $1";
     const result = await pool.query(query, [email]);

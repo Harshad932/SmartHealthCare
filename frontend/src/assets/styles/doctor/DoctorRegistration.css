@@ -1,17 +1,17 @@
 /* Doctor Registration - Modern Professional Theme */
-* {
+/* * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-}
+} */
 
-body {
+/* body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   min-height: 100vh;
   color: #2d3748;
   line-height: 1.6;
-}
+} */
 
 /* Container Styles */
 .doctor-registration-container {
@@ -22,6 +22,12 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  color: #2d3748;
+  line-height: 1.6;
+  box-sizing: border-box;
 }
 
 /* Header Styles */

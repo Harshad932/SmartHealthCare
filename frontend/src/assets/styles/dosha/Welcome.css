@@ -1,0 +1,146 @@
+/* client/src/styles/Welcome.css */
+.dosha-welcome-container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.dosha-welcome-content {
+  background: white;
+  border-radius: 16px;
+  padding: 3rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.5s ease-in;
+}
+
+.dosha-welcome-content h2 {
+  color: #2c3e50;
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.dosha-intro-text {
+  color: #34495e;
+  line-height: 1.8;
+  font-size: 1.1rem;
+}
+
+.dosha-intro-text p {
+  margin-bottom: 1.5rem;
+}
+
+.dosha-intro {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.dosha-card {
+  padding: 1.5rem;
+  border-radius: 12px;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.dosha-card:hover {
+  transform: translateY(-5px);
+}
+
+.dosha-card.vata {
+  background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+  border: 2px solid #a5b4fc;
+}
+
+.dosha-card.pitta {
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  border: 2px solid #fbbf24;
+}
+
+.dosha-card.kapha {
+  background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+  border: 2px solid #6ee7b7;
+}
+
+.dosha-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: #1f2937;
+}
+
+.dosha-card p {
+  font-size: 0.9rem;
+  color: #4b5563;
+  margin: 0;
+}
+
+.dosha-instructions {
+  text-align: center;
+  font-style: italic;
+  color: #6b7280;
+  margin: 2rem 0;
+}
+
+.dosha-disclaimer {
+  background-color: #fef3c7;
+  border-left: 4px solid #f59e0b;
+  padding: 1rem;
+  margin: 2rem 0;
+  border-radius: 4px;
+}
+
+.dosha-disclaimer p {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #92400e;
+}
+
+.dosha-start-button {
+  display: block;
+  margin: 2rem auto 0;
+  padding: 1rem 3rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: white;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.dosha-start-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+}
+
+.dosha-start-button:active {
+  transform: translateY(0);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .dosha-welcome-content {
+    padding: 2rem;
+  }
+
+  .dosha-welcome-content h2 {
+    font-size: 1.5rem;
+  }
+  
+  .dosha-intro {
+    grid-template-columns: 1fr;
+  }
+}

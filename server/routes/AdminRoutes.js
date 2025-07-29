@@ -27,7 +27,7 @@ const router = express.Router();
 // Public routes
 router.post('/admin/login', loginAdmin);
 
-// Protected routes - require admin authentication
+// // Ptes - require admin authenticatrotected rouion
 // router.use(authenticateToken, requireAdmin);
 
 // Dashboard routes
