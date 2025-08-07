@@ -26,13 +26,13 @@ function App() {
 
         <Route path="/" element={<Home />} />
 
-        <Route path="/register" element={<PatientRegistration />} />
+        <Route path="/patient-register" element={<PatientRegistration />} />
         <Route path="/chatBot" element={<PatientSymptomChecker />} />
-        <Route path="/login" element={<PatientLogin />} />
+        <Route path="/patient-login" element={<PatientLogin />} />
         <Route path="/patient-dashboard" element={<PatientDashboard />} />
         <Route path="/appointment-booking" element={<AppointmentBooking />} />
 
-        <Route path="/doctor-registration" element={<DoctorRegistration />} />
+        <Route path="/doctor-register" element={<DoctorRegistration />} />
         <Route path="/doctor-login" element={<DoctorLogin />} />
         <Route path="/doctor-dashboard" element={<DoctorDashboard />} />
         <Route path="/aura" element={<Aura />} />

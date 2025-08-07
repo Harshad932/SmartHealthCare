@@ -1,503 +1,888 @@
-/* Doctor Registration - Modern Professional Theme */
-/* * {
-  box-sizing: border-box;
+/* AYUMATE Doctor Registration - Premium Health App CSS */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+/* CSS Variables for consistent theming */
+:root {
+  --primary-green: #10b981;
+  --primary-blue: #3b82f6;
+  --secondary-green: #059669;
+  --secondary-blue: #2563eb;
+  --accent-teal: #14b8a6;
+  --accent-orange: #f59e0b;
+  --accent-purple: #8b5cf6;
+  --accent-red: #ef4444;
+  
+  --gradient-primary: linear-gradient(135deg, #10b981 0%, #3b82f6 100%);
+  --gradient-secondary: linear-gradient(135deg, #059669 0%, #2563eb 100%);
+  --gradient-hero: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
+  
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.1);
+  --shadow-2xl: 0 25px 50px rgba(0, 0, 0, 0.15);
+  
+  --animation-fast: 0.2s ease-out;
+  --animation-normal: 0.3s ease-out;
+  --animation-slow: 0.5s ease-out;
+}
+
+/* Base styles */
+* {
   margin: 0;
   padding: 0;
-} */
-
-/* body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  min-height: 100vh;
-  color: #2d3748;
-  line-height: 1.6;
-} */
-
-/* Container Styles */
-.doctor-registration-container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 2rem 1rem;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  min-height: 100vh;
-  color: #2d3748;
-  line-height: 1.6;
   box-sizing: border-box;
 }
 
-/* Header Styles */
-.doctor-registration-header {
-  background: #ffffff;
-  border-radius: 16px 16px 0 0;
-  padding: 2.5rem 2rem 2rem;
-  text-align: center;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.6;
+  color: #1f2937;
+  overflow-x: hidden;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gradient-primary);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gradient-secondary);
+}
+
+/* Main container */
+.doctor-registration-container {
+  position: relative;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 50%, #eff6ff 100%);
+}
+
+.doctor-registration-container::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(16, 185, 129, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(59, 130, 246, 0.03) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: -1;
+  animation: float 20s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+/* Header styles */
+.doctor-header {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: var(--shadow-lg);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  transition: all var(--animation-normal);
+}
+
+.doctor-nav-container {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+@media (min-width: 640px) {
+  .doctor-nav-container {
+    padding: 0 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .doctor-nav-container {
+    padding: 0 2rem;
+  }
+}
+
+.doctor-nav-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+}
+
+.doctor-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  animation: slideInLeft 0.8s ease-out;
+}
+
+.doctor-logo-icon {
+  background: var(--gradient-primary);
+  padding: 0.5rem;
+  border-radius: 0.75rem;
+  box-shadow: var(--shadow-md);
+  transition: all var(--animation-normal);
+}
+
+.doctor-logo-icon:hover {
+  transform: scale(1.1) rotate(5deg);
+  box-shadow: var(--shadow-lg);
+}
+
+.doctor-logo-heart {
+  height: 2rem;
+  width: 2rem;
+  color: white;
+}
+
+.doctor-logo-text {
+  font-size: 1.875rem;
+  font-weight: 800;
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.02em;
+}
+
+/* Navigation styles */
+.doctor-desktop-nav {
+  display: none;
+  align-items: center;
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .doctor-desktop-nav {
+    display: flex;
+  }
+}
+
+.doctor-nav-link {
+  position: relative;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  background: none;
+  border: none;
+  color: #374151;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--animation-normal);
+  overflow: hidden;
+}
+
+.doctor-nav-link::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: var(--gradient-primary);
+  opacity: 0.1;
+  transition: left var(--animation-normal);
+  z-index: -1;
+}
+
+.doctor-nav-link:hover::before {
+  left: 0;
+}
+
+.doctor-nav-link:hover {
+  transform: translateY(-2px);
+  color: var(--secondary-green);
+}
+
+.doctor-auth-buttons {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.doctor-login-btn {
+  padding: 0.5rem 1rem;
+  background: none;
+  border: none;
+  color: #374151;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--animation-normal);
+  border-radius: 0.5rem;
+}
+
+.doctor-login-btn:hover {
+  color: var(--primary-green);
+}
+
+.doctor-admin-btn {
+  padding: 0.5rem 1.5rem;
+  background: var(--gradient-primary);
+  color: white;
+  border: none;
+  border-radius: 9999px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--shadow-md);
+  transition: all var(--animation-normal);
   position: relative;
   overflow: hidden;
 }
 
-.doctor-registration-header::before {
+.doctor-admin-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: all 0.6s ease;
+}
+
+.doctor-admin-btn:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.doctor-admin-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-xl);
+}
+
+/* Mobile menu */
+.doctor-mobile-menu-btn {
+  display: block;
+  padding: 0.5rem;
+  background: none;
+  border: none;
+  border-radius: 0.5rem;
+  transition: all var(--animation-normal);
+  cursor: pointer;
+}
+
+@media (min-width: 768px) {
+  .doctor-mobile-menu-btn {
+    display: none;
+  }
+}
+
+.doctor-mobile-menu-btn:hover {
+  background: rgba(16, 185, 129, 0.1);
+  transform: scale(1.05);
+}
+
+.doctor-menu-icon {
+  height: 1.5rem;
+  width: 1.5rem;
+}
+
+.doctor-mobile-nav {
+  display: block;
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(20px);
+  border-top: 1px solid #e5e7eb;
+  animation: slideDown 0.3s ease-out;
+}
+
+@media (min-width: 768px) {
+  .doctor-mobile-nav {
+    display: none;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.doctor-mobile-nav-container {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.doctor-mobile-nav-link {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 0.5rem 0;
+  background: none;
+  border: none;
+  color: #374151;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--animation-normal);
+}
+
+.doctor-mobile-nav-link:hover {
+  color: var(--primary-green);
+}
+
+.doctor-mobile-auth {
+  border-top: 1px solid #e5e7eb;
+  padding-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.doctor-mobile-login, .doctor-mobile-register, .doctor-mobile-admin {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 0.5rem 0;
+  background: none;
+  border: none;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--animation-normal);
+}
+
+.doctor-mobile-login {
+  color: #374151;
+}
+
+.doctor-mobile-login:hover {
+  color: var(--primary-green);
+}
+
+.doctor-mobile-register {
+  color: #6b7280;
+}
+
+.doctor-mobile-register:hover {
+  color: var(--primary-green);
+}
+
+.doctor-mobile-admin {
+  color: #9333ea;
+}
+
+.doctor-mobile-admin:hover {
+  color: #7c3aed;
+}
+
+/* Main Content */
+.doctor-main-content {
+  position: relative;
+  z-index: 10;
+}
+
+/* Form Section */
+.doctor-form-section {
+  padding: 3rem 0 5rem;
+  background: var(--gradient-hero);
+  position: relative;
+}
+
+.doctor-form-container {
+  max-width: 56rem;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+@media (min-width: 640px) {
+  .doctor-form-container {
+    padding: 0 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .doctor-form-container {
+    padding: 0 2rem;
+  }
+}
+
+.doctor-form-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  animation: fadeInUp 1s ease-out;
+}
+
+.doctor-form-icon {
+  display: inline-flex;
+  padding: 1rem;
+  background: var(--gradient-primary);
+  border-radius: 1rem;
+  margin-bottom: 1.5rem;
+  box-shadow: var(--shadow-lg);
+  animation: pulse 2s infinite;
+}
+
+.form-stethoscope-icon {
+  height: 3rem;
+  width: 3rem;
+  color: white;
+}
+
+.doctor-form-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #111827;
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+}
+
+@media (min-width: 1024px) {
+  .doctor-form-title {
+    font-size: 3rem;
+  }
+}
+
+.doctor-form-subtitle {
+  font-size: 1.125rem;
+  color: #4b5563;
+  margin-bottom: 1.5rem;
+}
+
+.doctor-form-note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  border-radius: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.note-icon {
+  height: 1.25rem;
+  width: 1.25rem;
+  color: var(--primary-blue);
+  flex-shrink: 0;
+}
+
+.doctor-form-note p {
+  color: #374151;
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+.doctor-form-note strong {
+  color: var(--primary-blue);
+}
+
+/* Registration Form */
+.doctor-registration-form {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 1.5rem;
+  padding: 2.5rem;
+  box-shadow: var(--shadow-2xl);
+  animation: fadeInUp 1s ease-out 0.2s both;
+  position: relative;
+  overflow: hidden;
+}
+
+.doctor-registration-form::before {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, #4299e1, #3182ce, #2b77cb);
+  background: var(--gradient-primary);
+  border-radius: 1.5rem 1.5rem 0 0;
 }
 
-.doctor-registration-header h1 {
-  font-size: 2.25rem;
-  font-weight: 700;
-  color: #2d3748;
-  margin-bottom: 0.5rem;
-  letter-spacing: -0.025em;
-}
-
-.doctor-registration-header p {
-  color: #718096;
-  font-size: 1.1rem;
-  margin-bottom: 0;
-}
-
-.doctor-registration-note {
-  background: #ebf8ff;
-  border: 1px solid #bee3f8;
-  border-radius: 8px;
-  padding: 1rem;
-  margin-top: 1.5rem;
-}
-
-.doctor-registration-note p {
-  color: #2c5282;
-  font-size: 0.95rem;
-  margin: 0;
-}
-
-/* Success Icon */
-.doctor-registration-success-icon {
-  width: 80px;
-  height: 80px;
-  background: linear-gradient(135deg, #48bb78, #38a169);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 1.5rem;
-  color: white;
-  box-shadow: 0 8px 25px rgba(72, 187, 120, 0.3);
-}
-
-/* Form Styles */
-.doctor-registration-form,
-.doctor-registration-otp-form {
-  background: #ffffff;
-  border-radius: 0 0 16px 16px;
-  padding: 2rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-}
-
-.doctor-registration-form-section {
-  margin-bottom: 2.5rem;
-}
-
-.doctor-registration-form-section h2 {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #2d3748;
-  margin-bottom: 1.5rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 2px solid #e2e8f0;
-  position: relative;
-}
-
-.doctor-registration-form-section h2::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  width: 60px;
-  height: 2px;
-  background: linear-gradient(90deg, #4299e1, #3182ce);
-}
-
-/* Form Row */
-.doctor-registration-form-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
-  margin-bottom: 1.5rem;
-}
-
-@media (max-width: 768px) {
-  .doctor-registration-form-row {
-    grid-template-columns: 1fr;
-    gap: 1rem;
+@media (max-width: 640px) {
+  .doctor-registration-form {
+    padding: 1.5rem;
   }
 }
 
-/* Form Groups */
-.doctor-registration-form-group {
-  margin-bottom: 1.5rem;
-}
-
-.doctor-registration-form-group label {
-  display: block;
-  font-weight: 500;
-  color: #4a5568;
-  margin-bottom: 0.5rem;
-  font-size: 0.95rem;
-}
-
-/* Input Styles */
-.doctor-registration-form-input,
-.doctor-registration-form-select,
-.doctor-registration-form-textarea,
-.doctor-registration-otp-input {
-  width: 100%;
-  padding: 0.875rem 1rem;
-  border: 2px solid #e2e8f0;
-  border-radius: 8px;
-  font-size: 1rem;
-  transition: all 0.2s ease-in-out;
-  background-color: #ffffff;
-  color: #2d3748;
-}
-
-.doctor-registration-form-input:focus,
-.doctor-registration-form-select:focus,
-.doctor-registration-form-textarea:focus,
-.doctor-registration-otp-input:focus {
-  outline: none;
-  border-color: #4299e1;
-  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
-  transform: translateY(-1px);
-}
-
-.doctor-registration-form-input:disabled,
-.doctor-registration-form-select:disabled,
-.doctor-registration-form-textarea:disabled,
-.doctor-registration-otp-input:disabled {
-  background-color: #f7fafc;
-  color: #a0aec0;
-  cursor: not-allowed;
-}
-
-.doctor-registration-form-textarea {
-  resize: vertical;
-  min-height: 100px;
-}
-
-.doctor-registration-otp-input {
-  font-size: 1.25rem;
-  letter-spacing: 0.5rem;
-  text-align: center;
-  font-weight: 600;
-}
-
-/* OTP Specific Styles */
-.doctor-registration-otp-group {
-  margin-bottom: 1.5rem;
-}
-
-.doctor-registration-timer-section {
-  text-align: center;
-  margin-bottom: 1.5rem;
-}
-
-.doctor-registration-timer-section p {
-  color: #718096;
-  font-size: 0.95rem;
-}
-
-/* Terms Section */
-.doctor-registration-terms {
-  background: #f7fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  padding: 1.5rem;
-}
-
-.doctor-registration-terms h3 {
-  color: #2d3748;
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
-}
-
-.doctor-registration-terms ul {
-  list-style: none;
-  padding: 0;
-}
-
-.doctor-registration-terms li {
-  padding: 0.5rem 0;
-  padding-left: 1.5rem;
-  position: relative;
-  color: #4a5568;
-  font-size: 0.95rem;
-}
-
-.doctor-registration-terms li::before {
-  content: '✓';
-  position: absolute;
-  left: 0;
-  color: #48bb78;
-  font-weight: bold;
-}
-
-/* Button Styles */
-.doctor-registration-register-button,
-.doctor-registration-verify-button,
-.doctor-registration-home-button,
-.doctor-registration-login-button,
-.doctor-registration-login-redirect-button,
-.doctor-registration-back-button,
-.doctor-registration-resend-button {
-  padding: 0.875rem 2rem;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 48px;
-}
-
-/* Primary Buttons */
-.doctor-registration-register-button,
-.doctor-registration-verify-button,
-.doctor-registration-login-button {
-  background: linear-gradient(135deg, #4299e1, #3182ce);
-  color: white;
-  box-shadow: 0 4px 15px rgba(66, 153, 225, 0.3);
-}
-
-.doctor-registration-register-button:hover:not(:disabled),
-.doctor-registration-verify-button:hover:not(:disabled),
-.doctor-registration-login-button:hover:not(:disabled) {
-  background: linear-gradient(135deg, #3182ce, #2c5282);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(66, 153, 225, 0.4);
-}
-
-/* Secondary Buttons */
-.doctor-registration-home-button,
-.doctor-registration-login-redirect-button,
-.doctor-registration-back-button {
-  background: #ffffff;
-  color: #4a5568;
-  border: 2px solid #e2e8f0;
-}
-
-.doctor-registration-home-button:hover,
-.doctor-registration-login-redirect-button:hover,
-.doctor-registration-back-button:hover {
-  background: #f7fafc;
-  border-color: #cbd5e0;
-  transform: translateY(-1px);
-}
-
-/* Resend Button */
-.doctor-registration-resend-button {
-  background: transparent;
-  color: #4299e1;
-  border: 1px solid #4299e1;
-  padding: 0.5rem 1rem;
-  font-size: 0.9rem;
-}
-
-.doctor-registration-resend-button:hover:not(:disabled) {
-  background: #4299e1;
-  color: white;
-  transform: translateY(-1px);
-}
-
-/* Disabled Buttons */
-button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  transform: none !important;
-  box-shadow: none !important;
-}
-
-/* Form Actions */
-.doctor-registration-form-actions {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-top: 2rem;
-}
-
-.doctor-registration-actions {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-top: 2rem;
-}
-
-/* Message Styles */
-.doctor-registration-error-message,
-.doctor-registration-success-message {
-  padding: 1rem 1.25rem;
-  border-radius: 8px;
-  margin: 1rem 0;
-  font-weight: 500;
-}
-
-.doctor-registration-error-message {
-  background-color: #fed7d7;
-  border: 1px solid #feb2b2;
-  color: #c53030;
-}
-
-.doctor-registration-success-message {
-  background-color: #c6f6d5;
-  border: 1px solid #9ae6b4;
-  color: #276749;
-}
-
-/* Pending Message Styles */
-.doctor-registration-pending-message {
-  background: #ffffff;
-  border-radius: 0 0 16px 16px;
-  padding: 2.5rem 2rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  text-align: center;
-}
-
-.doctor-registration-pending-message h2 {
-  font-size: 1.75rem;
-  font-weight: 600;
-  color: #2d3748;
-  margin-bottom: 1rem;
-}
-
-.doctor-registration-pending-message > p {
-  color: #718096;
-  font-size: 1.1rem;
+/* Form Section Cards */
+.doctor-form-section-card {
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 1rem;
+  padding: 2rem;
   margin-bottom: 2rem;
-}
-
-.doctor-registration-status-info,
-.doctor-registration-contact-info {
-  background: #f7fafc;
-  border-radius: 8px;
-  padding: 1.5rem;
-  margin-bottom: 1.5rem;
-  text-align: left;
-}
-
-.doctor-registration-status-info h3,
-.doctor-registration-contact-info h3 {
-  color: #2d3748;
-  font-size: 1.2rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
-}
-
-.doctor-registration-status-info ul {
-  list-style: none;
-  padding: 0;
-}
-
-.doctor-registration-status-info li {
-  padding: 0.5rem 0;
-  padding-left: 1.5rem;
+  transition: all var(--animation-normal);
   position: relative;
-  color: #4a5568;
+  overflow: hidden;
 }
 
-.doctor-registration-status-info li::before {
-  content: '•';
+.doctor-form-section-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+  border-color: rgba(16, 185, 129, 0.2);
+}
+
+.doctor-form-section-card::before {
+  content: '';
   position: absolute;
+  top: 0;
   left: 0;
-  color: #4299e1;
-  font-weight: bold;
-  font-size: 1.2rem;
+  width: 100%;
+  height: 2px;
+  background: var(--gradient-primary);
+  opacity: 0;
+  transition: opacity var(--animation-normal);
 }
 
-.doctor-registration-contact-info p {
-  color: #718096;
+.doctor-form-section-card:hover::before {
+  opacity: 1;
+}
+
+.doctor-section-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(229, 231, 235, 0.5);
+}
+
+.section-icon {
+  height: 1.5rem;
+  width: 1.5rem;
+  color: var(--primary-green);
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #111827;
   margin: 0;
 }
 
-/* Footer */
-.doctor-registration-form-footer {
-  text-align: center;
-  margin-top: 2rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid #e2e8f0;
+/* Form Grid */
+.doctor-form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
 }
 
-.doctor-registration-form-footer p {
-  color: #718096;
-  font-size: 0.9rem;
+@media (min-width: 768px) {
+  .doctor-form-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Input Groups */
+.doctor-input-group {
+  margin-bottom: 1.5rem;
+}
+
+.doctor-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 0.5rem;
+}
+
+.doctor-input,
+.doctor-select,
+.doctor-textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(209, 213, 219, 0.5);
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  color: #111827;
+  transition: all var(--animation-normal);
+  position: relative;
+}
+
+.doctor-input:focus,
+.doctor-select:focus,
+.doctor-textarea:focus {
+  outline: none;
+  border-color: var(--primary-green);
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+  background: rgba(255, 255, 255, 0.95);
+  transform: translateY(-1px);
+}
+
+.doctor-input:hover,
+.doctor-select:hover,
+.doctor-textarea:hover {
+  border-color: rgba(16, 185, 129, 0.3);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.doctor-input::placeholder,
+.doctor-textarea::placeholder {
+  color: #9ca3af;
+}
+
+.doctor-textarea {
+  resize: vertical;
+  min-height: 100px;
   line-height: 1.5;
 }
 
-/* Responsive Design */
-@media (max-width: 640px) {
-  .doctor-registration-container {
-    padding: 1rem;
-  }
-  
-  .doctor-registration-header {
-    padding: 2rem 1.5rem;
-  }
-  
-  .doctor-registration-header h1 {
-    font-size: 1.875rem;
-  }
-  
-  .doctor-registration-form,
-  .doctor-registration-otp-form,
-  .doctor-registration-pending-message {
-    padding: 1.5rem;
-  }
-  
-  .doctor-registration-form-actions,
-  .doctor-registration-actions {
-    flex-direction: column;
-  }
-  
-  .doctor-registration-register-button,
-  .doctor-registration-verify-button,
-  .doctor-registration-home-button,
-  .doctor-registration-login-button,
-  .doctor-registration-login-redirect-button,
-  .doctor-registration-back-button {
-    width: 100%;
-  }
-}
-
-/* Loading States */
-button:disabled {
+/* Password Input */
+.doctor-password-input {
   position: relative;
+  display: flex;
+  align-items: center;
 }
 
-button:disabled::after {
+.doctor-password-toggle {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #6b7280;
+  transition: all var(--animation-normal);
+  padding: 0.25rem;
+  border-radius: 0.25rem;
+}
+
+.doctor-password-toggle:hover {
+  color: var(--primary-green);
+  background: rgba(16, 185, 129, 0.1);
+}
+
+.eye-icon {
+  height: 1.25rem;
+  width: 1.25rem;
+}
+
+/* Terms Section */
+.doctor-terms-section {
+  background: rgba(248, 250, 252, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(226, 232, 240, 0.5);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.doctor-terms-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 1rem;
+}
+
+.doctor-terms-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.doctor-term-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.check-icon {
+  height: 1.25rem;
+  width: 1.25rem;
+  color: var(--primary-green);
+  margin-top: 0.125rem;
+  flex-shrink: 0;
+  animation: checkmark 0.6s ease-out;
+}
+
+@keyframes checkmark {
+  0% { transform: scale(0) rotate(0deg); }
+  50% { transform: scale(1.2) rotate(180deg); }
+  100% { transform: scale(1) rotate(360deg); }
+}
+
+.doctor-term-item span {
+  color: #374151;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+/* Messages */
+.doctor-error-message {
+  padding: 0.75rem 1rem;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: 0.5rem;
+  margin-bottom: 1.5rem;
+  animation: shake 0.5s ease-in-out;
+}
+
+.doctor-error-message p {
+  color: #dc2626;
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+.doctor-success-message {
+  padding: 0.75rem 1rem;
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  border-radius: 0.5rem;
+  margin-bottom: 1.5rem;
+  animation: slideInDown 0.5s ease-out;
+}
+
+.doctor-success-message p {
+  color: #059669;
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Form Actions */
+.doctor-form-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+@media (min-width: 640px) {
+  .doctor-form-actions {
+    flex-direction: row;
+    justify-content: center;
+  }
+}
+
+.doctor-register-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem 2rem;
+  background: var(--gradient-primary);
+  color: white;
+  border: none;
+  border-radius: 9999px;
+  font-size: 1.125rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--shadow-lg);
+  transition: all var(--animation-normal);
+  position: relative;
+  overflow: hidden;
+  min-width: 200px;
+}
+
+.doctor-register-button::before {
   content: '';
   position: absolute;
-  width: 16px;
-  height: 16px;
-  margin: auto;
-  border: 2px solid transparent;
-  border-top-color: currentColor;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.8s ease;
+}
+
+.doctor-register-button:hover::before {
+  left: 100%;
+}
+
+.doctor-register-button:hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow: 0 20px 40px rgba(16, 185, 129, 0.3);
+}
+
+.doctor-register-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.doctor-login-redirect-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem 2rem;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  color: #374151;
+  border: 2px solid rgba(229, 231, 235, 0.5);
+  border-radius: 9999px;
+  font-size: 1.125rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--animation-normal);
+  min-width: 200px;
+}
+
+.doctor-login-redirect-button:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 1);
+  border-color: var(--primary-blue);
+  transform: translateY(-3px);
+  box-shadow: 0 20px 40px rgba(59, 130, 246, 0.2);
+  color: var(--primary-blue);
+}
+
+.doctor-login-redirect-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-icon {
+  height: 1.25rem;
+  width: 1.25rem;
+  flex-shrink: 0;
+}
+
+/* Loading Spinner */
+.loading-spinner {
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top: 2px solid white;
   border-radius: 50%;
   animation: spin 1s linear infinite;
-  right: 1rem;
 }
 
 @keyframes spin {
@@ -505,35 +890,816 @@ button:disabled::after {
   100% { transform: rotate(360deg); }
 }
 
-/* Accessibility Improvements */
+.doctor-form-footer {
+  text-align: center;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(229, 231, 235, 0.3);
+}
+
+.doctor-form-footer p {
+  color: #6b7280;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  max-width: 32rem;
+  margin: 0 auto;
+}
+
+/* OTP Section */
+.doctor-otp-section {
+  padding: 5rem 0;
+  background: var(--gradient-hero);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.doctor-otp-container {
+  max-width: 28rem;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.doctor-otp-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 1.5rem;
+  padding: 2.5rem;
+  box-shadow: var(--shadow-2xl);
+  text-align: center;
+  animation: scaleIn 0.5s ease-out;
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.doctor-otp-header {
+  margin-bottom: 2rem;
+}
+
+.doctor-otp-icon {
+  display: inline-flex;
+  padding: 1rem;
+  background: var(--gradient-primary);
+  border-radius: 1rem;
+  margin-bottom: 1.5rem;
+  box-shadow: var(--shadow-lg);
+  animation: pulse 2s infinite;
+}
+
+.otp-brain-icon {
+  height: 2.5rem;
+  width: 2.5rem;
+  color: white;
+}
+
+.doctor-otp-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 0.5rem;
+}
+
+.doctor-otp-subtitle {
+  color: #4b5563;
+  font-size: 1rem;
+  word-break: break-word;
+}
+
+.doctor-otp-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.doctor-otp-input-group {
+  text-align: left;
+}
+
+.doctor-otp-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 0.5rem;
+}
+
+.doctor-otp-input {
+  width: 100%;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(209, 213, 219, 0.5);
+  border-radius: 0.5rem;
+  font-size: 1.25rem;
+  color: #111827;
+  text-align: center;
+  font-weight: 600;
+  letter-spacing: 0.25rem;
+  transition: all var(--animation-normal);
+}
+
+.doctor-otp-input:focus {
+  outline: none;
+  border-color: var(--primary-green);
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+  background: rgba(255, 255, 255, 0.95);
+  transform: translateY(-1px);
+}
+
+.doctor-timer-section {
+  text-align: center;
+}
+
+.doctor-timer-text {
+  color: #6b7280;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.doctor-resend-button {
+  background: none;
+  border: none;
+  color: var(--primary-green);
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.875rem;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  transition: all var(--animation-normal);
+}
+
+.doctor-resend-button:hover {
+  color: var(--secondary-green);
+  background: rgba(16, 185, 129, 0.1);
+}
+
+.doctor-otp-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.doctor-verify-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem 2rem;
+  background: var(--gradient-primary);
+  color: white;
+  border: none;
+  border-radius: 9999px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--shadow-lg);
+  transition: all var(--animation-normal);
+  position: relative;
+  overflow: hidden;
+}
+
+.doctor-verify-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.8s ease;
+}
+
+.doctor-verify-button:hover::before {
+  left: 100%;
+}
+
+.doctor-verify-button:hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow: 0 20px 40px rgba(16, 185, 129, 0.3);
+}
+
+.doctor-verify-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.doctor-back-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem 2rem;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  color: #374151;
+  border: 2px solid rgba(229, 231, 235, 0.5);
+  border-radius: 9999px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--animation-normal);
+}
+
+.doctor-back-button:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 1);
+  border-color: var(--primary-blue);
+  transform: translateY(-3px);
+  box-shadow: 0 20px 40px rgba(59, 130, 246, 0.2);
+  color: var(--primary-blue);
+}
+
+.doctor-back-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Approval Section */
+.doctor-approval-section {
+  padding: 5rem 0;
+  background: var(--gradient-hero);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.doctor-approval-container {
+  max-width: 48rem;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.doctor-approval-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 1.5rem;
+  padding: 3rem 2rem;
+  box-shadow: var(--shadow-2xl);
+  text-align: center;
+  animation: scaleIn 0.5s ease-out;
+  position: relative;
+  overflow: hidden;
+}
+
+.doctor-approval-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--gradient-primary);
+  border-radius: 1.5rem 1.5rem 0 0;
+}
+
+.doctor-success-icon {
+  display: inline-flex;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+  border-radius: 50%;
+  margin-bottom: 2rem;
+  box-shadow: var(--shadow-lg);
+  animation: bounceIn 0.8s ease-out;
+}
+
+.success-check {
+  height: 3rem;
+  width: 3rem;
+  color: var(--secondary-green);
+}
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.doctor-approval-title {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: #111827;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.02em;
+}
+
+@media (min-width: 1024px) {
+  .doctor-approval-title {
+    font-size: 2.75rem;
+  }
+}
+
+.doctor-approval-subtitle {
+  color: #4b5563;
+  font-size: 1.125rem;
+  margin-bottom: 2.5rem;
+}
+
+.doctor-approval-content {
+  text-align: left;
+}
+
+.doctor-status-info {
+  margin-bottom: 2.5rem;
+}
+
+.doctor-status-info h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.doctor-status-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.doctor-status-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: rgba(248, 250, 252, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(226, 232, 240, 0.5);
+  border-radius: 1rem;
+  transition: all var(--animation-normal);
+}
+
+.doctor-status-step:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: rgba(16, 185, 129, 0.2);
+}
+
+.step-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  background: var(--gradient-primary);
+  border-radius: 0.75rem;
+  flex-shrink: 0;
+  box-shadow: var(--shadow-md);
+}
+
+.step-icon-svg {
+  height: 1.5rem;
+  width: 1.5rem;
+  color: white;
+}
+
+.step-content {
+  flex: 1;
+}
+
+.step-content h4 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 0.5rem;
+}
+
+.step-content p {
+  color: #4b5563;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.doctor-contact-info {
+  background: rgba(239, 246, 255, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(147, 197, 253, 0.3);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  margin-bottom: 2.5rem;
+  text-align: center;
+}
+
+.doctor-contact-info h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 0.5rem;
+}
+
+.doctor-contact-info p {
+  color: #4b5563;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.doctor-approval-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  text-align: center;
+}
+
+@media (min-width: 640px) {
+  .doctor-approval-actions {
+    flex-direction: row;
+    justify-content: center;
+  }
+}
+
+.doctor-home-button,
+.doctor-login-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem 2rem;
+  border-radius: 9999px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--animation-normal);
+  border: none;
+  min-width: 200px;
+}
+
+.doctor-home-button {
+  background: var(--gradient-primary);
+  color: white;
+  box-shadow: var(--shadow-lg);
+}
+
+.doctor-home-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 20px 40px rgba(16, 185, 129, 0.3);
+}
+
+.doctor-login-button {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  color: #374151;
+  border: 2px solid rgba(229, 231, 235, 0.5);
+}
+
+.doctor-login-button:hover {
+  background: rgba(255, 255, 255, 1);
+  border-color: var(--primary-blue);
+  transform: translateY(-3px);
+  box-shadow: 0 20px 40px rgba(59, 130, 246, 0.2);
+  color: var(--primary-blue);
+}
+
+/* Footer */
+.doctor-footer {
+  background: linear-gradient(135deg, #111827 0%, #1f2937 100%);
+  color: white;
+  padding: 4rem 0;
+  position: relative;
+}
+
+.doctor-footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--gradient-primary);
+}
+
+.doctor-footer-container {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+@media (min-width: 640px) {
+  .doctor-footer-container {
+    padding: 0 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .doctor-footer-container {
+    padding: 0 2rem;
+  }
+}
+
+.doctor-footer-content {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .doctor-footer-content {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.doctor-footer-brand {
+  grid-column: span 1;
+}
+
+@media (min-width: 768px) {
+  .doctor-footer-brand {
+    grid-column: span 1;
+  }
+}
+
+.doctor-footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.doctor-footer-heart {
+  height: 1.5rem;
+  width: 1.5rem;
+  color: white;
+}
+
+.doctor-footer-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: white;
+}
+
+.doctor-footer-desc {
+  color: #9ca3af;
+  line-height: 1.625;
+  font-size: 0.875rem;
+}
+
+.doctor-footer-heading {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: white;
+}
+
+.doctor-footer-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.doctor-footer-link {
+  background: none;
+  border: none;
+  color: #9ca3af;
+  cursor: pointer;
+  text-align: left;
+  padding: 0.25rem 0;
+  border-radius: 0.25rem;
+  transition: all var(--animation-normal);
+  font-size: 0.875rem;
+}
+
+.doctor-footer-link:hover {
+  color: var(--primary-green);
+  transform: translateX(5px);
+  padding-left: 0.5rem;
+}
+
+.doctor-footer-item {
+  color: #9ca3af;
+  padding: 0.25rem 0;
+  font-size: 0.875rem;
+}
+
+.footer-item {
+  color: #9ca3af;
+  padding: 0.25rem 0;
+  font-size: 0.875rem;
+}
+
+.footer-bottom {
+  border-top: 1px solid #374151;
+  margin-top: 3rem;
+  padding-top: 2rem;
+  text-align: center;
+}
+
+.copyright {
+  color: #9ca3af;
+  font-size: 0.875rem;
+}
+
+/* Animation keyframes */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.05);
+  }
+}
+
+/* Responsive design adjustments */
+@media (max-width: 768px) {
+  .doctor-form-title {
+    font-size: 2rem;
+  }
+  
+  .doctor-approval-title {
+    font-size: 1.875rem;
+  }
+  
+  .doctor-form-section-card {
+    padding: 1.5rem;
+  }
+  
+  .doctor-registration-form {
+    padding: 1.5rem;
+  }
+  
+  .doctor-otp-card {
+    padding: 2rem 1.5rem;
+  }
+  
+  .doctor-approval-card {
+    padding: 2.5rem 1.5rem;
+  }
+  
+  .doctor-status-steps {
+    gap: 1rem;
+  }
+  
+  .doctor-status-step {
+    padding: 1rem;
+  }
+  
+  .step-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+  
+  .step-icon-svg {
+    height: 1.25rem;
+    width: 1.25rem;
+  }
+}
+
+/* Focus states for accessibility */
+button:focus,
+.doctor-nav-link:focus,
+.doctor-input:focus,
+.doctor-select:focus,
+.doctor-textarea:focus {
+  outline: 2px solid var(--primary-green);
+  outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  :root {
+    --primary-green: #047857;
+    --primary-blue: #1d4ed8;
+  }
+  
+  .doctor-form-title,
+  .doctor-otp-title,
+  .doctor-approval-title,
+  .section-title {
+    color: #000000;
+  }
+  
+  .doctor-form-subtitle,
+  .doctor-otp-subtitle,
+  .doctor-approval-subtitle {
+    color: #374151;
+  }
+}
+
+/* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-}
-
-/* Focus styles for better accessibility */
-button:focus-visible,
-input:focus-visible,
-select:focus-visible,
-textarea:focus-visible {
-  outline: 2px solid #4299e1;
-  outline-offset: 2px;
-}
-
-/* High contrast mode support */
-@media (prefers-contrast: high) {
-  .doctor-registration-form-input,
-  .doctor-registration-form-select,
-  .doctor-registration-form-textarea {
-    border-width: 2px;
+  
+  .doctor-registration-container::before {
+    animation: none;
   }
   
-  .doctor-registration-register-button,
-  .doctor-registration-verify-button,
-  .doctor-registration-login-button {
-    border: 2px solid transparent;
+  .doctor-form-icon {
+    animation: none;
   }
+  
+  .doctor-otp-icon {
+    animation: none;
+  }
+}
+
+/* Print styles */
+@media print {
+  .doctor-registration-container {
+    background: white;
+  }
+  
+  .doctor-header,
+  .doctor-footer {
+    display: none;
+  }
+  
+  .doctor-form-section,
+  .doctor-otp-section,
+  .doctor-approval-section {
+    background: white;
+    padding: 1rem 0;
+    page-break-inside: avoid;
+  }
+  
+  .doctor-form-title,
+  .doctor-otp-title,
+  .doctor-approval-title {
+    color: black;
+  }
+  
+  .doctor-registration-form,
+  .doctor-otp-card,
+  .doctor-approval-card {
+    border: 1px solid #e5e7eb;
+    box-shadow: none;
+    backdrop-filter: none;
+  }
+}
+
+/* Performance optimizations */
+.doctor-registration-container * {
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Glassmorphism effects */
+.doctor-header,
+.doctor-mobile-nav,
+.doctor-registration-form,
+.doctor-form-section-card,
+.doctor-otp-card,
+.doctor-approval-card {
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+/* Loading states */
+.loading {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+/* Smooth transitions for all interactive elements */
+a, button, .doctor-form-section-card, .doctor-nav-link, .doctor-input, .doctor-select, .doctor-textarea {
+  transition: all var(--animation-normal);
 }
