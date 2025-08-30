@@ -11,6 +11,7 @@ export const loginAdmin = async (req, res) => {
 
   try {
 
+
     const query = "SELECT * FROM admins WHERE email = $1";
     const result = await pool.query(query, [email]);
     const admin = result.rows[0];
@@ -182,6 +183,7 @@ export const getPendingDoctors = async (req, res) => {
 export const approveDoctor = async (req, res) => {
   const { doctorId } = req.body;
   const adminId = req.user.id;
+  console.log(` is approving doctor ${doctorId}`);
 
   try {
     await pool.query('BEGIN');
@@ -198,6 +200,7 @@ export const approveDoctor = async (req, res) => {
       [doctorId]
     );
     const doctor = doctorResult.rows[0];
+    console.log(doctor);
 
     // Log admin action
     await pool.query(

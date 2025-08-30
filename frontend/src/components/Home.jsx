@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import "../assets/styles/Home.css"; // Assuming you have a CSS file for styling
+import styles from "../assets/styles/Home.module.css"; // Assuming you have a CSS file for styling
 import { 
   Heart, Stethoscope, Brain, FileText, Calendar, Mic, Cloud, Users, Star, ChevronRight, Activity, Leaf, UserCheck,
   CheckCircle, Menu, X
@@ -13,40 +13,40 @@ const Home = () => {
 
   const features = [
     {
-      icon: <Leaf className="feature-icon" />,
+      icon: <Leaf className={styles["feature-icon"]} />,
       title: "Prakriti Assessment",
       description: "Discover your unique Ayurvedic constitution through comprehensive dosha analysis",
-      color: "bg-green"
+      color: styles["bg-green"]
     },
     {
-      icon: <Brain className="feature-icon" />,
+      icon: <Brain className={styles["feature-icon"]} />,
       title: "AI Symptom Checker",
       description: "Get instant health insights with our advanced AI-powered symptom analysis",
-      color: "bg-blue"
+      color: styles["bg-blue"]
     },
     {
-      icon: <Cloud className="feature-icon" />,
+      icon: <Cloud className={styles["feature-icon"]} />,
       title: "Medical Records",
       description: "Securely store and access your medical documents from anywhere",
-      color: "bg-purple"
+      color: styles["bg-purple"]
     },
     {
-      icon: <Calendar className="feature-icon" />,
+      icon: <Calendar className={styles["feature-icon"]} />,
       title: "Doctor Appointments",
       description: "Book and manage appointments with certified healthcare professionals",
-      color: "bg-orange"
+      color: styles["bg-orange"]
     },
     {
-      icon: <Mic className="feature-icon" />,
+      icon: <Mic className={styles["feature-icon"]} />,
       title: "Smart Consultations",
       description: "AI-powered consultation recording with automated report generation",
-      color: "bg-red"
+      color: styles["bg-red"]
     },
     {
-      icon: <FileText className="feature-icon" />,
+      icon: <FileText className={styles["feature-icon"]} />,
       title: "Health Reports",
       description: "Comprehensive health analytics and personalized recommendations",
-      color: "bg-teal"
+      color: styles["bg-teal"]
     }
   ];
 
@@ -84,48 +84,48 @@ const Home = () => {
   };
 
   return (
-    <div className="home-container">
+    <div className={styles["home-container"]}>
       {/* Header */}
-      <header className="header">
-        <div className="nav-container">
-          <div className="nav-wrapper">
-            <div className="logo">
-              <div className="logo-icon">
-                <Heart className="logo-heart" />
+      <header className={styles["header"]}>
+        <div className={styles["nav-container"]}>
+          <div className={styles["nav-wrapper"]}>
+            <div className={styles["logo"]}>
+              <div className={styles["logo-icon"]}>
+                <Heart className={styles["logo-heart"]} />
               </div>
-              <h1 className="logo-text">AYUMATE</h1>
+              <h1 className={styles["logo-text"]} onClick={() => handleNavigation('/')}>AYUMATE</h1>
             </div>
 
             {/* Desktop Navigation */}
-            <nav className="desktop-nav">
+            <nav className={styles["desktop-nav"]}>
               <button 
                 onClick={() => handleNavigation('/dosha')}
-                className="nav-link"
+                className={styles["nav-link"]}
               >
                 Prakriti Check
               </button>
               <button 
                 onClick={() => handleNavigation('/chatBot')}
-                className="nav-link"
+                className={styles["nav-link"]}
               >
                 AI Symptom Checker
               </button>
-              <div className="auth-buttons">
+              <div className={styles["auth-buttons"]}>
                 <button 
                   onClick={() => handleNavigation('/patient-login')}
-                  className="login-btn"
+                  className={styles["login-btn"]}
                 >
                   Patient Login
                 </button>
                 <button 
                   onClick={() => handleNavigation('/doctor-login')}
-                  className="login-btn"
+                  className={styles["login-btn"]}
                 >
                   Doctor Login
                 </button>
                 <button 
                   onClick={() => handleNavigation('/admin-login')}
-                  className="admin-btn"
+                  className={styles["admin-btn"]}
                 >
                   Admin
                 </button>
@@ -135,57 +135,57 @@ const Home = () => {
             {/* Mobile Menu Button */}
             <button 
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="mobile-menu-btn"
+              className={styles["mobile-menu-btn"]}
             >
-              {isMenuOpen ? <X className="menu-icon" /> : <Menu className="menu-icon" />}
+              {isMenuOpen ? <X className={styles["menu-icon"]} /> : <Menu className={styles["menu-icon"]} />}
             </button>
           </div>
         </div>
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="mobile-nav">
-            <div className="mobile-nav-container">
+          <div className={styles["mobile-nav"]}>
+            <div className={styles["mobile-nav-container"]}>
               <button 
                 onClick={() => handleNavigation('/dosha')}
-                className="mobile-nav-link"
+                className={styles["mobile-nav-link"]}
               >
                 Prakriti Check
               </button>
               <button 
                 onClick={() => handleNavigation('/chatBot')}
-                className="mobile-nav-link"
+                className={styles["mobile-nav-link"]}
               >
                 AI Symptom Checker
               </button>
-              <div className="mobile-auth">
+              <div className={styles["mobile-auth"]}>
                 <button 
                   onClick={() => handleNavigation('/patient-login')}
-                  className="mobile-login"
+                  className={styles["mobile-login"]}
                 >
                   Patient Login
                 </button>
                 <button 
                   onClick={() => handleNavigation('/patient-register')}
-                  className="mobile-register"
+                  className={styles["mobile-register"]}
                 >
                   Patient Register
                 </button>
                 <button 
                   onClick={() => handleNavigation('/doctor-login')}
-                  className="mobile-login"
+                  className={styles["mobile-login"]}
                 >
                   Doctor Login
                 </button>
                 <button 
                   onClick={() => handleNavigation('/doctor-register')}
-                  className="mobile-register"
+                  className={styles["mobile-register"]}
                 >
                   Doctor Register
                 </button>
                 <button 
                   onClick={() => handleNavigation('/admin-login')}
-                  className="mobile-admin"
+                  className={styles["mobile-admin"]}
                 >
                   Admin Login
                 </button>
@@ -196,34 +196,34 @@ const Home = () => {
       </header>
 
       {/* Hero Section */}
-      <section className="hero">
-        <div className="hero-bg"></div>
-        <div className="hero-container">
-          <div className="hero-content">
-            <h2 className="hero-title">
+      <section className={styles["hero"]}>
+        <div className={styles["hero-bg"]}></div>
+        <div className={styles["hero-container"]}>
+          <div className={styles["hero-content"]}>
+            <h2 className={styles["hero-title"]}>
               Your Complete
-              <span className="hero-highlight">
+              <span className={styles["hero-highlight"]}>
                 Ayurvedic Health
               </span>
               Companion
             </h2>
-            <p className="hero-subtitle">
+            <p className={styles["hero-subtitle"]}>
               Discover personalized healthcare through ancient Ayurvedic wisdom combined with modern AI technology
             </p>
-            <div className="hero-actions">
+            <div className={styles["hero-actions"]}>
               <button 
                 onClick={() => handleNavigation('/dosha')}
-                className="cta-primary"
+                className={styles["cta-primary"]}
               >
-                <Leaf className="btn-icon" />
+                <Leaf className={styles["btn-icon"]} />
                 <span>Check Your Prakriti</span>
-                <ChevronRight className="btn-icon" />
+                <ChevronRight className={styles["btn-icon"]} />
               </button>
               <button 
                 onClick={() => handleNavigation('/chatBot')}
-                className="cta-secondary"
+                className={styles["cta-secondary"]}
               >
-                <Brain className="btn-icon" />
+                <Brain className={styles["btn-icon"]} />
                 <span>AI Health Check</span>
               </button>
             </div>
@@ -232,77 +232,77 @@ const Home = () => {
       </section>
 
       {/* Quick Access Cards */}
-      <section className="quick-access">
-        <div className="access-container">
-          <div className="access-grid">
+      <section className={styles["quick-access"]}>
+        <div className={styles["access-container"]}>
+          <div className={styles["access-grid"]}>
             <div 
               onClick={() => handleNavigation('/patient-register')}
-              className="access-card access-card-green"
+              className={`${styles["access-card"]} ${styles["access-card-green"]}`}
             >
-              <UserCheck className="card-icon" />
-              <h3 className="card-title">Patient Portal</h3>
-              <p className="card-desc">Register and access your personalized health dashboard</p>
-              <ChevronRight className="card-arrow" />
+              <UserCheck className={styles["card-icon"]} />
+              <h3 className={styles["card-title"]}>Patient Portal</h3>
+              <p className={styles["card-desc"]}>Register and access your personalized health dashboard</p>
+              <ChevronRight className={styles["card-arrow"]} />
             </div>
 
             <div 
               onClick={() => handleNavigation('/doctor-register')}
-              className="access-card access-card-blue"
+              className={`${styles["access-card"]} ${styles["access-card-blue"]}`}
             >
-              <Stethoscope className="card-icon" />
-              <h3 className="card-title">Doctor Portal</h3>
-              <p className="card-desc">Join our network of certified healthcare professionals</p>
-              <ChevronRight className="card-arrow" />
+              <Stethoscope className={styles["card-icon"]} />
+              <h3 className={styles["card-title"]}>Doctor Portal</h3>
+              <p className={styles["card-desc"]}>Join our network of certified healthcare professionals</p>
+              <ChevronRight className={styles["card-arrow"]} />
             </div>
 
             <div 
               onClick={() => handleNavigation('/dosha')}
-              className="access-card access-card-orange"
+              className={`${styles["access-card"]} ${styles["access-card-orange"]}`}
             >
-              <Activity className="card-icon" />
-              <h3 className="card-title">Dosha Analysis</h3>
-              <p className="card-desc">Discover your Ayurvedic constitution and body type</p>
-              <ChevronRight className="card-arrow" />
+              <Activity className={styles["card-icon"]} />
+              <h3 className={styles["card-title"]}>Dosha Analysis</h3>
+              <p className={styles["card-desc"]}>Discover your Ayurvedic constitution and body type</p>
+              <ChevronRight className={styles["card-arrow"]} />
             </div>
 
             <div 
               onClick={() => handleNavigation('/chatBot')}
-              className="access-card access-card-purple"
+              className={`${styles["access-card"]} ${styles["access-card-purple"]}`}
             >
-              <Brain className="card-icon" />
-              <h3 className="card-title">AI Diagnosis</h3>
-              <p className="card-desc">Get instant health insights with AI technology</p>
-              <ChevronRight className="card-arrow" />
+              <Brain className={styles["card-icon"]} />
+              <h3 className={styles["card-title"]}>AI Diagnosis</h3>
+              <p className={styles["card-desc"]}>Get instant health insights with AI technology</p>
+              <ChevronRight className={styles["card-arrow"]} />
             </div>
           </div>
         </div>
       </section>
 
       {/* Features Section */}
-      <section className="features">
-        <div className="features-container">
-          <div className="features-header">
-            <h2 className="section-title">
+      <section className={styles["features"]}>
+        <div className={styles["features-container"]}>
+          <div className={styles["features-header"]}>
+            <h2 className={styles["section-title"]}>
               Comprehensive Health Features
             </h2>
-            <p className="section-subtitle">
+            <p className={styles["section-subtitle"]}>
               Experience the perfect blend of traditional Ayurveda and modern technology for your complete wellness journey
             </p>
           </div>
 
-          <div className="features-grid">
+          <div className={styles["features-grid"]}>
             {features.map((feature, index) => (
               <div 
                 key={index}
-                className="feature-card"
+                className={styles["feature-card"]}
               >
-                <div className={`feature-icon-container ${feature.color}`}>
-                  {React.cloneElement(feature.icon, { className: "feature-icon-white" })}
+                <div className={`${styles["feature-icon-container"]} ${feature.color}`}>
+                  {React.cloneElement(feature.icon, { className: styles["feature-icon-white"] })}
                 </div>
-                <h3 className="feature-title">
+                <h3 className={styles["feature-title"]}>
                   {feature.title}
                 </h3>
-                <p className="feature-description">
+                <p className={styles["feature-description"]}>
                   {feature.description}
                 </p>
               </div>
@@ -312,70 +312,70 @@ const Home = () => {
       </section>
 
       {/* Health Information Section */}
-      <section className="info">
-        <div className="info-container">
-          <div className="info-content">
-            <div className="info-text">
-              <h2 className="info-title">
+      <section className={styles["info"]}>
+        <div className={styles["info-container"]}>
+          <div className={styles["info-content"]}>
+            <div className={styles["info-text"]}>
+              <h2 className={styles["info-title"]}>
                 Why Choose AYUMATE?
               </h2>
-              <div className="info-points">
-                <div className="info-point">
-                  <CheckCircle className="check-icon check-green" />
+              <div className={styles["info-points"]}>
+                <div className={styles["info-point"]}>
+                  <CheckCircle className={`${styles["check-icon"]} ${styles["check-green"]}`} />
                   <div>
-                    <h3 className="point-title">
+                    <h3 className={styles["point-title"]}>
                       Personalized Ayurvedic Care
                     </h3>
-                    <p className="point-desc">
+                    <p className={styles["point-desc"]}>
                       Get customized health recommendations based on your unique prakriti and current health status
                     </p>
                   </div>
                 </div>
-                <div className="info-point">
-                  <CheckCircle className="check-icon check-blue" />
+                <div className={styles["info-point"]}>
+                  <CheckCircle className={`${styles["check-icon"]} ${styles["check-blue"]}`} />
                   <div>
-                    <h3 className="point-title">
+                    <h3 className={styles["point-title"]}>
                       AI-Powered Insights
                     </h3>
-                    <p className="point-desc">
+                    <p className={styles["point-desc"]}>
                       Advanced machine learning algorithms provide accurate symptom analysis and health predictions
                     </p>
                   </div>
                 </div>
-                <div className="info-point">
-                  <CheckCircle className="check-icon check-purple" />
+                <div className={styles["info-point"]}>
+                  <CheckCircle className={`${styles["check-icon"]} ${styles["check-purple"]}`} />
                   <div>
-                    <h3 className="point-title">
+                    <h3 className={styles["point-title"]}>
                       Complete Health Ecosystem
                     </h3>
-                    <p className="point-desc">
+                    <p className={styles["point-desc"]}>
                       From consultation to treatment tracking, manage your entire health journey in one place
                     </p>
                   </div>
                 </div>
               </div>
             </div>
-            <div className="info-visual">
-              <div className="visual-grid">
-                <div className="visual-card visual-green">
-                  <Users className="visual-icon" />
-                  <div className="stat-number">10K+</div>
-                  <div className="stat-label">Happy Patients</div>
+            <div className={styles["info-visual"]}>
+              <div className={styles["visual-grid"]}>
+                <div className={`${styles["visual-card"]} ${styles["visual-green"]}`}>
+                  <Users className={styles["visual-icon"]} />
+                  <div className={styles["stat-number"]}>10K+</div>
+                  <div className={styles["stat-label"]}>Happy Patients</div>
                 </div>
-                <div className="visual-card visual-blue">
-                  <Stethoscope className="visual-icon" />
-                  <div className="stat-number">500+</div>
-                  <div className="stat-label">Expert Doctors</div>
+                <div className={`${styles["visual-card"]} ${styles["visual-blue"]}`}>
+                  <Stethoscope className={styles["visual-icon"]} />
+                  <div className={styles["stat-number"]}>500+</div>
+                  <div className={styles["stat-label"]}>Expert Doctors</div>
                 </div>
-                <div className="visual-card visual-purple">
-                  <Brain className="visual-icon" />
-                  <div className="stat-number">95%</div>
-                  <div className="stat-label">AI Accuracy</div>
+                <div className={`${styles["visual-card"]} ${styles["visual-purple"]}`}>
+                  <Brain className={styles["visual-icon"]} />
+                  <div className={styles["stat-number"]}>95%</div>
+                  <div className={styles["stat-label"]}>AI Accuracy</div>
                 </div>
-                <div className="visual-card visual-orange">
-                  <Activity className="visual-icon" />
-                  <div className="stat-number">24/7</div>
-                  <div className="stat-label">Support</div>
+                <div className={`${styles["visual-card"]} ${styles["visual-orange"]}`}>
+                  <Activity className={styles["visual-icon"]} />
+                  <div className={styles["stat-number"]}>24/7</div>
+                  <div className={styles["stat-label"]}>Support</div>
                 </div>
               </div>
             </div>
@@ -384,43 +384,43 @@ const Home = () => {
       </section>
 
       {/* Testimonials Section */}
-      <section className="testimonials">
-        <div className="testimonials-container">
-          <div className="testimonials-header">
-            <h2 className="section-title">
+      <section className={styles["testimonials"]}>
+        <div className={styles["testimonials-container"]}>
+          <div className={styles["testimonials-header"]}>
+            <h2 className={styles["section-title"]}>
               What Our Users Say
             </h2>
-            <p className="section-subtitle">
+            <p className={styles["section-subtitle"]}>
               Real experiences from our community of patients and healthcare professionals
             </p>
           </div>
 
-          <div className="testimonial-slider">
-            <div className="testimonial-card">
-              <div className="rating">
+          <div className={styles["testimonial-slider"]}>
+            <div className={styles["testimonial-card"]}>
+              <div className={styles["rating"]}>
                 {[...Array(testimonials[currentSlide].rating)].map((_, i) => (
-                  <Star key={i} className="star" />
+                  <Star key={i} className={styles["star"]} />
                 ))}
               </div>
-              <p className="testimonial-text">
+              <p className={styles["testimonial-text"]}>
                 "{testimonials[currentSlide].content}"
               </p>
-              <div className="testimonial-author">
-                <div className="author-name">
+              <div className={styles["testimonial-author"]}>
+                <div className={styles["author-name"]}>
                   {testimonials[currentSlide].name}
                 </div>
-                <div className="author-role">
+                <div className={styles["author-role"]}>
                   {testimonials[currentSlide].role}
                 </div>
               </div>
             </div>
 
-            <div className="slider-dots">
+            <div className={styles["slider-dots"]}>
               {testimonials.map((_, index) => (
                 <button
                   key={index}
                   onClick={() => setCurrentSlide(index)}
-                  className={`dot ${index === currentSlide ? 'dot-active' : ''}`}
+                  className={`${styles["dot"]} ${index === currentSlide ? styles["dot-active"] : ''}`}
                 />
               ))}
             </div>
@@ -429,27 +429,27 @@ const Home = () => {
       </section>
 
       {/* Call to Action Section */}
-      <section className="cta">
-        <div className="cta-container">
-          <h2 className="cta-title">
+      <section className={styles["cta"]}>
+        <div className={styles["cta-container"]}>
+          <h2 className={styles["cta-title"]}>
             Start Your Health Journey Today
           </h2>
-          <p className="cta-subtitle">
+          <p className={styles["cta-subtitle"]}>
             Join thousands of users who have transformed their health with AYUMATE's personalized approach to wellness
           </p>
-          <div className="cta-buttons">
+          <div className={styles["cta-buttons"]}>
             <button 
               onClick={() => handleNavigation('/patient-register')}
-              className="cta-btn-primary"
+              className={styles["cta-btn-primary"]}
             >
-              <UserCheck className="btn-icon" />
+              <UserCheck className={styles["btn-icon"]} />
               <span>Get Started as Patient</span>
             </button>
             <button 
               onClick={() => handleNavigation('/doctor-register')}
-              className="cta-btn-secondary"
+              className={styles["cta-btn-secondary"]}
             >
-              <Stethoscope className="btn-icon" />
+              <Stethoscope className={styles["btn-icon"]} />
               <span>Join as Healthcare Provider</span>
             </button>
           </div>
@@ -457,55 +457,55 @@ const Home = () => {
       </section>
 
       {/* Footer */}
-      <footer className="footer">
-        <div className="footer-container">
-          <div className="footer-content">
-            <div className="footer-brand">
-              <div className="footer-logo">
-                <div className="logo-icon">
-                  <Heart className="footer-heart" />
+      <footer className={styles["footer"]}>
+        <div className={styles["footer-container"]}>
+          <div className={styles["footer-content"]}>
+            <div className={styles["footer-brand"]}>
+              <div className={styles["footer-logo"]}>
+                <div className={styles["logo-icon"]}>
+                  <Heart className={styles["footer-heart"]} />
                 </div>
-                <h3 className="footer-title">AYUMATE</h3>
+                <h3 className={styles["footer-title"]}>AYUMATE</h3>
               </div>
-              <p className="footer-desc">
+              <p className={styles["footer-desc"]}>
                 Your comprehensive Ayurvedic health companion, combining ancient wisdom with modern technology for optimal wellness.
               </p>
             </div>
 
-            <div className="footer-links">
-              <h4 className="footer-heading">Quick Links</h4>
-              <ul className="footer-list">
-                <li><button onClick={() => handleNavigation('/dosha')} className="footer-link">Prakriti Assessment</button></li>
-                <li><button onClick={() => handleNavigation('/chatBot')} className="footer-link">AI Symptom Checker</button></li>
-                <li><button onClick={() => handleNavigation('/patient-register')} className="footer-link">Patient Portal</button></li>
-                <li><button onClick={() => handleNavigation('/doctor-register')} className="footer-link">Doctor Portal</button></li>
+            <div className={styles["footer-links"]}>
+              <h4 className={styles["footer-heading"]}>Quick Links</h4>
+              <ul className={styles["footer-list"]}>
+                <li><button onClick={() => handleNavigation('/dosha')} className={styles["footer-link"]}>Prakriti Assessment</button></li>
+                <li><button onClick={() => handleNavigation('/chatBot')} className={styles["footer-link"]}>AI Symptom Checker</button></li>
+                <li><button onClick={() => handleNavigation('/patient-register')} className={styles["footer-link"]}>Patient Portal</button></li>
+                <li><button onClick={() => handleNavigation('/doctor-register')} className={styles["footer-link"]}>Doctor Portal</button></li>
               </ul>
             </div>
 
-            <div className="footer-features">
-              <h4 className="footer-heading">Features</h4>
-              <ul className="footer-list">
-                <li className="footer-item">Medical Records Storage</li>
-                <li className="footer-item">Doctor Appointments</li>
-                <li className="footer-item">Smart Consultations</li>
-                <li className="footer-item">Health Analytics</li>
+            <div className={styles["footer-features"]}>
+              <h4 className={styles["footer-heading"]}>Features</h4>
+              <ul className={styles["footer-list"]}>
+                <li className={styles["footer-item"]}>Medical Records Storage</li>
+                <li className={styles["footer-item"]}>Doctor Appointments</li>
+                <li className={styles["footer-item"]}>Smart Consultations</li>
+                <li className={styles["footer-item"]}>Health Analytics</li>
               </ul>
             </div>
 
-            <div className="footer-contact">
-              <h4 className="footer-heading">Support</h4>
-              <ul className="footer-list">
-                <li className="footer-item">24/7 Customer Support</li>
-                <li className="footer-item">Help Center</li>
-                <li className="footer-item">Privacy Policy</li>
-                <li className="footer-item">Terms of Service</li>
+            <div className={styles["footer-contact"]}>
+              <h4 className={styles["footer-heading"]}>Support</h4>
+              <ul className={styles["footer-list"]}>
+                <li className={styles["footer-item"]}>24/7 Customer Support</li>
+                <li className={styles["footer-item"]}>Help Center</li>
+                <li className={styles["footer-item"]}>Privacy Policy</li>
+                <li className={styles["footer-item"]}>Terms of Service</li>
               </ul>
             </div>
           </div>
 
-          <div className="footer-bottom">
-            <p className="copyright">
-              © 2024 AYUMATE. All rights reserved. Empowering health through technology and tradition.
+          <div className={styles["footer-bottom"]}>
+            <p className={styles["copyright"]}>
+              © 2025 AYUMATE. All rights reserved. Empowering health through technology and tradition.
             </p>
           </div>
         </div>

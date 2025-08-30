@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import "../../assets/styles/patient/AppointmentBooking.css";
+import styles from  "../../assets/styles/patient/AppointmentBooking.module.css";
 import { 
-  Search, Filter, Calendar, Clock, MapPin,  User, Phone, ChevronLeft, ChevronRight,  Stethoscope, Award, DollarSign, 
-  BookOpen, CheckCircle,AlertCircle, X, } from 'lucide-react';
+  Search, Filter, Calendar, Clock, MapPin, User, Phone, ChevronLeft, ChevronRight, Stethoscope, Award, DollarSign, 
+  BookOpen, CheckCircle, AlertCircle, X, Heart,  Menu
+} from 'lucide-react';
 
 const AppointmentBooking = () => {
   const navigate = useNavigate();
-  const [currentStep, setCurrentStep] = useState(1); // 1: Doctor Selection, 2: Time Selection, 3: Booking Details, 4: Confirmation
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [currentStep, setCurrentStep] = useState(1);
   const [doctors, setDoctors] = useState([]);
   const [filteredDoctors, setFilteredDoctors] = useState([]);
   const [selectedDoctor, setSelectedDoctor] = useState(null);
@@ -132,6 +134,11 @@ const AppointmentBooking = () => {
     setFilteredDoctors(filtered);
   };
 
+  const handleNavigation = (path) => {
+    navigate(path);
+    setIsMenuOpen(false);
+  };
+
   const handleDoctorSelect = (doctor) => {
     setSelectedDoctor(doctor);
     setCurrentStep(2);
@@ -195,7 +202,6 @@ const AppointmentBooking = () => {
 
   const generateCalendarDays = () => {
     const startOfMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1);
-    const endOfMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0);
     const startDate = new Date(startOfMonth);
     startDate.setDate(startDate.getDate() - startOfMonth.getDay());
     
@@ -207,7 +213,6 @@ const AppointmentBooking = () => {
       const date = new Date(startDate);
       date.setDate(startDate.getDate() + i);
       
-      // Fix: Use local date string without timezone conversion
       const year = date.getFullYear();
       const month = String(date.getMonth() + 1).padStart(2, '0');
       const day = String(date.getDate()).padStart(2, '0');
@@ -219,7 +224,7 @@ const AppointmentBooking = () => {
       
       days.push({
         date: date,
-        dateString: dateString, // Use the manually created dateString
+        dateString: dateString,
         day: date.getDate(),
         isCurrentMonth,
         isPast,
@@ -248,47 +253,47 @@ const AppointmentBooking = () => {
   };
 
   const renderStepIndicator = () => (
-    <div className="patient-booking-step-indicator">
+    <div className={styles["patient-booking-step-indicator"]}>
       {[1, 2, 3, 4].map((step) => (
-        <div key={step} className="patient-booking-step-item">
-          <div className={`patient-booking-step-circle ${currentStep >= step ? 'patient-booking-step-active' : ''}`}>
+        <div key={step} className={styles["patient-booking-step-item"]}>
+          <div className={`${styles["patient-booking-step-circle"]} ${currentStep >= step ? styles["patient-booking-step-active"] : ''}`}>
             {step}
           </div>
-          <span className="patient-booking-step-label">
+          <span className={styles["patient-booking-step-label"]}>
             {step === 1 && 'Select Doctor'}
             {step === 2 && 'Choose Time'}
             {step === 3 && 'Booking Details'}
             {step === 4 && 'Confirmation'}
           </span>
-          {step < 4 && <div className="patient-booking-step-connector"></div>}
+          {step < 4 && <div className={styles["patient-booking-step-connector"]}></div>}
         </div>
       ))}
     </div>
   );
 
   const renderDoctorSelection = () => (
-    <div className="patient-booking-doctor-selection">
-      <div className="patient-booking-section-header">
-        <h2 className="patient-booking-section-title">Select a Doctor</h2>
-        <p className="patient-booking-section-subtitle">Choose from our qualified healthcare professionals</p>
+    <div className={styles["patient-booking-doctor-selection"]}>
+      <div className={styles["patient-booking-section-header"]}>
+        <h2 className={styles["patient-booking-section-title"]}>Select a Doctor</h2>
+        <p className={styles["patient-booking-section-subtitle"]}>Choose from our qualified healthcare professionals</p>
       </div>
 
-      <div className="patient-booking-filters">
-        <div className="patient-booking-search-container">
-          <Search className="patient-booking-search-icon" />
+      <div className={styles["patient-booking-filters"]}>
+        <div className={styles["patient-booking-search-container"]}>
+          <Search className={styles["patient-booking-search-icon"]} />
           <input
             type="text"
             placeholder="Search doctors by name or specialization..."
-            className="patient-booking-search-input"
+            className={styles["patient-booking-search-input"]}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
 
-        <div className="patient-booking-filter-container">
-          <Filter className="patient-booking-filter-icon" />
+        <div className={styles["patient-booking-filter-container"]}>
+          <Filter className={styles["patient-booking-filter-icon"]} />
           <select
-            className="patient-booking-filter-select"
+            className={styles["patient-booking-filter-select"]}
             value={selectedSpecialization}
             onChange={(e) => setSelectedSpecialization(e.target.value)}
           >
@@ -300,75 +305,75 @@ const AppointmentBooking = () => {
         </div>
       </div>
 
-      <div className="patient-booking-doctors-grid">
+      <div className={styles["patient-booking-doctors-grid"]}>
         {filteredDoctors.map((doctor) => (
-          <div key={doctor.doctor_id} className="patient-booking-doctor-card">
-            <div className="patient-booking-doctor-header">
-              <div className="patient-booking-doctor-avatar">
-                <User className="patient-booking-avatar-icon" />
+          <div key={doctor.doctor_id} className={styles["patient-booking-doctor-card"]}>
+            <div className={styles["patient-booking-doctor-header"]}>
+              <div className={styles["patient-booking-doctor-avatar"]}>
+                <User className={styles["patient-booking-avatar-icon"]} />
               </div>
-              <div className="patient-booking-doctor-info">
-                <h3 className="patient-booking-doctor-name">
+              <div className={styles["patient-booking-doctor-info"]}>
+                <h3 className={styles["patient-booking-doctor-name"]}>
                   Dr. {doctor.first_name} {doctor.last_name}
                 </h3>
-                <p className="patient-booking-doctor-specialization">
-                  <Stethoscope className="patient-booking-specialization-icon" />
+                <p className={styles["patient-booking-doctor-specialization"]}>
+                  <Stethoscope className={styles["patient-booking-specialization-icon"]} />
                   {doctor.specialization}
                 </p>
               </div>
-              <div className="patient-booking-doctor-status">
-                <span className={`patient-booking-status-badge ${doctor.availability_status}`}>
+              <div className={styles["patient-booking-doctor-status"]}>
+                <span className={`${styles["patient-booking-status-badge"]} ${styles[doctor.availability_status]}`}>
                   {doctor.availability_status}
                 </span>
               </div>
             </div>
 
-            <div className="patient-booking-doctor-details">
+            <div className={styles["patient-booking-doctor-details"]}>
               {doctor.qualification && (
-                <div className="patient-booking-detail-item">
-                  <Award className="patient-booking-detail-icon" />
+                <div className={styles["patient-booking-detail-item"]}>
+                  <Award className={styles["patient-booking-detail-icon"]} />
                   <span>{doctor.qualification}</span>
                 </div>
               )}
               
               {doctor.experience_years && (
-                <div className="patient-booking-detail-item">
-                  <BookOpen className="patient-booking-detail-icon" />
+                <div className={styles["patient-booking-detail-item"]}>
+                  <BookOpen className={styles["patient-booking-detail-icon"]} />
                   <span>{doctor.experience_years} years experience</span>
                 </div>
               )}
 
               {doctor.consultation_fee && (
-                <div className="patient-booking-detail-item">
-                  <DollarSign className="patient-booking-detail-icon" />
+                <div className={styles["patient-booking-detail-item"]}>
+                  <DollarSign className={styles["patient-booking-detail-icon"]} />
                   <span>{formatCurrency(doctor.consultation_fee)} consultation fee</span>
                 </div>
               )}
 
               {doctor.clinic_address && (
-                <div className="patient-booking-detail-item">
-                  <MapPin className="patient-booking-detail-icon" />
+                <div className={styles["patient-booking-detail-item"]}>
+                  <MapPin className={styles["patient-booking-detail-icon"]} />
                   <span>{doctor.clinic_address}</span>
                 </div>
               )}
 
               {doctor.phone && (
-                <div className="patient-booking-detail-item">
-                  <Phone className="patient-booking-detail-icon" />
+                <div className={styles["patient-booking-detail-item"]}>
+                  <Phone className={styles["patient-booking-detail-icon"]} />
                   <span>{doctor.phone}</span>
                 </div>
               )}
             </div>
 
             {doctor.bio && (
-              <div className="patient-booking-doctor-bio">
+              <div className={styles["patient-booking-doctor-bio"]}>
                 <p>{doctor.bio}</p>
               </div>
             )}
 
-            <div className="patient-booking-doctor-actions">
+            <div className={styles["patient-booking-doctor-actions"]}>
               <button
-                className="patient-booking-select-doctor-btn"
+                className={styles["patient-booking-select-doctor-btn"]}
                 onClick={() => handleDoctorSelect(doctor)}
                 disabled={doctor.availability_status !== 'available'}
               >
@@ -380,35 +385,35 @@ const AppointmentBooking = () => {
       </div>
 
       {filteredDoctors.length === 0 && !loading && (
-        <div className="patient-booking-no-results">
-          <AlertCircle className="patient-booking-no-results-icon" />
+        <div className={styles["patient-booking-no-results"]}>
+          <AlertCircle className={styles["patient-booking-no-results-icon"]} />
           <h3>No doctors found</h3>
           <p>Try adjusting your search criteria or filters</p>
         </div>
       )}
 
       {doctorsPagination.totalPages > 1 && (
-        <div className="patient-booking-pagination">
+        <div className={styles["patient-booking-pagination"]}>
           <button
-            className="patient-booking-pagination-btn"
+            className={styles["patient-booking-pagination-btn"]}
             onClick={() => loadDoctors(currentPage - 1)}
             disabled={!doctorsPagination.hasPrevious}
           >
-            <ChevronLeft className="patient-booking-pagination-icon" />
+            <ChevronLeft className={styles["patient-booking-pagination-icon"]} />
             Previous
           </button>
           
-          <span className="patient-booking-pagination-info">
+          <span className={styles["patient-booking-pagination-info"]}>
             Page {doctorsPagination.currentPage} of {doctorsPagination.totalPages}
           </span>
           
           <button
-            className="patient-booking-pagination-btn"
+            className={styles["patient-booking-pagination-btn"]}
             onClick={() => loadDoctors(currentPage + 1)}
             disabled={!doctorsPagination.hasNext}
           >
             Next
-            <ChevronRight className="patient-booking-pagination-icon" />
+            <ChevronRight className={styles["patient-booking-pagination-icon"]} />
           </button>
         </div>
       )}
@@ -416,60 +421,60 @@ const AppointmentBooking = () => {
   );
 
   const renderTimeSelection = () => (
-    <div className="patient-booking-time-selection">
-      <div className="patient-booking-section-header">
+    <div className={styles["patient-booking-time-selection"]}>
+      <div className={styles["patient-booking-section-header"]}>
         <button
-          className="patient-booking-back-btn"
+          className={styles["patient-booking-back-btn"]}
           onClick={() => setCurrentStep(1)}
         >
-          <ChevronLeft className="patient-booking-back-icon" />
+          <ChevronLeft className={styles["patient-booking-back-icon"]} />
           Back to Doctors
         </button>
-        <h2 className="patient-booking-section-title">Select Date & Time</h2>
-        <p className="patient-booking-section-subtitle">
+        <h2 className={styles["patient-booking-section-title"]}>Select Date & Time</h2>
+        <p className={styles["patient-booking-section-subtitle"]}>
           Booking with Dr. {selectedDoctor?.first_name} {selectedDoctor?.last_name}
         </p>
       </div>
 
-      <div className="patient-booking-time-container">
-        <div className="patient-booking-calendar-section">
-          <div className="patient-booking-calendar-header">
+      <div className={styles["patient-booking-time-container"]}>
+        <div className={styles["patient-booking-calendar-section"]}>
+          <div className={styles["patient-booking-calendar-header"]}>
             <h3>Select Date</h3>
-            <div className="patient-booking-calendar-nav">
+            <div className={styles["patient-booking-calendar-nav"]}>
               <button
-                className="patient-booking-calendar-nav-btn"
+                className={styles["patient-booking-calendar-nav-btn"]}
                 onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1))}
               >
-                <ChevronLeft className="patient-booking-calendar-nav-icon" />
+                <ChevronLeft className={styles["patient-booking-calendar-nav-icon"]} />
               </button>
-              <span className="patient-booking-calendar-month">
+              <span className={styles["patient-booking-calendar-month"]}>
                 {currentMonth.toLocaleString('default', { month: 'long', year: 'numeric' })}
               </span>
               <button
-                className="patient-booking-calendar-nav-btn"
+                className={styles["patient-booking-calendar-nav-btn"]}
                 onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1))}
               >
-                <ChevronRight className="patient-booking-calendar-nav-icon" />
+                <ChevronRight className={styles["patient-booking-calendar-nav-icon"]} />
               </button>
             </div>
           </div>
 
-          <div className="patient-booking-calendar">
-            <div className="patient-booking-calendar-weekdays">
+          <div className={styles["patient-booking-calendar"]}>
+            <div className={styles["patient-booking-calendar-weekdays"]}>
               {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
-                <div key={day} className="patient-booking-calendar-weekday">{day}</div>
+                <div key={day} className={styles["patient-booking-calendar-weekday"]}>{day}</div>
               ))}
             </div>
-            <div className="patient-booking-calendar-days">
+            <div className={styles["patient-booking-calendar-days"]}>
               {generateCalendarDays().map((day, index) => (
                 <button
                   key={index}
-                  className={`patient-booking-calendar-day ${
-                    day.isSelected ? 'patient-booking-calendar-day-selected' : ''
+                  className={`${styles["patient-booking-calendar-day"]} ${
+                    day.isSelected ? styles["patient-booking-calendar-day-selected"] : ''
                   } ${
-                    day.isDisabled ? 'patient-booking-calendar-day-disabled' : ''
+                    day.isDisabled ? styles["patient-booking-calendar-day-disabled"] : ''
                   } ${
-                    !day.isCurrentMonth ? 'patient-booking-calendar-day-other-month' : ''
+                    !day.isCurrentMonth ? styles["patient-booking-calendar-day-other-month"] : ''
                   }`}
                   onClick={() => !day.isDisabled && handleDateSelect(day.dateString)}
                   disabled={day.isDisabled}
@@ -481,60 +486,60 @@ const AppointmentBooking = () => {
           </div>
         </div>
 
-        <div className="patient-booking-slots-section">
+        <div className={styles["patient-booking-slots-section"]}>
           <h3>Available Time Slots</h3>
           {selectedDate ? (
-            <div className="patient-booking-slots-container">
+            <div className={styles["patient-booking-slots-container"]}>
               {loading ? (
-                <div className="patient-booking-slots-loading">
-                  <div className="patient-booking-spinner"></div>
+                <div className={styles["patient-booking-slots-loading"]}>
+                  <div className={styles["patient-booking-spinner"]}></div>
                   <p>Loading available slots...</p>
                 </div>
               ) : availableSlots.length > 0 ? (
-                <div className="patient-booking-slots-grid">
+                <div className={styles["patient-booking-slots-grid"]}>
                   {availableSlots.map((slot, index) => (
                     <button
                       key={index}
-                      className={`patient-booking-slot-btn ${
-                        selectedSlot?.time === slot.time ? 'patient-booking-slot-selected' : ''
+                      className={`${styles["patient-booking-slot-btn"]} ${
+                        selectedSlot?.time === slot.time ? styles["patient-booking-slot-selected"] : ''
                       } ${
-                        slot.isBooked ? 'patient-booking-slot-booked' : ''
+                        slot.isBooked ? styles["patient-booking-slot-booked"] : ''
                       }`}
                       onClick={() => !slot.isBooked && handleSlotSelect(slot)}
                       disabled={slot.isBooked}
                     >
-                      <Clock className="patient-booking-slot-icon" />
+                      <Clock className={styles["patient-booking-slot-icon"]} />
                       {formatTime(slot.time)}
-                      {slot.isBooked && <span className="patient-booking-slot-status">Booked</span>}
+                      {slot.isBooked && <span className={styles["patient-booking-slot-status"]}>Booked</span>}
                     </button>
                   ))}
                 </div>
               ) : (
-                <div className="patient-booking-no-slots">
-                  <Clock className="patient-booking-no-slots-icon" />
+                <div className={styles["patient-booking-no-slots"]}>
+                  <Clock className={styles["patient-booking-no-slots-icon"]} />
                   <p>No available slots for this date</p>
                   <p>Please select another date</p>
                 </div>
               )}
             </div>
           ) : (
-            <div className="patient-booking-select-date-prompt">
-              <Calendar className="patient-booking-select-date-icon" />
+            <div className={styles["patient-booking-select-date-prompt"]}>
+              <Calendar className={styles["patient-booking-select-date-icon"]} />
               <p>Please select a date to see available time slots</p>
             </div>
           )}
 
           {selectedSlot && (
-            <div className="patient-booking-time-summary">
+            <div className={styles["patient-booking-time-summary"]}>
               <h4>Selected Appointment Time</h4>
-              <div className="patient-booking-selected-time">
-                <Calendar className="patient-booking-summary-icon" />
+              <div className={styles["patient-booking-selected-time"]}>
+                <Calendar className={styles["patient-booking-summary-icon"]} />
                 <span>{new Date(selectedDate).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span>
-                <Clock className="patient-booking-summary-icon" />
+                <Clock className={styles["patient-booking-summary-icon"]} />
                 <span>{formatTime(selectedSlot.time)}</span>
               </div>
               <button
-                className="patient-booking-continue-btn"
+                className={styles["patient-booking-continue-btn"]}
                 onClick={() => setCurrentStep(3)}
               >
                 Continue to Booking Details
@@ -547,46 +552,46 @@ const AppointmentBooking = () => {
   );
 
   const renderBookingDetails = () => (
-    <div className="patient-booking-details">
-      <div className="patient-booking-section-header">
+    <div className={styles["patient-booking-details"]}>
+      <div className={styles["patient-booking-section-header"]}>
         <button
-          className="patient-booking-back-btn"
+          className={styles["patient-booking-back-btn"]}
           onClick={() => setCurrentStep(2)}
         >
-          <ChevronLeft className="patient-booking-back-icon" />
+          <ChevronLeft className={styles["patient-booking-back-icon"]} />
           Back to Time Selection
         </button>
-        <h2 className="patient-booking-section-title">Booking Details</h2>
-        <p className="patient-booking-section-subtitle">Provide additional information for your appointment</p>
+        <h2 className={styles["patient-booking-section-title"]}>Booking Details</h2>
+        <p className={styles["patient-booking-section-subtitle"]}>Provide additional information for your appointment</p>
       </div>
 
-      <div className="patient-booking-details-container">
-        <div className="patient-booking-appointment-summary">
+      <div className={styles["patient-booking-details-container"]}>
+        <div className={styles["patient-booking-appointment-summary"]}>
           <h3>Appointment Summary</h3>
-          <div className="patient-booking-summary-card">
-            <div className="patient-booking-summary-item">
-              <User className="patient-booking-summary-icon" />
+          <div className={styles["patient-booking-summary-card"]}>
+            <div className={styles["patient-booking-summary-item"]}>
+              <User className={styles["patient-booking-summary-icon"]} />
               <div>
                 <strong>Doctor:</strong> Dr. {selectedDoctor?.first_name} {selectedDoctor?.last_name}
                 <br />
                 <span>{selectedDoctor?.specialization}</span>
               </div>
             </div>
-            <div className="patient-booking-summary-item">
-              <Calendar className="patient-booking-summary-icon" />
+            <div className={styles["patient-booking-summary-item"]}>
+              <Calendar className={styles["patient-booking-summary-icon"]} />
               <div>
                 <strong>Date:</strong> {new Date(selectedDate).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
               </div>
             </div>
-            <div className="patient-booking-summary-item">
-              <Clock className="patient-booking-summary-icon" />
+            <div className={styles["patient-booking-summary-item"]}>
+              <Clock className={styles["patient-booking-summary-icon"]} />
               <div>
                 <strong>Time:</strong> {formatTime(selectedSlot?.time)}
               </div>
             </div>
             {selectedDoctor?.consultation_fee && (
-              <div className="patient-booking-summary-item">
-                <DollarSign className="patient-booking-summary-icon" />
+              <div className={styles["patient-booking-summary-item"]}>
+                <DollarSign className={styles["patient-booking-summary-icon"]} />
                 <div>
                   <strong>Consultation Fee:</strong> {formatCurrency(selectedDoctor.consultation_fee)}
                 </div>
@@ -595,15 +600,15 @@ const AppointmentBooking = () => {
           </div>
         </div>
 
-        <div className="patient-booking-details-form">
+        <div className={styles["patient-booking-details-form"]}>
           <h3>Additional Information</h3>
-          <div className="patient-booking-form-container">
-            <div className="patient-booking-form-group">
-              <label className="patient-booking-form-label">
-                Reason for Visit <span className="patient-booking-required">*</span>
+          <div className={styles["patient-booking-form-container"]}>
+            <div className={styles["patient-booking-form-group"]}>
+              <label className={styles["patient-booking-form-label"]}>
+                Reason for Visit <span className={styles["patient-booking-required"]}>*</span>
               </label>
               <textarea
-                className="patient-booking-form-textarea"
+                className={styles["patient-booking-form-textarea"]}
                 rows="4"
                 placeholder="Please describe your symptoms or reason for consultation..."
                 value={bookingDetails.reasonForVisit}
@@ -612,10 +617,10 @@ const AppointmentBooking = () => {
               />
             </div>
 
-            <div className="patient-booking-form-group">
-              <label className="patient-booking-form-label">Additional Notes</label>
+            <div className={styles["patient-booking-form-group"]}>
+              <label className={styles["patient-booking-form-label"]}>Additional Notes</label>
               <textarea
-                className="patient-booking-form-textarea"
+                className={styles["patient-booking-form-textarea"]}
                 rows="3"
                 placeholder="Any additional information you'd like to share with the doctor..."
                 value={bookingDetails.additionalNotes}
@@ -623,10 +628,10 @@ const AppointmentBooking = () => {
               />
             </div>
 
-            <div className="patient-booking-form-group">
-              <label className="patient-booking-form-label">Preferred Language</label>
+            <div className={styles["patient-booking-form-group"]}>
+              <label className={styles["patient-booking-form-label"]}>Preferred Language</label>
               <select
-                className="patient-booking-form-select"
+                className={styles["patient-booking-form-select"]}
                 value={bookingDetails.preferredLanguage}
                 onChange={(e) => handleBookingDetailsChange('preferredLanguage', e.target.value)}
               >
@@ -642,32 +647,32 @@ const AppointmentBooking = () => {
               </select>
             </div>
 
-            <div className="patient-booking-form-group">
-              <label className="patient-booking-form-checkbox">
+            <div className={styles["patient-booking-form-group"]}>
+              <label className={styles["patient-booking-form-checkbox"]}>
                 <input
                   type="checkbox"
                   checked={bookingDetails.isUrgent}
                   onChange={(e) => handleBookingDetailsChange('isUrgent', e.target.checked)}
                 />
-                <span className="patient-booking-checkbox-mark"></span>
+                <span className={styles["patient-booking-checkbox-mark"]}></span>
                 This is an urgent consultation
               </label>
             </div>
 
-            <div className="patient-booking-form-actions">
+            <div className={styles["patient-booking-form-actions"]}>
               <button
-                className="patient-booking-book-btn"
+                className={styles["patient-booking-book-btn"]}
                 onClick={handleBookAppointment}
                 disabled={loading || !bookingDetails.reasonForVisit.trim()}
               >
                 {loading ? (
                   <>
-                    <div className="patient-booking-btn-spinner"></div>
+                    <div className={styles["patient-booking-btn-spinner"]}></div>
                     Booking Appointment...
                   </>
                 ) : (
                   <>
-                    <CheckCircle className="patient-booking-btn-icon" />
+                    <CheckCircle className={styles["patient-booking-btn-icon"]} />
                     Book Appointment
                   </>
                 )}
@@ -680,67 +685,67 @@ const AppointmentBooking = () => {
   );
 
   const renderConfirmation = () => (
-    <div className="patient-booking-confirmation">
-      <div className="patient-booking-success-container">
-        <div className="patient-booking-success-icon">
-          <CheckCircle className="patient-booking-success-check" />
+    <div className={styles["patient-booking-confirmation"]}>
+      <div className={styles["patient-booking-success-container"]}>
+        <div className={styles["patient-booking-success-icon"]}>
+          <CheckCircle className={styles["patient-booking-success-check"]} />
         </div>
-        <h2 className="patient-booking-success-title">Appointment Booked Successfully!</h2>
-        <p className="patient-booking-success-subtitle">
+        <h2 className={styles["patient-booking-success-title"]}>Appointment Booked Successfully!</h2>
+        <p className={styles["patient-booking-success-subtitle"]}>
           Your appointment request has been sent to the doctor for confirmation.
         </p>
 
-        <div className="patient-booking-confirmation-details">
+        <div className={styles["patient-booking-confirmation-details"]}>
           <h3>Appointment Details</h3>
-          <div className="patient-booking-confirmation-card">
-            <div className="patient-booking-confirmation-item">
+          <div className={styles["patient-booking-confirmation-card"]}>
+            <div className={styles["patient-booking-confirmation-item"]}>
               <strong>Booking ID:</strong> #{bookingId}
             </div>
-            <div className="patient-booking-confirmation-item">
+            <div className={styles["patient-booking-confirmation-item"]}>
               <strong>Doctor:</strong> Dr. {selectedDoctor?.first_name} {selectedDoctor?.last_name}
             </div>
-            <div className="patient-booking-confirmation-item">
+            <div className={styles["patient-booking-confirmation-item"]}>
               <strong>Specialization:</strong> {selectedDoctor?.specialization}
             </div>
-            <div className="patient-booking-confirmation-item">
+            <div className={styles["patient-booking-confirmation-item"]}>
               <strong>Date:</strong> {new Date(selectedDate).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
             </div>
-            <div className="patient-booking-confirmation-item">
+            <div className={styles["patient-booking-confirmation-item"]}>
               <strong>Time:</strong> {formatTime(selectedSlot?.time)}
             </div>
-            <div className="patient-booking-confirmation-item">
-              <strong>Status:</strong> <span className="patient-booking-status-pending">Pending Confirmation</span>
+            <div className={styles["patient-booking-confirmation-item"]}>
+              <strong>Status:</strong> <span className={styles["patient-booking-status-pending"]}>Pending Confirmation</span>
             </div>
           </div>
         </div>
 
-        <div className="patient-booking-next-steps">
+        <div className={styles["patient-booking-next-steps"]}>
           <h3>What happens next?</h3>
-          <div className="patient-booking-steps-list">
-            <div className="patient-booking-step-item">
-              <div className="patient-booking-step-number">1</div>
+          <div className={styles["patient-booking-steps-list"]}>
+            <div className={styles["patient-booking-step-item"]}>
+              <div className={styles["patient-booking-step-number"]}>1</div>
               <p>The doctor will review your appointment request</p>
             </div>
-            <div className="patient-booking-step-item">
-              <div className="patient-booking-step-number">2</div>
+            <div className={styles["patient-booking-step-item"]}>
+              <div className={styles["patient-booking-step-number"]}>2</div>
               <p>You'll receive a confirmation notification within 24 hours</p>
             </div>
-            <div className="patient-booking-step-item">
-              <div className="patient-booking-step-number">3</div>
+            <div className={styles["patient-booking-step-item"]}>
+              <div className={styles["patient-booking-step-number"]}>3</div>
               <p>If confirmed, you'll receive appointment details and reminders</p>
             </div>
           </div>
         </div>
 
-        <div className="patient-booking-confirmation-actions">
+        <div className={styles["patient-booking-confirmation-actions"]}>
           <button
-            className="patient-booking-dashboard-btn"
+            className={styles["patient-booking-dashboard-btn"]}
             onClick={() => navigate('/patient-dashboard')}
           >
             Go to Dashboard
           </button>
           <button
-            className="patient-booking-book-another-btn"
+            className={styles["patient-booking-book-another-btn"]}
             onClick={() => {
               setCurrentStep(1);
               setSelectedDoctor(null);
@@ -764,35 +769,202 @@ const AppointmentBooking = () => {
   );
 
   return (
-    <div className="patient-booking-container">
-      <div className="patient-booking-header">
-        <div className="patient-booking-header-content">
-          <button
-            className="patient-booking-close-btn"
-            onClick={() => navigate('/patient-dashboard')}
-          >
-            <X className="patient-booking-close-icon" />
-          </button>
-          <h1 className="patient-booking-title">Book Appointment</h1>
-        </div>
-        {renderStepIndicator()}
-      </div>
+    <div className={styles["home-container"]}>
+      {/* Header */}
+      <header className={styles["header"]}>
+        <div className={styles["nav-container"]}>
+          <div className={styles["nav-wrapper"]}>
+            <div className={styles["logo"]}>
+              <div className={styles["logo-icon"]}>
+                <Heart className={styles["logo-heart"]} />
+              </div>
+              <h1 className={styles["logo-text"]} onClick={() => handleNavigation('/')}>AYUMATE</h1>
+            </div>
 
-      <div className="patient-booking-content">
-        {currentStep === 1 && renderDoctorSelection()}
-        {currentStep === 2 && renderTimeSelection()}
-        {currentStep === 3 && renderBookingDetails()}
-        {currentStep === 4 && renderConfirmation()}
-      </div>
+            {/* Desktop Navigation */}
+            <nav className={styles["desktop-nav"]}>
+              <button 
+                onClick={() => handleNavigation('/dosha')}
+                className={styles["nav-link"]}
+              >
+                Prakriti Check
+              </button>
+              <button 
+                onClick={() => handleNavigation('/chatBot')}
+                className={styles["nav-link"]}
+              >
+                AI Symptom Checker
+              </button>
+              <div className={styles["auth-buttons"]}>
+                <button 
+                  onClick={() => handleNavigation('/patient-login')}
+                  className={styles["login-btn"]}
+                >
+                  Patient Login
+                </button>
+                <button 
+                  onClick={() => handleNavigation('/doctor-login')}
+                  className={styles["login-btn"]}
+                >
+                  Doctor Login
+                </button>
+                <button 
+                  onClick={() => handleNavigation('/admin-login')}
+                  className={styles["admin-btn"]}
+                >
+                  Admin
+                </button>
+              </div>
+            </nav>
 
-      {loading && currentStep !== 4 && (
-        <div className="patient-booking-loading-overlay">
-          <div className="patient-booking-loading-content">
-            <div className="patient-booking-spinner"></div>
-            <p>Loading...</p>
+            {/* Mobile Menu Button */}
+            <button 
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className={styles["mobile-menu-btn"]}
+            >
+              {isMenuOpen ? <X className={styles["menu-icon"]} /> : <Menu className={styles["menu-icon"]} />}
+            </button>
           </div>
         </div>
-      )}
+
+        {/* Mobile Navigation */}
+        {isMenuOpen && (
+          <div className={styles["mobile-nav"]}>
+            <div className={styles["mobile-nav-container"]}>
+              <button 
+                onClick={() => handleNavigation('/dosha')}
+                className={styles["mobile-nav-link"]}
+              >
+                Prakriti Check
+              </button>
+              <button 
+                onClick={() => handleNavigation('/chatBot')}
+                className={styles["mobile-nav-link"]}
+              >
+                AI Symptom Checker
+              </button>
+              <div className={styles["mobile-auth"]}>
+                <button 
+                  onClick={() => handleNavigation('/patient-login')}
+                  className={styles["mobile-login"]}
+                >
+                  Patient Login
+                </button>
+                <button 
+                  onClick={() => handleNavigation('/patient-register')}
+                  className={styles["mobile-register"]}
+                >
+                  Patient Register
+                </button>
+                <button 
+                  onClick={() => handleNavigation('/doctor-login')}
+                  className={styles["mobile-login"]}
+                >
+                  Doctor Login
+                </button>
+                <button 
+                  onClick={() => handleNavigation('/doctor-register')}
+                  className={styles["mobile-register"]}
+                >
+                  Doctor Register
+                </button>
+                <button 
+                  onClick={() => handleNavigation('/admin-login')}
+                  className={styles["mobile-admin"]}
+                >
+                  Admin Login
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </header>
+
+      <div className={styles["patient-booking-container"]}>
+        <div className={styles["patient-booking-header"]}>
+          <div className={styles["patient-booking-header-content"]}>
+            <button
+              className={styles["patient-booking-close-btn"]}
+              onClick={() => navigate('/patient-dashboard')}
+            >
+              <X className={styles["patient-booking-close-icon"]} />
+            </button>
+            <h1 className={styles["patient-booking-title"]}>Book Appointment</h1>
+          </div>
+          {renderStepIndicator()}
+        </div>
+
+        <div className={styles["patient-booking-content"]}>
+          {currentStep === 1 && renderDoctorSelection()}
+          {currentStep === 2 && renderTimeSelection()}
+          {currentStep === 3 && renderBookingDetails()}
+          {currentStep === 4 && renderConfirmation()}
+        </div>
+
+        {loading && currentStep !== 4 && (
+          <div className={styles["patient-booking-loading-overlay"]}>
+            <div className={styles["patient-booking-loading-content"]}>
+              <div className={styles["patient-booking-spinner"]}></div>
+              <p>Loading...</p>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Footer */}
+      <footer className={styles["footer"]}>
+        <div className={styles["footer-container"]}>
+          <div className={styles["footer-content"]}>
+            <div className={styles["footer-brand"]}>
+              <div className={styles["footer-logo"]}>
+                <div className={styles["logo-icon"]}>
+                  <Heart className={styles["footer-heart"]} />
+                </div>
+                <h3 className={styles["footer-title"]}>AYUMATE</h3>
+              </div>
+              <p className={styles["footer-desc"]}>
+                Your comprehensive Ayurvedic health companion, combining ancient wisdom with modern technology for optimal wellness.
+              </p>
+            </div>
+
+            <div className={styles["footer-links"]}>
+              <h4 className={styles["footer-heading"]}>Quick Links</h4>
+              <ul className={styles["footer-list"]}>
+                <li><button onClick={() => handleNavigation('/dosha')} className={styles["footer-link"]}>Prakriti Assessment</button></li>
+                <li><button onClick={() => handleNavigation('/chatBot')} className={styles["footer-link"]}>AI Symptom Checker</button></li>
+                <li><button onClick={() => handleNavigation('/patient-register')} className={styles["footer-link"]}>Patient Portal</button></li>
+                <li><button onClick={() => handleNavigation('/doctor-register')} className={styles["footer-link"]}>Doctor Portal</button></li>
+              </ul>
+            </div>
+
+            <div className={styles["footer-features"]}>
+              <h4 className={styles["footer-heading"]}>Features</h4>
+              <ul className={styles["footer-list"]}>
+                <li className={styles["footer-item"]}>Medical Records Storage</li>
+                <li className={styles["footer-item"]}>Doctor Appointments</li>
+                <li className={styles["footer-item"]}>Smart Consultations</li>
+                <li className={styles["footer-item"]}>Health Analytics</li>
+              </ul>
+            </div>
+
+            <div className={styles["footer-contact"]}>
+              <h4 className={styles["footer-heading"]}>Support</h4>
+              <ul className={styles["footer-list"]}>
+                <li className={styles["footer-item"]}>24/7 Customer Support</li>
+                <li className={styles["footer-item"]}>Help Center</li>
+                <li className={styles["footer-item"]}>Privacy Policy</li>
+                <li className={styles["footer-item"]}>Terms of Service</li>
+              </ul>
+            </div>
+          </div>
+
+          <div className={styles["footer-bottom"]}>
+            <p className={styles["copyright"]}>
+              © 2025 AYUMATE. All rights reserved. Empowering health through technology and tradition.
+            </p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };

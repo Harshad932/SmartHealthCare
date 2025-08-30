@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import "../../assets/styles/dosha/Dosha.css";
+import styles from "../../assets/styles/dosha/Dosha.module.css";
 import { 
   Heart, Menu, X,
 } from 'lucide-react';
@@ -10,40 +10,40 @@ import { doshaAPI } from '../../services/api';
 
 // Welcome Component
 const Welcome = ({ onStart }) => (
-  <div className="dosha-welcome-container">
-    <div className="dosha-welcome-content">
+  <div className={styles["dosha-welcome-container"]}>
+    <div className={styles["dosha-welcome-content"]}>
       <h2>Welcome to Your Ayurvedic Journey</h2>
       
-      <div className="dosha-intro-text">
+      <div className={styles["dosha-intro-text"]}>
         <p>
           Ayurveda, the ancient Indian system of medicine, recognizes three fundamental 
           energies or doshas that govern our physical and mental characteristics:
         </p>
         
-        <div className="dosha-intro">
-          <div className="dosha-card vata">
+        <div className={styles["dosha-intro"]}>
+          <div className={`${styles["dosha-card"]} ${styles["vata"]}`}>
             <h3>🌬️ Vata</h3>
             <p>Air & Space - Creative, Quick, Light</p>
           </div>
           
-          <div className="dosha-card pitta">
+          <div className={`${styles["dosha-card"]} ${styles["pitta"]}`}>
             <h3>🔥 Pitta</h3>
             <p>Fire & Water - Focused, Intense, Sharp</p>
           </div>
           
-          <div className="dosha-card kapha">
+          <div className={`${styles["dosha-card"]} ${styles["kapha"]}`}>
             <h3>🌍 Kapha</h3>
             <p>Earth & Water - Stable, Calm, Grounded</p>
           </div>
         </div>
         
-        <p className="dosha-instructions">
+        <p className={styles["dosha-instructions"]}>
           This assessment will ask you 10-15 personalized questions about your 
           physical traits, mental tendencies, and lifestyle preferences. Our AI 
           will analyze your responses to determine your unique dosha constitution.
         </p>
         
-        <div className="dosha-disclaimer">
+        <div className={styles["dosha-disclaimer"]}>
           <p>
             <strong>Note:</strong> This is for educational purposes only and should 
             not replace professional medical advice.
@@ -51,7 +51,7 @@ const Welcome = ({ onStart }) => (
         </div>
       </div>
 
-      <button className="dosha-start-button" onClick={onStart}>
+      <button className={styles["dosha-start-button"]} onClick={onStart}>
         Begin Assessment
       </button>
     </div>
@@ -83,26 +83,26 @@ const QuestionCard = ({ question, onAnswer, progress }) => {
   };
 
   return (
-    <div className="dosha-question-container">
-      <div className="dosha-progress-bar">
-        <div className="dosha-progress-fill" style={{ width: `${progress}%` }}></div>
+    <div className={styles["dosha-question-container"]}>
+      <div className={styles["dosha-progress-bar"]}>
+        <div className={styles["dosha-progress-fill"]} style={{ width: `${progress}%` }}></div>
       </div>
       
-      <div className="dosha-question-card">
-        <div className="dosha-question-header">
-          <span className="dosha-question-number">Question {question.questionNumber} of 15</span>
-          <span className="dosha-category-badge">
+      <div className={styles["dosha-question-card"]}>
+        <div className={styles["dosha-question-header"]}>
+          <span className={styles["dosha-question-number"]}>Question {question.questionNumber} of 15</span>
+          <span className={styles["dosha-category-badge"]}>
             {getCategoryIcon(question.category)} {question.category}
           </span>
         </div>
 
-        <h3 className="dosha-question-text">{question.question}</h3>
+        <h3 className={styles["dosha-question-text"]}>{question.question}</h3>
 
-        <div className="dosha-options-container">
+        <div className={styles["dosha-options-container"]}>
           {question.options.map((option, index) => (
             <button
               key={index}
-              className={`dosha-option-button ${selectedOption === option.value ? 'selected' : ''}`}
+              className={`${styles["dosha-option-button"]} ${selectedOption === option.value ? styles["selected"] : ''}`}
               onClick={() => setSelectedOption(option.value)}
             >
               {option.label}
@@ -111,7 +111,7 @@ const QuestionCard = ({ question, onAnswer, progress }) => {
         </div>
         
         <button
-          className="dosha-submit-button"
+          className={styles["dosha-submit-button"]}
           onClick={handleSubmit}
           disabled={!selectedOption}
         >
@@ -124,21 +124,21 @@ const QuestionCard = ({ question, onAnswer, progress }) => {
 
 // Loading Component
 const Loading = ({ message = 'Loading...' }) => (
-  <div className="dosha-loading-container">
-    <div className="dosha-loading-spinner">
-      <div className="dosha-spinner-ring"></div>
-      <div className="dosha-spinner-ring"></div>
-      <div className="dosha-spinner-ring"></div>
+  <div className={styles["dosha-loading-container"]}>
+    <div className={styles["dosha-loading-spinner"]}>
+      <div className={styles["dosha-spinner-ring"]}></div>
+      <div className={styles["dosha-spinner-ring"]}></div>
+      <div className={styles["dosha-spinner-ring"]}></div>
     </div>
-    <p className="dosha-loading-message">{message}</p>
+    <p className={styles["dosha-loading-message"]}>{message}</p>
   </div>
 );
 
 // Error Message Component
 const ErrorMessage = ({ message }) => (
-  <div className="dosha-error-container">
-    <div className="dosha-error-icon">⚠️</div>
-    <p className="dosha-error-message">{message}</p>
+  <div className={styles["dosha-error-container"]}>
+    <div className={styles["dosha-error-icon"]}>⚠️</div>
+    <p className={styles["dosha-error-message"]}>{message}</p>
   </div>
 );
 
@@ -158,26 +158,26 @@ const Results = ({ results, onRestart }) => {
   };
 
   return (
-    <div className="dosha-results-container">
-      <div className="dosha-results-header">
+    <div className={styles["dosha-results-container"]}>
+      <div className={styles["dosha-results-header"]}>
         <h2>Your Dosha Analysis</h2>
-        <div className="dosha-display">
-          <span className="dosha-icon">{getDoshaIcon(results.primaryDosha)}</span>
-          <h3 className="dosha-type">
+        <div className={styles["dosha-display"]}>
+          <span className={styles["dosha-icon"]}>{getDoshaIcon(results.primaryDosha)}</span>
+          <h3 className={styles["dosha-type"]}>
             {results.primaryDosha}
             {results.secondaryDosha && ` - ${results.secondaryDosha}`}
           </h3>
-          <p className="dosha-subtype">{results.doshaType}</p>
+          <p className={styles["dosha-subtype"]}>{results.doshaType}</p>
         </div>
       </div>
 
-      <div className="dosha-results-content">
-        <section className="dosha-description-section">
+      <div className={styles["dosha-results-content"]}>
+        <section className={styles["dosha-description-section"]}>
           <h4>About Your Constitution</h4>
           <p>{results.description}</p>
         </section>
 
-        <section className="dosha-characteristics-section">
+        <section className={styles["dosha-characteristics-section"]}>
           <h4>Key Characteristics</h4>
           <ul>
             {results.characteristics.map((char, index) => (
@@ -186,10 +186,10 @@ const Results = ({ results, onRestart }) => {
           </ul>
         </section>
 
-        <section className="dosha-recommendations-section">
+        <section className={styles["dosha-recommendations-section"]}>
           <h4>Dietary Recommendations</h4>
-          <div className="dosha-diet-columns">
-            <div className="dosha-diet-favorable">
+          <div className={styles["dosha-diet-columns"]}>
+            <div className={styles["dosha-diet-favorable"]}>
               <h5>✅ Foods to Favor</h5>
               <ul>
                 {results.dietaryRecommendations.favorable.map((food, index) => (
@@ -197,7 +197,7 @@ const Results = ({ results, onRestart }) => {
                 ))}
               </ul>
             </div>
-            <div className="dosha-diet-avoid">
+            <div className={styles["dosha-diet-avoid"]}>
               <h5>❌ Foods to Avoid</h5>
               <ul>
                 {results.dietaryRecommendations.avoid.map((food, index) => (
@@ -208,7 +208,7 @@ const Results = ({ results, onRestart }) => {
           </div>
         </section>
 
-        <section className="dosha-lifestyle-section">
+        <section className={styles["dosha-lifestyle-section"]}>
           <h4>Lifestyle Recommendations</h4>
           <ul>
             {results.lifestyleRecommendations.map((rec, index) => (
@@ -217,7 +217,7 @@ const Results = ({ results, onRestart }) => {
           </ul>
         </section>
 
-        <section className="dosha-remedies-section">
+        <section className={styles["dosha-remedies-section"]}>
           <h4>Ayurvedic Remedies</h4>
           <ul>
             {results.ayurvedicRemedies.map((remedy, index) => (
@@ -227,18 +227,18 @@ const Results = ({ results, onRestart }) => {
         </section>
 
         {results.dailyRoutine && (
-          <section className="dosha-routine-section">
+          <section className={styles["dosha-routine-section"]}>
             <h4>Recommended Daily Routine</h4>
-            <div className="dosha-routine-grid">
-              <div className="dosha-routine-time">
+            <div className={styles["dosha-routine-grid"]}>
+              <div className={styles["dosha-routine-time"]}>
                 <h5>🌅 Morning</h5>
                 <p>{results.dailyRoutine.morning}</p>
               </div>
-              <div className="dosha-routine-time">
+              <div className={styles["dosha-routine-time"]}>
                 <h5>☀️ Afternoon</h5>
                 <p>{results.dailyRoutine.afternoon}</p>
               </div>
-              <div className="dosha-routine-time">
+              <div className={styles["dosha-routine-time"]}>
                 <h5>🌙 Evening</h5>
                 <p>{results.dailyRoutine.evening}</p>
               </div>
@@ -247,18 +247,18 @@ const Results = ({ results, onRestart }) => {
         )}
 
         {results.seasonalGuidance && (
-          <section className="dosha-seasonal-section">
+          <section className={styles["dosha-seasonal-section"]}>
             <h4>Seasonal Guidance</h4>
             <p>{results.seasonalGuidance}</p>
           </section>
         )}
       </div>
 
-      <div className="dosha-results-footer">
-        <button className="dosha-restart-button" onClick={onRestart}>
+      <div className={styles["dosha-results-footer"]}>
+        <button className={styles["dosha-restart-button"]} onClick={onRestart}>
           Take Assessment Again
         </button>
-        <p className="dosha-disclaimer">
+        <p className={styles["dosha-disclaimer"]}>
           Remember: This assessment is for educational purposes only.
           Please consult with a qualified Ayurvedic practitioner for personalized advice.
         </p>
@@ -358,54 +358,54 @@ const Dosha = () => {
   };
 
   return (
-    <div className="home-container">
+    <div className={styles["home-container"]}>
       {/* Header */}
-      <header className="header">
-        <div className="nav-container">
-          <div className="nav-wrapper">
-            <div className="logo">
-              <div className="logo-icon">
-                <Heart className="logo-heart" />
+      <header className={styles["header"]}>
+        <div className={styles["nav-container"]}>
+          <div className={styles["nav-wrapper"]}>
+            <div className={styles["logo"]}>
+              <div className={styles["logo-icon"]}>
+                <Heart className={styles["logo-heart"]} />
               </div>
-              <h1 className="logo-text">AYUMATE</h1>
+              <h1 className={styles["logo-text"]} onClick={() => handleNavigation('/')}>AYUMATE</h1>
             </div>
 
             {/* Desktop Navigation */}
-            <nav className="desktop-nav">
+            <nav className={styles["desktop-nav"]}>
               <button 
                 onClick={() => handleNavigation('/')}
-                className="nav-link"
+                className={styles["nav-link"]}
               >
                 Home
               </button>
               <button 
                 onClick={() => handleNavigation('/dosha')}
-                className="nav-link"
+                className={styles["nav-link"]}
               >
                 Prakriti Check
               </button>
               <button 
                 onClick={() => handleNavigation('/chatBot')}
-                className="nav-link"
+                className={styles["nav-link"]}
               >
                 AI Symptom Checker
               </button>
-              <div className="auth-buttons">
+              <div className={styles["auth-buttons"]}>
                 <button 
                   onClick={() => handleNavigation('/patient-login')}
-                  className="login-btn"
+                  className={styles["login-btn"]}
                 >
                   Patient Login
                 </button>
                 <button 
                   onClick={() => handleNavigation('/doctor-login')}
-                  className="login-btn"
+                  className={styles["login-btn"]}
                 >
                   Doctor Login
                 </button>
                 <button 
                   onClick={() => handleNavigation('/admin-login')}
-                  className="admin-btn"
+                  className={styles["admin-btn"]}
                 >
                   Admin
                 </button>
@@ -415,63 +415,63 @@ const Dosha = () => {
             {/* Mobile Menu Button */}
             <button 
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="mobile-menu-btn"
+              className={styles["mobile-menu-btn"]}
             >
-              {isMenuOpen ? <X className="menu-icon" /> : <Menu className="menu-icon" />}
+              {isMenuOpen ? <X className={styles["menu-icon"]} /> : <Menu className={styles["menu-icon"]} />}
             </button>
           </div>
         </div>
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="mobile-nav">
-            <div className="mobile-nav-container">
+          <div className={styles["mobile-nav"]}>
+            <div className={styles["mobile-nav-container"]}>
               <button 
                 onClick={() => handleNavigation('/')}
-                className="mobile-nav-link"
+                className={styles["mobile-nav-link"]}
               >
                 Home
               </button>
               <button 
                 onClick={() => handleNavigation('/dosha')}
-                className="mobile-nav-link"
+                className={styles["mobile-nav-link"]}
               >
                 Prakriti Check
               </button>
               <button 
                 onClick={() => handleNavigation('/chatBot')}
-                className="mobile-nav-link"
+                className={styles["mobile-nav-link"]}
               >
                 AI Symptom Checker
               </button>
-              <div className="mobile-auth">
+              <div className={styles["mobile-auth"]}>
                 <button 
                   onClick={() => handleNavigation('/patient-login')}
-                  className="mobile-login"
+                  className={styles["mobile-login"]}
                 >
                   Patient Login
                 </button>
                 <button 
                   onClick={() => handleNavigation('/patient-register')}
-                  className="mobile-register"
+                  className={styles["mobile-register"]}
                 >
                   Patient Register
                 </button>
                 <button 
                   onClick={() => handleNavigation('/doctor-login')}
-                  className="mobile-login"
+                  className={styles["mobile-login"]}
                 >
                   Doctor Login
                 </button>
                 <button 
                   onClick={() => handleNavigation('/doctor-register')}
-                  className="mobile-register"
+                  className={styles["mobile-register"]}
                 >
                   Doctor Register
                 </button>
                 <button 
                   onClick={() => handleNavigation('/admin-login')}
-                  className="mobile-admin"
+                  className={styles["mobile-admin"]}
                 >
                   Admin Login
                 </button>
@@ -482,14 +482,14 @@ const Dosha = () => {
       </header>
 
       {/* Main Content */}
-      <main className="dosha-main">
-        <div className="dosha">
-          <header className="dosha-header">
+      <main className={styles["dosha-main"]}>
+        <div className={styles["dosha"]}>
+          <header className={styles["dosha-header"]}>
             <h1>🕉️ Prakriti Check</h1>
-            <p className="dosha-subtitle">Discover your mind-body constitution</p>
+            <p className={styles["dosha-subtitle"]}>Discover your mind-body constitution</p>
           </header>
 
-          <section className="dosha-content">
+          <section className={styles["dosha-content"]}>
             {error && <ErrorMessage message={error} />}
             
             {isLoading && stage !== 'loading' && <Loading />}
@@ -518,55 +518,55 @@ const Dosha = () => {
       </main>
 
       {/* Footer */}
-      <footer className="footer">
-        <div className="footer-container">
-          <div className="footer-content">
-            <div className="footer-brand">
-              <div className="footer-logo">
-                <div className="logo-icon">
-                  <Heart className="footer-heart" />
+      <footer className={styles["footer"]}>
+        <div className={styles["footer-container"]}>
+          <div className={styles["footer-content"]}>
+            <div className={styles["footer-brand"]}>
+              <div className={styles["footer-logo"]}>
+                <div className={styles["logo-icon"]}>
+                  <Heart className={styles["footer-heart"]} />
                 </div>
-                <h3 className="footer-title">AYUMATE</h3>
+                <h3 className={styles["footer-title"]}>AYUMATE</h3>
               </div>
-              <p className="footer-desc">
+              <p className={styles["footer-desc"]}>
                 Your comprehensive Ayurvedic health companion, combining ancient wisdom with modern technology for optimal wellness.
               </p>
             </div>
 
-            <div className="footer-links">
-              <h4 className="footer-heading">Quick Links</h4>
-              <ul className="footer-list">
-                <li><button onClick={() => handleNavigation('/dosha')} className="footer-link">Prakriti Assessment</button></li>
-                <li><button onClick={() => handleNavigation('/chatBot')} className="footer-link">AI Symptom Checker</button></li>
-                <li><button onClick={() => handleNavigation('/patient-register')} className="footer-link">Patient Portal</button></li>
-                <li><button onClick={() => handleNavigation('/doctor-register')} className="footer-link">Doctor Portal</button></li>
+            <div className={styles["footer-links"]}>
+              <h4 className={styles["footer-heading"]}>Quick Links</h4>
+              <ul className={styles["footer-list"]}>
+                <li><button onClick={() => handleNavigation('/dosha')} className={styles["footer-link"]}>Prakriti Assessment</button></li>
+                <li><button onClick={() => handleNavigation('/chatBot')} className={styles["footer-link"]}>AI Symptom Checker</button></li>
+                <li><button onClick={() => handleNavigation('/patient-register')} className={styles["footer-link"]}>Patient Portal</button></li>
+                <li><button onClick={() => handleNavigation('/doctor-register')} className={styles["footer-link"]}>Doctor Portal</button></li>
               </ul>
             </div>
 
-            <div className="footer-features">
-              <h4 className="footer-heading">Features</h4>
-              <ul className="footer-list">
-                <li className="footer-item">Medical Records Storage</li>
-                <li className="footer-item">Doctor Appointments</li>
-                <li className="footer-item">Smart Consultations</li>
-                <li className="footer-item">Health Analytics</li>
+            <div className={styles["footer-features"]}>
+              <h4 className={styles["footer-heading"]}>Features</h4>
+              <ul className={styles["footer-list"]}>
+                <li className={styles["footer-item"]}>Medical Records Storage</li>
+                <li className={styles["footer-item"]}>Doctor Appointments</li>
+                <li className={styles["footer-item"]}>Smart Consultations</li>
+                <li className={styles["footer-item"]}>Health Analytics</li>
               </ul>
             </div>
 
-            <div className="footer-contact">
-              <h4 className="footer-heading">Support</h4>
-              <ul className="footer-list">
-                <li className="footer-item">24/7 Customer Support</li>
-                <li className="footer-item">Help Center</li>
-                <li className="footer-item">Privacy Policy</li>
-                <li className="footer-item">Terms of Service</li>
+            <div className={styles["footer-contact"]}>
+              <h4 className={styles["footer-heading"]}>Support</h4>
+              <ul className={styles["footer-list"]}>
+                <li className={styles["footer-item"]}>24/7 Customer Support</li>
+                <li className={styles["footer-item"]}>Help Center</li>
+                <li className={styles["footer-item"]}>Privacy Policy</li>
+                <li className={styles["footer-item"]}>Terms of Service</li>
               </ul>
             </div>
           </div>
 
-          <div className="footer-bottom">
-            <p className="copyright">
-              © 2024 AYUMATE. All rights reserved. Empowering health through technology and tradition.
+          <div className={styles["footer-bottom"]}>
+            <p className={styles["copyright"]}>
+              © 2025 AYUMATE. All rights reserved. Empowering health through technology and tradition.
             </p>
           </div>
         </div>

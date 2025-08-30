@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../../assets/styles/patient/PatientDashboard.css';
+import styles from '../../assets/styles/patient/PatientDashboard.module.css';
 import { 
   User, Calendar, FileText, Upload, Download, Trash2, Eye, MessageCircle, Activity, Clock, Phone, Mail, MapPin, Heart, 
   AlertCircle, Plus, Search, Bell, Settings, LogOut, Stethoscope, FileImage, File, X
@@ -41,12 +41,12 @@ const PatientDashboard = () => {
       // Check if user is logged in
       const token = localStorage.getItem('token');
       if (!token) {
-        navigate('/login');
+        navigate('/patient-login');
         return;
       }
       
     } else {
-      navigate('/login');
+      navigate('/patient-login');
       return;
     }
     
@@ -176,7 +176,7 @@ const submitCancellation = async () => {
         setNotifications(result.data.recentNotifications || []);
         setSymptomHistory(result.data.recentSymptoms || []);
       } else if (response.status === 401) {
-        navigate('/login');
+        navigate('/patient-login');
       } else {
         console.error('Failed to load dashboard data');
       }
@@ -193,7 +193,6 @@ const submitCancellation = async () => {
 
       if (response.ok) {
         const result = await response.json();
-        console.log('User profile:', result.data.profile);
         setUser(result.data.profile);
       } else {
         console.error('Failed to load user profile');
@@ -246,23 +245,6 @@ const submitCancellation = async () => {
       }
     } catch (error) {
       console.error('Error loading documents:', error);
-    }
-  };
-
-  const loadNotifications = async () => {
-    try {
-      const response = await fetch(`${API_BASE_URL}/patient/notifications`, {
-        headers: getAuthHeaders()
-      });
-
-      if (response.ok) {
-        const result = await response.json();
-        setNotifications(result.data.notifications || []);
-      } else {
-        console.error('Failed to load notifications');
-      }
-    } catch (error) {
-      console.error('Error loading notifications:', error);
     }
   };
 
@@ -391,25 +373,25 @@ const submitCancellation = async () => {
   const getFileIcon = (fileType) => {
     const type = fileType?.toLowerCase();
     if (type?.includes('pdf')) {
-      return <File className="patient-dashboard-file-icon" />;
+      return <File className={styles["patient-dashboard-file-icon"]} />;
     } else if (type?.includes('image') || ['jpg', 'jpeg', 'png', 'gif'].includes(type)) {
-      return <FileImage className="patient-dashboard-file-icon" />;
+      return <FileImage className={styles["patient-dashboard-file-icon"]} />;
     } else {
-      return <File className="patient-dashboard-file-icon" />;
+      return <File className={styles["patient-dashboard-file-icon"]} />;
     }
   };
 
   const getStatusBadge = (status) => {
     const statusConfig = {
-      confirmed: { className: 'patient-dashboard-status-confirmed', text: 'Confirmed' },
-      pending: { className: 'patient-dashboard-status-pending', text: 'Pending' },
-      completed: { className: 'patient-dashboard-status-completed', text: 'Completed' },
-      cancelled: { className: 'patient-dashboard-status-cancelled', text: 'Cancelled' },
-      rejected: { className: 'patient-dashboard-status-cancelled', text: 'Rejected' }
+      confirmed: { className: styles["patient-dashboard-status-confirmed"], text: 'Confirmed' },
+      pending: { className: styles["patient-dashboard-status-pending"], text: 'Pending' },
+      completed: { className: styles["patient-dashboard-status-completed"], text: 'Completed' },
+      cancelled: { className: styles["patient-dashboard-status-cancelled"], text: 'Cancelled' },
+      rejected: { className: styles["patient-dashboard-status-cancelled"], text: 'Rejected' }
     };
     
     const config = statusConfig[status] || statusConfig.pending;
-    return <span className={`patient-dashboard-status-badge ${config.className}`}>{config.text}</span>;
+    return <span className={`${styles["patient-dashboard-status-badge"]} ${config.className}`}>{config.text}</span>;
   };
 
   const formatDate = (dateString) => {
@@ -438,13 +420,13 @@ const submitCancellation = async () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     localStorage.removeItem('userRole');
-    navigate('/login');
+    navigate('/patient-login');
   };
 
   if (!user) {
     return (
-      <div className="patient-dashboard-loading">
-        <div className="patient-dashboard-spinner"></div>
+      <div className={styles["patient-dashboard-loading"]}>
+        <div className={styles["patient-dashboard-spinner"]}></div>
         <p>Loading dashboard...</p>
       </div>
     );
@@ -454,161 +436,161 @@ const submitCancellation = async () => {
   const unreadCount = notifications.filter(n => !n.is_read).length;
 
   return (
-    <div className="patient-dashboard-container">
+    <div className={styles["patient-dashboard-container"]}>
       {/* Header */}
-      <header className="patient-dashboard-header">
-        <div className="patient-dashboard-header-left">
-          <div className="patient-dashboard-logo">
-            <Heart className="patient-dashboard-logo-icon" />
-            <span className="patient-dashboard-logo-text">Smart Healthcare</span>
+      <header className={styles["patient-dashboard-header"]}>
+        <div className={styles["patient-dashboard-header-left"]}>
+          <div className={styles["patient-dashboard-logo"]}>
+            <Heart className={styles["patient-dashboard-logo-icon"]} />
+            <span className={styles["patient-dashboard-logo-text"]}>AYUMATE</span>
           </div>
         </div>
         
-        <div className="patient-dashboard-header-right">
+        <div className={styles["patient-dashboard-header-right"]}>
           <button 
-            className="patient-dashboard-notification-btn"
+            className={styles["patient-dashboard-notification-btn"]}
             onClick={() => setActiveTab('notifications')}
           >
-            <Bell className="patient-dashboard-notification-icon" />
+            <Bell className={styles["patient-dashboard-notification-icon"]} />
             {unreadCount > 0 && (
-              <span className="patient-dashboard-notification-badge">
+              <span className={styles["patient-dashboard-notification-badge"]}>
                 {unreadCount}
               </span>
             )}
           </button>
           
-          <div className="patient-dashboard-user-menu">
-            <div className="patient-dashboard-user-info">
-              <span className="patient-dashboard-user-name">
+          <div className={styles["patient-dashboard-user-menu"]}>
+            <div className={styles["patient-dashboard-user-info"]}>
+              <span className={styles["patient-dashboard-user-name"]}>
                 {user.first_name } {user.last_name }
               </span>
-              <span className="patient-dashboard-user-role">Patient</span>
+              <span className={styles["patient-dashboard-user-role"]}>Patient</span>
             </div>
-            <button className="patient-dashboard-logout-btn" onClick={handleLogout}>
-              <LogOut className="patient-dashboard-logout-icon" />
+            <button className={styles["patient-dashboard-logout-btn"]} onClick={handleLogout}>
+              <LogOut className={styles["patient-dashboard-logout-icon"]} />
             </button>
           </div>
         </div>
       </header>
 
-      <div className="patient-dashboard-main">
+      <div className={styles["patient-dashboard-main"]}>
         {/* Sidebar */}
-        <aside className="patient-dashboard-sidebar">
-          <nav className="patient-dashboard-nav">
+        <aside className={styles["patient-dashboard-sidebar"]}>
+          <nav className={styles["patient-dashboard-nav"]}>
             <button
-              className={`patient-dashboard-nav-item ${activeTab === 'overview' ? 'patient-dashboard-nav-active' : ''}`}
+              className={`${styles["patient-dashboard-nav-item"]} ${activeTab === 'overview' ? styles["patient-dashboard-nav-active"] : ''}`}
               onClick={() => setActiveTab('overview')}
             >
-              <Activity className="patient-dashboard-nav-icon" />
+              <Activity className={styles["patient-dashboard-nav-icon"]} />
               <span>Overview</span>
             </button>
             
             <button
-              className={`patient-dashboard-nav-item ${activeTab === 'appointments' ? 'patient-dashboard-nav-active' : ''}`}
+              className={`${styles["patient-dashboard-nav-item"]} ${activeTab === 'appointments' ? styles["patient-dashboard-nav-active"] : ''}`}
               onClick={() => setActiveTab('appointments')}
             >
-              <Calendar className="patient-dashboard-nav-icon" />
+              <Calendar className={styles["patient-dashboard-nav-icon"]} />
               <span>Appointments</span>
             </button>
             
             <button
-              className={`patient-dashboard-nav-item ${activeTab === 'documents' ? 'patient-dashboard-nav-active' : ''}`}
+              className={`${styles["patient-dashboard-nav-item"]} ${activeTab === 'documents' ? styles["patient-dashboard-nav-active"] : ''}`}
               onClick={() => setActiveTab('documents')}
             >
-              <FileText className="patient-dashboard-nav-icon" />
+              <FileText className={styles["patient-dashboard-nav-icon"]} />
               <span>Documents</span>
             </button>
             
             <button
-              className={`patient-dashboard-nav-item ${activeTab === 'symptoms' ? 'patient-dashboard-nav-active' : ''}`}
+              className={`${styles["patient-dashboard-nav-item"]} ${activeTab === 'symptoms' ? styles["patient-dashboard-nav-active"] : ''}`}
               onClick={() => setActiveTab('symptoms')}
             >
-              <Stethoscope className="patient-dashboard-nav-icon" />
+              <Stethoscope className={styles["patient-dashboard-nav-icon"]} />
               <span>Symptom History</span>
             </button>
             
             <button
-              className={`patient-dashboard-nav-item ${activeTab === 'profile' ? 'patient-dashboard-nav-active' : ''}`}
+              className={`${styles["patient-dashboard-nav-item"]} ${activeTab === 'profile' ? styles["patient-dashboard-nav-active"] : ''}`}
               onClick={() => setActiveTab('profile')}
             >
-              <User className="patient-dashboard-nav-icon" />
+              <User className={styles["patient-dashboard-nav-icon"]} />
               <span>Profile</span>
             </button>
           </nav>
           
-          <div className="patient-dashboard-sidebar-bottom">
+          <div className={styles["patient-dashboard-sidebar-bottom"]}>
             <button 
-              className="patient-dashboard-chatbot-btn"
+              className={styles["patient-dashboard-chatbot-btn"]}
               onClick={() => navigate('/chatBot')}
             >
-              <MessageCircle className="patient-dashboard-chatbot-icon" />
+              <MessageCircle className={styles["patient-dashboard-chatbot-icon"]} />
               <span>AI Symptom Checker</span>
             </button>
           </div>
         </aside>
 
         {/* Main Content */}
-        <main className="patient-dashboard-content">
+        <main className={styles["patient-dashboard-content"]}>
           {/* Overview Tab */}
           {activeTab === 'overview' && (
-            <div className="patient-dashboard-overview">
-              <div className="patient-dashboard-welcome">
+            <div className={styles["patient-dashboard-overview"]}>
+              <div className={styles["patient-dashboard-welcome"]}>
                 <h1>Welcome back, {user.first_name || user.firstName}!</h1>
                 <p>Here's your health overview for today</p>
               </div>
 
-              <div className="patient-dashboard-stats-grid">
-                <div className="patient-dashboard-stat-card">
-                  <div className="patient-dashboard-stat-icon patient-dashboard-stat-appointments">
+              <div className={styles["patient-dashboard-stats-grid"]}>
+                <div className={styles["patient-dashboard-stat-card"]}>
+                  <div className={`${styles["patient-dashboard-stat-icon"]} ${styles["patient-dashboard-stat-appointments"]}`}>
                     <Calendar />
                   </div>
-                  <div className="patient-dashboard-stat-content">
+                  <div className={styles["patient-dashboard-stat-content"]}>
                     <h3>{stats.totalAppointments || 0}</h3>
                     <p>Total Appointments</p>
                   </div>
                 </div>
 
-                <div className="patient-dashboard-stat-card">
-                  <div className="patient-dashboard-stat-icon patient-dashboard-stat-documents">
+                <div className={styles["patient-dashboard-stat-card"]}>
+                  <div className={`${styles["patient-dashboard-stat-icon"]} ${styles["patient-dashboard-stat-documents"]}`}>
                     <FileText />
                   </div>
-                  <div className="patient-dashboard-stat-content">
+                  <div className={styles["patient-dashboard-stat-content"]}>
                     <h3>{stats.totalDocuments || 0}</h3>
                     <p>Medical Documents</p>
                   </div>
                 </div>
 
-                <div className="patient-dashboard-stat-card">
-                  <div className="patient-dashboard-stat-icon patient-dashboard-stat-symptoms">
+                <div className={styles["patient-dashboard-stat-card"]}>
+                  <div className={`${styles["patient-dashboard-stat-icon"]} ${styles["patient-dashboard-stat-symptoms"]}`}>
                     <Activity />
                   </div>
-                  <div className="patient-dashboard-stat-content">
+                  <div className={styles["patient-dashboard-stat-content"]}>
                     <h3>{stats.totalAnalyses || 0}</h3>
                     <p>Symptom Analyses</p>
                   </div>
                 </div>
 
-                <div className="patient-dashboard-stat-card">
-                  <div className="patient-dashboard-stat-icon patient-dashboard-stat-notifications">
+                <div className={styles["patient-dashboard-stat-card"]}>
+                  <div className={`${styles["patient-dashboard-stat-icon"]} ${styles["patient-dashboard-stat-notifications"]}`}>
                     <Bell />
                   </div>
-                  <div className="patient-dashboard-stat-content">
+                  <div className={styles["patient-dashboard-stat-content"]}>
                     <h3>{stats.unreadNotifications || 0}</h3>
                     <p>Unread Notifications</p>
                   </div>
                 </div>
               </div>
 
-              <div className="patient-dashboard-overview-grid">
-                <div className="patient-dashboard-overview-card">
+              <div className={styles["patient-dashboard-overview-grid"]}>
+                <div className={styles["patient-dashboard-overview-card"]}>
                   <h3>Recent Appointments</h3>
-                  <div className="patient-dashboard-appointment-list">
+                  <div className={styles["patient-dashboard-appointment-list"]}>
                     {appointments.slice(0, 3).map(appointment => (
-                      <div key={appointment.appointment_id} className="patient-dashboard-appointment-item">
-                        <div className="patient-dashboard-appointment-info">
+                      <div key={appointment.appointment_id} className={styles["patient-dashboard-appointment-item"]}>
+                        <div className={styles["patient-dashboard-appointment-info"]}>
                           <h4>Dr. {appointment.doctor_name}</h4>
                           <p>{appointment.specialization}</p>
-                          <span className="patient-dashboard-appointment-date">
+                          <span className={styles["patient-dashboard-appointment-date"]}>
                             {formatDate(appointment.appointment_date)} at {appointment.appointment_time}
                           </span>
                         </div>
@@ -616,34 +598,34 @@ const submitCancellation = async () => {
                       </div>
                     ))}
                     {appointments.length === 0 && (
-                      <p className="patient-dashboard-no-data">No recent appointments</p>
+                      <p className={styles["patient-dashboard-no-data"]}>No recent appointments</p>
                     )}
                   </div>
                 </div>
 
-                <div className="patient-dashboard-overview-card">
+                <div className={styles["patient-dashboard-overview-card"]}>
                   <h3>Recent Notifications</h3>
-                  <div className="patient-dashboard-notification-list">
+                  <div className={styles["patient-dashboard-notification-list"]}>
                     {notifications.slice(0, 3).map(notification => (
                       <div 
                         key={notification.notification_id} 
-                        className="patient-dashboard-notification-item"
+                        className={styles["patient-dashboard-notification-item"]}
                         onClick={() => markNotificationAsRead(notification.notification_id)}
                       >
-                        <div className="patient-dashboard-notification-content">
+                        <div className={styles["patient-dashboard-notification-content"]}>
                           <h4>{notification.title}</h4>
                           <p>{notification.message}</p>
-                          <span className="patient-dashboard-notification-date">
+                          <span className={styles["patient-dashboard-notification-date"]}>
                             {formatDate(notification.created_at)}
                           </span>
                         </div>
                         {!notification.is_read && (
-                          <div className="patient-dashboard-notification-unread"></div>
+                          <div className={styles["patient-dashboard-notification-unread"]}></div>
                         )}
                       </div>
                     ))}
                     {notifications.length === 0 && (
-                      <p className="patient-dashboard-no-data">No recent notifications</p>
+                      <p className={styles["patient-dashboard-no-data"]}>No recent notifications</p>
                     )}
                   </div>
                 </div>
@@ -653,43 +635,43 @@ const submitCancellation = async () => {
 
           {/* Appointments Tab */}
           {activeTab === 'appointments' && (
-            <div className="patient-dashboard-appointments">
-              <div className="patient-dashboard-section-header">
+            <div className={styles["patient-dashboard-appointments"]}>
+              <div className={styles["patient-dashboard-section-header"]}>
                 <h2>My Appointments</h2>
-                <button className="patient-dashboard-primary-btn" onClick={() => navigate('/appointment-booking')}>
-                  <Plus className="patient-dashboard-btn-icon" />
+                <button className={styles["patient-dashboard-primary-btn"]} onClick={() => navigate('/appointment-booking')}>
+                  <Plus className={styles["patient-dashboard-btn-icon"]} />
                   Book New Appointment
                 </button>
               </div>
 
-              <div className="patient-dashboard-appointments-grid">
+              <div className={styles["patient-dashboard-appointments-grid"]}>
                 {appointments.map(appointment => (
-                  <div key={appointment.appointment_id} className="patient-dashboard-appointment-card">
-                    <div className="patient-dashboard-appointment-header">
+                  <div key={appointment.appointment_id} className={styles["patient-dashboard-appointment-card"]}>
+                    <div className={styles["patient-dashboard-appointment-header"]}>
                       <h3>Dr. {appointment.doctor_name}</h3>
                       {getStatusBadge(appointment.status)}
                     </div>
-                    <div className="patient-dashboard-appointment-details">
-                      <p className="patient-dashboard-specialization">{appointment.specialization}</p>
-                      <div className="patient-dashboard-appointment-time">
-                        <Calendar className="patient-dashboard-detail-icon" />
+                    <div className={styles["patient-dashboard-appointment-details"]}>
+                      <p className={styles["patient-dashboard-specialization"]}>{appointment.specialization}</p>
+                      <div className={styles["patient-dashboard-appointment-time"]}>
+                        <Calendar className={styles["patient-dashboard-detail-icon"]} />
                         <span>{formatDate(appointment.appointment_date)}</span>
                       </div>
-                      <div className="patient-dashboard-appointment-time">
-                        <Clock className="patient-dashboard-detail-icon" />
+                      <div className={styles["patient-dashboard-appointment-time"]}>
+                        <Clock className={styles["patient-dashboard-detail-icon"]} />
                         <span>{appointment.appointment_time}</span>
                       </div>
                       {appointment.reason_for_visit && (
-                        <p className="patient-dashboard-appointment-reason">{appointment.reason_for_visit}</p>
+                        <p className={styles["patient-dashboard-appointment-reason"]}>{appointment.reason_for_visit}</p>
                       )}
                       {appointment.consultation_fee && (
-                        <p className="patient-dashboard-appointment-fee">Fee: ₹{appointment.consultation_fee}</p>
+                        <p className={styles["patient-dashboard-appointment-fee"]}>Fee: ₹{appointment.consultation_fee}</p>
                       )}
                     </div>
-                    <div className="patient-dashboard-appointment-actions">
+                    <div className={styles["patient-dashboard-appointment-actions"]}>
                       {canRescheduleAppointment(appointment.status) && (
                         <button 
-                          className="patient-dashboard-secondary-btn"
+                          className={styles["patient-dashboard-secondary-btn"]}
                           onClick={() => handleRescheduleAppointment(appointment.appointment_id, appointment)}
                         >
                           Reschedule
@@ -697,19 +679,19 @@ const submitCancellation = async () => {
                       )}
                       {canCancelAppointment(appointment.status) && (
                         <button 
-                          className="patient-dashboard-danger-btn"
+                          className={styles["patient-dashboard-danger-btn"]}
                           onClick={() => handleCancelAppointment(appointment.appointment_id, appointment)}
                         >
                           Cancel
                         </button>
                       )}
                       {appointment.status === 'completed' && (
-                        <button className="patient-dashboard-primary-btn">
+                        <button className={styles["patient-dashboard-primary-btn"]}>
                           View Report
                         </button>
                       )}
                       {appointment.status === 'cancelled' && (
-                        <span className="patient-dashboard-cancelled-text">
+                        <span className={styles["patient-dashboard-cancelled-text"]}>
                           Cancelled: {appointment.cancellation_reason || 'No reason provided'}
                         </span>
                       )}
@@ -717,14 +699,14 @@ const submitCancellation = async () => {
                   </div>
                 ))}
                 {appointments.length === 0 && (
-                  <div className="patient-dashboard-no-data-card">
+                  <div className={styles["patient-dashboard-no-data-card"]}>
                     <p>No appointments found</p>
                   </div>
                 )}
               </div>
 
               {appointmentsPagination && appointmentsPagination.totalPages > 1 && (
-                <div className="patient-dashboard-pagination">
+                <div className={styles["patient-dashboard-pagination"]}>
                   <button 
                     disabled={!appointmentsPagination.hasPrevious}
                     onClick={() => loadAppointments(appointmentsPagination.currentPage - 1)}
@@ -747,31 +729,31 @@ const submitCancellation = async () => {
 
           {/* Documents Tab */}
           {activeTab === 'documents' && (
-            <div className="patient-dashboard-documents">
-              <div className="patient-dashboard-section-header">
+            <div className={styles["patient-dashboard-documents"]}>
+              <div className={styles["patient-dashboard-section-header"]}>
                 <h2>Medical Documents</h2>
                 <button 
-                  className="patient-dashboard-primary-btn"
+                  className={styles["patient-dashboard-primary-btn"]}
                   onClick={() => setUploadModal(true)}
                 >
-                  <Upload className="patient-dashboard-btn-icon" />
+                  <Upload className={styles["patient-dashboard-btn-icon"]} />
                   Upload Documents
                 </button>
               </div>
 
-              <div className="patient-dashboard-documents-filter">
-                <div className="patient-dashboard-search-box">
-                  <Search className="patient-dashboard-search-icon" />
+              <div className={styles["patient-dashboard-documents-filter"]}>
+                <div className={styles["patient-dashboard-search-box"]}>
+                  <Search className={styles["patient-dashboard-search-icon"]} />
                   <input 
                     type="text" 
                     placeholder="Search documents..."
-                    className="patient-dashboard-search-input"
+                    className={styles["patient-dashboard-search-input"]}
                     value={documentFilters.search}
                     onChange={handleDocumentSearch}
                   />
                 </div>
                 <select 
-                  className="patient-dashboard-filter-select"
+                  className={styles["patient-dashboard-filter-select"]}
                   value={documentFilters.category}
                   onChange={handleCategoryFilter}
                 >
@@ -784,38 +766,38 @@ const submitCancellation = async () => {
                 </select>
               </div>
 
-              <div className="patient-dashboard-documents-grid">
+              <div className={styles["patient-dashboard-documents-grid"]}>
                 {documents.map(document => (
-                  <div key={document.file_id} className="patient-dashboard-document-card">
-                    <div className="patient-dashboard-document-preview">
+                  <div key={document.file_id} className={styles["patient-dashboard-document-card"]}>
+                    <div className={styles["patient-dashboard-document-preview"]}>
                       {getFileIcon(document.file_type)}
                     </div>
-                    <div className="patient-dashboard-document-info">
-                      <h4 className="patient-dashboard-document-name" title={document.file_name}>
+                    <div className={styles["patient-dashboard-document-info"]}>
+                      <h4 className={styles["patient-dashboard-document-name"]} title={document.file_name}>
                         {document.file_name}
                       </h4>
-                      <p className="patient-dashboard-document-category">
+                      <p className={styles["patient-dashboard-document-category"]}>
                         {document.category?.charAt(0).toUpperCase() + document.category?.slice(1)}
                       </p>
-                      <p className="patient-dashboard-document-date">
+                      <p className={styles["patient-dashboard-document-date"]}>
                         {formatDate(document.created_at)}
                       </p>
-                      <p className="patient-dashboard-document-uploaded-by">
+                      <p className={styles["patient-dashboard-document-uploaded-by"]}>
                         By: {document.uploaded_by}
                       </p>
                     </div>
-                    <div className="patient-dashboard-document-actions">
+                    <div className={styles["patient-dashboard-document-actions"]}>
                       <button 
-                        className="patient-dashboard-action-btn"
+                        className={styles["patient-dashboard-action-btn"]}
                         onClick={() => {
                           setSelectedDocument(document);
                           setDocumentViewModal(true);
                         }}
                       >
-                        <Eye className="patient-dashboard-action-icon" />
+                        <Eye className={styles["patient-dashboard-action-icon"]} />
                       </button>
                       <button 
-                        className="patient-dashboard-action-btn"
+                        className={styles["patient-dashboard-action-btn"]}
                         onClick={() => {
                           const downloadUrl = getProperDownloadUrl(document);
                           const link = window.document.createElement('a'); // Use window.document explicitly
@@ -828,28 +810,28 @@ const submitCancellation = async () => {
                           window.document.body.removeChild(link);
                         }}
                       >
-                        <Download className="patient-dashboard-action-icon" />
+                        <Download className={styles["patient-dashboard-action-icon"]} />
                       </button>
                       {document.uploaded_by_patient && (
                         <button 
-                          className="patient-dashboard-action-btn patient-dashboard-danger-action"
+                          className={`${styles["patient-dashboard-action-btn"]} ${styles["patient-dashboard-danger-action"]}`}
                           onClick={() => handleDocumentDelete(document.file_id)}
                         >
-                          <Trash2 className="patient-dashboard-action-icon" />
+                          <Trash2 className={styles["patient-dashboard-action-icon"]} />
                         </button>
                       )}
                     </div>
                   </div>
                 ))}
                 {documents.length === 0 && (
-                  <div className="patient-dashboard-no-data-card">
+                  <div className={styles["patient-dashboard-no-data-card"]}>
                     <p>No documents found</p>
                   </div>
                 )}
               </div>
 
               {documentsPagination && documentsPagination.totalPages > 1 && (
-                <div className="patient-dashboard-pagination">
+                <div className={styles["patient-dashboard-pagination"]}>
                   <button 
                     disabled={!documentsPagination.hasPrevious}
                     onClick={() => loadDocuments(documentsPagination.currentPage - 1)}
@@ -872,35 +854,35 @@ const submitCancellation = async () => {
 
           {/* Symptom History Tab */}
           {activeTab === 'symptoms' && (
-            <div className="patient-dashboard-symptoms">
-              <div className="patient-dashboard-section-header">
+            <div className={styles["patient-dashboard-symptoms"]}>
+              <div className={styles["patient-dashboard-section-header"]}>
                 <h2>Symptom Analysis History</h2>
                 <button 
-                  className="patient-dashboard-primary-btn"
+                  className={styles["patient-dashboard-primary-btn"]}
                   onClick={() => navigate('/chatBot')}
                 >
-                  <MessageCircle className="patient-dashboard-btn-icon" />
+                  <MessageCircle className={styles["patient-dashboard-btn-icon"]} />
                   New Analysis
                 </button>
               </div>
 
-              <div className="patient-dashboard-symptoms-list">
+              <div className={styles["patient-dashboard-symptoms-list"]}>
                 {symptomHistory.map(entry => (
-                  <div key={entry.analysis_id} className="patient-dashboard-symptom-card">
-                    <div className="patient-dashboard-symptom-header">
+                  <div key={entry.analysis_id} className={styles["patient-dashboard-symptom-card"]}>
+                    <div className={styles["patient-dashboard-symptom-header"]}>
                       <h3>{entry.conversation_title || 'Symptom Analysis'}</h3>
-                      <span className="patient-dashboard-symptom-date">
+                      <span className={styles["patient-dashboard-symptom-date"]}>
                         {formatDateTime(entry.created_at)}
                       </span>
                     </div>
-                    <div className="patient-dashboard-symptom-content">
+                    <div className={styles["patient-dashboard-symptom-content"]}>
                       <p><strong>Symptoms:</strong> {entry.symptoms}</p>
                       {entry.severity && (
-                        <div className="patient-dashboard-severity">
+                        <div className={styles["patient-dashboard-severity"]}>
                           <span>Severity: </span>
-                          <div className="patient-dashboard-severity-bar">
+                          <div className={styles["patient-dashboard-severity-bar"]}>
                             <div 
-                              className="patient-dashboard-severity-fill"
+                              className={styles["patient-dashboard-severity-fill"]}
                               style={{ width: `${(entry.severity / 10) * 100}%` }}
                             ></div>
                           </div>
@@ -914,22 +896,22 @@ const submitCancellation = async () => {
                         <p><strong>AI Suggestion:</strong> {entry.analysis_results.suggestion}</p>
                       )}
                       {entry.ai_model_used && (
-                        <p className="patient-dashboard-model-info">
+                        <p className={styles["patient-dashboard-model-info"]}>
                           <small>Analyzed by: {entry.ai_model_used}</small>
                         </p>
                       )}
                     </div>
-                    <div className="patient-dashboard-symptom-actions">
-                      <button className="patient-dashboard-secondary-btn">View Full Analysis</button>
-                      <button className="patient-dashboard-primary-btn">Book Appointment</button>
+                    <div className={styles["patient-dashboard-symptom-actions"]}>
+                      <button className={styles["patient-dashboard-secondary-btn"]}>View Full Analysis</button>
+                      <button className={styles["patient-dashboard-primary-btn"]}>Book Appointment</button>
                     </div>
                   </div>
                 ))}
                 {symptomHistory.length === 0 && (
-                  <div className="patient-dashboard-no-data-card">
+                  <div className={styles["patient-dashboard-no-data-card"]}>
                     <p>No symptom analyses found</p>
                     <button 
-                      className="patient-dashboard-primary-btn"
+                      className={styles["patient-dashboard-primary-btn"]}
                       onClick={() => navigate('/chatBot')}
                     >
                       Start Your First Analysis
@@ -942,56 +924,56 @@ const submitCancellation = async () => {
 
           {/* Profile Tab */}
           {activeTab === 'profile' && (
-            <div className="patient-dashboard-profile">
-              <div className="patient-dashboard-section-header">
+            <div className={styles["patient-dashboard-profile"]}>
+              <div className={styles["patient-dashboard-section-header"]}>
                 <h2>My Profile</h2>
-                <button className="patient-dashboard-primary-btn">
-                  <Settings className="patient-dashboard-btn-icon" />
+                <button className={styles["patient-dashboard-primary-btn"]}>
+                  <Settings className={styles["patient-dashboard-btn-icon"]} />
                   Edit Profile
                 </button>
               </div>
 
-              <div className="patient-dashboard-profile-grid">
-                <div className="patient-dashboard-profile-card">
+              <div className={styles["patient-dashboard-profile-grid"]}>
+                <div className={styles["patient-dashboard-profile-card"]}>
                   <h3>Personal Information</h3>
-                  <div className="patient-dashboard-profile-fields">
-                    <div className="patient-dashboard-profile-field">
-                      <User className="patient-dashboard-field-icon" />
+                  <div className={styles["patient-dashboard-profile-fields"]}>
+                    <div className={styles["patient-dashboard-profile-field"]}>
+                      <User className={styles["patient-dashboard-field-icon"]} />
                       <div>
                         <label>Full Name</label>
                         <p>{user.first_name || user.firstName} {user.last_name || user.lastName}</p>
                       </div>
                     </div>
-                    <div className="patient-dashboard-profile-field">
-                      <Mail className="patient-dashboard-field-icon" />
+                    <div className={styles["patient-dashboard-profile-field"]}>
+                      <Mail className={styles["patient-dashboard-field-icon"]} />
                       <div>
                         <label>Email</label>
                         <p>{user.email}</p>
                       </div>
                     </div>
-                    <div className="patient-dashboard-profile-field">
-                      <Phone className="patient-dashboard-field-icon" />
+                    <div className={styles["patient-dashboard-profile-field"]}>
+                      <Phone className={styles["patient-dashboard-field-icon"]} />
                       <div>
                         <label>Phone</label>
                         <p>{user.phone || 'Not provided'}</p>
                       </div>
                     </div>
-                    <div className="patient-dashboard-profile-field">
-                      <Calendar className="patient-dashboard-field-icon" />
+                    <div className={styles["patient-dashboard-profile-field"]}>
+                      <Calendar className={styles["patient-dashboard-field-icon"]} />
                       <div>
                         <label>Date of Birth</label>
                         <p>{user.date_of_birth ? formatDate(user.date_of_birth) : 'Not provided'}</p>
                       </div>
                     </div>
-                    <div className="patient-dashboard-profile-field">
-                      <User className="patient-dashboard-field-icon" />
+                    <div className={styles["patient-dashboard-profile-field"]}>
+                      <User className={styles["patient-dashboard-field-icon"]} />
                       <div>
                         <label>Gender</label>
                         <p>{user.gender || 'Not provided'}</p>
                       </div>
                     </div>
-                    <div className="patient-dashboard-profile-field">
-                      <MapPin className="patient-dashboard-field-icon" />
+                    <div className={styles["patient-dashboard-profile-field"]}>
+                      <MapPin className={styles["patient-dashboard-field-icon"]} />
                       <div>
                         <label>Address</label>
                         <p>{user.address || 'Not provided'}</p>
@@ -1000,25 +982,25 @@ const submitCancellation = async () => {
                   </div>
                 </div>
 
-                <div className="patient-dashboard-profile-card">
+                <div className={styles["patient-dashboard-profile-card"]}>
                   <h3>Medical Information</h3>
-                  <div className="patient-dashboard-profile-fields">
-                    <div className="patient-dashboard-profile-field">
-                      <Heart className="patient-dashboard-field-icon" />
+                  <div className={styles["patient-dashboard-profile-fields"]}>
+                    <div className={styles["patient-dashboard-profile-field"]}>
+                      <Heart className={styles["patient-dashboard-field-icon"]} />
                       <div>
                         <label>Blood Group</label>
                         <p>{user.blood_group || 'Not provided'}</p>
                       </div>
                     </div>
-                    <div className="patient-dashboard-profile-field">
-                      <AlertCircle className="patient-dashboard-field-icon" />
+                    <div className={styles["patient-dashboard-profile-field"]}>
+                      <AlertCircle className={styles["patient-dashboard-field-icon"]} />
                       <div>
                         <label>Allergies</label>
                         <p>{user.allergies || 'None reported'}</p>
                       </div>
                     </div>
-                    <div className="patient-dashboard-profile-field">
-                      <FileText className="patient-dashboard-field-icon" />
+                    <div className={styles["patient-dashboard-profile-field"]}>
+                      <FileText className={styles["patient-dashboard-field-icon"]} />
                       <div>
                         <label>Medical History</label>
                         <p>{user.medical_history || 'No significant medical history'}</p>
@@ -1027,18 +1009,18 @@ const submitCancellation = async () => {
                   </div>
                 </div>
 
-                <div className="patient-dashboard-profile-card">
+                <div className={styles["patient-dashboard-profile-card"]}>
                   <h3>Emergency Contact</h3>
-                  <div className="patient-dashboard-profile-fields">
-                    <div className="patient-dashboard-profile-field">
-                      <User className="patient-dashboard-field-icon" />
+                  <div className={styles["patient-dashboard-profile-fields"]}>
+                    <div className={styles["patient-dashboard-profile-field"]}>
+                      <User className={styles["patient-dashboard-field-icon"]} />
                       <div>
                         <label>Contact Name</label>
                         <p>{user.emergency_contact_name || 'Not provided'}</p>
                       </div>
                     </div>
-                    <div className="patient-dashboard-profile-field">
-                      <Phone className="patient-dashboard-field-icon" />
+                    <div className={styles["patient-dashboard-profile-field"]}>
+                      <Phone className={styles["patient-dashboard-field-icon"]} />
                       <div>
                         <label>Contact Phone</label>
                         <p>{user.emergency_contact_phone || 'Not provided'}</p>
@@ -1052,11 +1034,11 @@ const submitCancellation = async () => {
 
           {/* Notifications Tab */}
           {activeTab === 'notifications' && (
-            <div className="patient-dashboard-notifications">
-              <div className="patient-dashboard-section-header">
+            <div className={styles["patient-dashboard-notifications"]}>
+              <div className={styles["patient-dashboard-section-header"]}>
                 <h2>Notifications</h2>
                 <button 
-                  className="patient-dashboard-secondary-btn"
+                  className={styles["patient-dashboard-secondary-btn"]}
                   onClick={async () => {
                     try {
                       const response = await fetch(`${API_BASE_URL}/patient/notifications/read-all`, {
@@ -1075,35 +1057,35 @@ const submitCancellation = async () => {
                 </button>
               </div>
 
-              <div className="patient-dashboard-notifications-list">
+              <div className={styles["patient-dashboard-notifications-list"]}>
                 {notifications.map(notification => (
                   <div 
                     key={notification.notification_id} 
-                    className={`patient-dashboard-notification-card ${!notification.is_read ? 'unread' : ''}`}
+                    className={`${styles["patient-dashboard-notification-card"]} ${!notification.is_read ? 'unread' : ''}`}
                     onClick={() => markNotificationAsRead(notification.notification_id)}
                   >
-                    <div className="patient-dashboard-notification-header">
+                    <div className={styles["patient-dashboard-notification-header"]}>
                       <h3>{notification.title}</h3>
-                      <span className="patient-dashboard-notification-time">
+                      <span className={styles["patient-dashboard-notification-time"]}>
                         {formatDateTime(notification.created_at)}
                       </span>
                     </div>
-                    <p className="patient-dashboard-notification-message">
+                    <p className={styles["patient-dashboard-notification-message"]}>
                       {notification.message}
                     </p>
-                    <div className="patient-dashboard-notification-meta">
-                      <span className={`patient-dashboard-notification-type type-${notification.type}`}>
+                    <div className={styles["patient-dashboard-notification-meta"]}>
+                      <span className={`${styles["patient-dashboard-notification-type"]} type-${notification.type}`}>
                         {notification.type.replace('_', ' ')}
                       </span>
                       {!notification.is_read && (
-                        <div className="patient-dashboard-notification-unread-indicator"></div>
+                        <div className={styles["patient-dashboard-notification-unread-indicator"]}></div>
                       )}
                     </div>
                   </div>
                 ))}
                 {notifications.length === 0 && (
-                  <div className="patient-dashboard-no-data-card">
-                    <Bell className="patient-dashboard-empty-icon" />
+                  <div className={styles["patient-dashboard-no-data-card"]}>
+                    <Bell className={styles["patient-dashboard-empty-icon"]} />
                     <p>No notifications yet</p>
                   </div>
                 )}
@@ -1115,41 +1097,41 @@ const submitCancellation = async () => {
 
       {/* Upload Modal */}
       {uploadModal && (
-        <div className="patient-dashboard-modal-overlay">
-          <div className="patient-dashboard-modal">
-            <div className="patient-dashboard-modal-header">
+        <div className={styles["patient-dashboard-modal-overlay"]}>
+          <div className={styles["patient-dashboard-modal"]}>
+            <div className={styles["patient-dashboard-modal-header"]}>
               <h3>Upload Medical Documents</h3>
               <button 
-                className="patient-dashboard-modal-close"
+                className={styles["patient-dashboard-modal-close"]}
                 onClick={() => setUploadModal(false)}
               >
                 <X />
               </button>
             </div>
             
-            <div className="patient-dashboard-modal-content">
-              <div className="patient-dashboard-upload-section">
-                <label className="patient-dashboard-file-upload-area">
+            <div className={styles["patient-dashboard-modal-content"]}>
+              <div className={styles["patient-dashboard-upload-section"]}>
+                <label className={styles["patient-dashboard-file-upload-area"]}>
                   <input
                     type="file"
                     multiple
                     accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
                     onChange={handleFileSelect}
-                    className="patient-dashboard-file-input"
+                    className={styles["patient-dashboard-file-input"]}
                   />
-                  <div className="patient-dashboard-upload-content">
-                    <Upload className="patient-dashboard-upload-icon" />
+                  <div className={styles["patient-dashboard-upload-content"]}>
+                    <Upload className={styles["patient-dashboard-upload-icon"]} />
                     <p>Click to select files or drag and drop</p>
                     <small>PDF, JPG, PNG, DOC, DOCX files up to 10MB each</small>
                   </div>
                 </label>
 
-                <div className="patient-dashboard-form-group">
+                <div className={styles["patient-dashboard-form-group"]}>
                   <label>Document Category</label>
                   <select
                     value={uploadCategory}
                     onChange={(e) => setUploadCategory(e.target.value)}
-                    className="patient-dashboard-select"
+                    className={styles["patient-dashboard-select"]}
                   >
                     <option value="report">Medical Report</option>
                     <option value="prescription">Prescription</option>
@@ -1160,10 +1142,10 @@ const submitCancellation = async () => {
                 </div>
 
                 {selectedFiles.length > 0 && (
-                  <div className="patient-dashboard-selected-files">
+                  <div className={styles["patient-dashboard-selected-files"]}>
                     <h4>Selected Files:</h4>
                     {selectedFiles.map((file, index) => (
-                      <div key={index} className="patient-dashboard-selected-file">
+                      <div key={index} className={styles["patient-dashboard-selected-file"]}>
                         <span>{file.name}</span>
                         <span>{(file.size / (1024 * 1024)).toFixed(1)} MB</span>
                       </div>
@@ -1173,26 +1155,26 @@ const submitCancellation = async () => {
               </div>
             </div>
 
-            <div className="patient-dashboard-modal-actions">
+            <div className={styles["patient-dashboard-modal-actions"]}>
               <button 
-                className="patient-dashboard-secondary-btn"
+                className={styles["patient-dashboard-secondary-btn"]}
                 onClick={() => setUploadModal(false)}
               >
                 Cancel
               </button>
               <button 
-                className="patient-dashboard-primary-btn"
+                className={styles["patient-dashboard-primary-btn"]}
                 onClick={handleDocumentUpload}
                 disabled={selectedFiles.length === 0 || loading}
               >
                 {loading ? (
                   <>
-                    <div className="patient-dashboard-spinner"></div>
+                    <div className={styles["patient-dashboard-spinner"]}></div>
                     Uploading...
                   </>
                 ) : (
                   <>
-                    <Upload className="patient-dashboard-btn-icon" />
+                    <Upload className={styles["patient-dashboard-btn-icon"]} />
                     Upload Documents
                   </>
                 )}
@@ -1204,22 +1186,22 @@ const submitCancellation = async () => {
 
       {/* Document View Modal */}
      {documentViewModal && selectedDocument && (
-      <div className="patient-dashboard-modal-overlay">
-        <div className="patient-dashboard-modal patient-dashboard-document-modal">
-          <div className="patient-dashboard-modal-header">
+      <div className={styles["patient-dashboard-modal-overlay"]}>
+        <div className={`${styles["patient-dashboard-modal"]} ${styles["patient-dashboard-document-modal"]}`}>
+          <div className={styles["patient-dashboard-modal-header"]}>
             <h3>{selectedDocument.file_name}</h3>
             <button 
-              className="patient-dashboard-modal-close"
+              className={styles["patient-dashboard-modal-close"]}
               onClick={() => setDocumentViewModal(false)}
             >
               <X />
             </button>
           </div>
           
-          <div className="patient-dashboard-modal-content">
-            <div className="patient-dashboard-document-preview-large">
+          <div className={styles["patient-dashboard-modal-content"]}>
+            <div className={styles["patient-dashboard-document-preview-large"]}>
               {getFileIcon(selectedDocument.file_type)}
-              <div className="patient-dashboard-document-details">
+              <div className={styles["patient-dashboard-document-details"]}>
                 <p><strong>Category:</strong> {selectedDocument.category}</p>
                 <p><strong>Uploaded by:</strong> {selectedDocument.uploaded_by}</p>
                 <p><strong>Upload Date:</strong> {formatDateTime(selectedDocument.created_at)}</p>
@@ -1231,7 +1213,7 @@ const submitCancellation = async () => {
               
               {/* Image Preview */}
               {selectedDocument.file_type?.includes('image') && (
-                <div className="patient-dashboard-image-preview">
+                <div className={styles["patient-dashboard-image-preview"]}>
                   <img 
                     src={selectedDocument.cloudinary_url} 
                     alt={selectedDocument.file_name}
@@ -1242,7 +1224,7 @@ const submitCancellation = async () => {
               
               {/* PDF Preview */}
               {selectedDocument.file_type === 'application/pdf' && (
-                <div className="patient-dashboard-pdf-preview">
+                <div className={styles["patient-dashboard-pdf-preview"]}>
                   <iframe
                     src={`${selectedDocument.cloudinary_url}#toolbar=1&navpanes=1&scrollbar=1`}
                     width="100%"
@@ -1269,14 +1251,14 @@ const submitCancellation = async () => {
               {/* Other file types */}
               {!selectedDocument.file_type?.includes('image') && 
               selectedDocument.file_type !== 'application/pdf' && (
-                <div className="patient-dashboard-file-preview">
+                <div className={styles["patient-dashboard-file-preview"]}>
                   <div style={{ textAlign: 'center', padding: '40px' }}>
                     {getFileIcon(selectedDocument.file_type)}
                     <p style={{ marginTop: '20px' }}>
                       This file type cannot be previewed. Please download to view.
                     </p>
                     <button 
-                      className="patient-dashboard-primary-btn"
+                      className={styles["patient-dashboard-primary-btn"]}
                       onClick={() => {
                         const downloadUrl = getProperDownloadUrl(selectedDocument);
                         const link = document.createElement('a');
@@ -1290,7 +1272,7 @@ const submitCancellation = async () => {
                       }}
                       style={{ marginTop: '10px' }}
                     >
-                      <Download className="patient-dashboard-btn-icon" />
+                      <Download className={styles["patient-dashboard-btn-icon"]} />
                       Download File
                     </button>
                   </div>
@@ -1299,9 +1281,9 @@ const submitCancellation = async () => {
             </div>
           </div>
 
-          <div className="patient-dashboard-modal-actions">
+          <div className={styles["patient-dashboard-modal-actions"]}>
             <button 
-              className="patient-dashboard-secondary-btn"
+              className={styles["patient-dashboard-secondary-btn"]}
               onClick={() => {
                 const downloadUrl = getProperDownloadUrl(selectedDocument);
                 const link = document.createElement('a');
@@ -1314,10 +1296,10 @@ const submitCancellation = async () => {
                 document.body.removeChild(link);
               }}
             >
-              <Download className="patient-dashboard-btn-icon" />
+              <Download className={styles["patient-dashboard-btn-icon"]} />
               Download
             </button>
-            <button className="patient-dashboard-primary-btn">
+            <button className={styles["patient-dashboard-primary-btn"]}>
               Share with Doctor
             </button>
           </div>
@@ -1326,12 +1308,12 @@ const submitCancellation = async () => {
     )}
 
     {rescheduleModal && (
-  <div className="patient-dashboard-modal-overlay">
-    <div className="patient-dashboard-modal reschedule-modal">
-      <div className="patient-dashboard-modal-header">
+  <div className={styles["patient-dashboard-modal-overlay"]}>
+    <div className={`${styles["patient-dashboard-modal"]} reschedule-modal`}>
+      <div className={styles["patient-dashboard-modal-header"]}>
         <h3>Reschedule Appointment</h3>
         <button 
-          className="patient-dashboard-modal-close"
+          className={styles["patient-dashboard-modal-close"]}
           onClick={() => {
             setRescheduleModal(false);
             setRescheduleForm({ date: '', time: '', reason: '' });
@@ -1341,7 +1323,7 @@ const submitCancellation = async () => {
         </button>
       </div>
       
-      <div className="patient-dashboard-modal-content">
+      <div className={styles["patient-dashboard-modal-content"]}>
         {selectedAppointment && (
           <div className="appointment-details">
             <h4>Current Appointment</h4>
@@ -1354,11 +1336,11 @@ const submitCancellation = async () => {
         <div className="reschedule-form">
           <h4>New Appointment Details</h4>
           
-          <div className="patient-dashboard-form-group">
+          <div className={styles["patient-dashboard-form-group"]}>
             <label>New Date</label>
             <input
               type="date"
-              className="patient-dashboard-input"
+              className={styles["patient-dashboard-input"]}
               value={rescheduleForm.date}
               min={new Date().toISOString().split('T')[0]}
               onChange={(e) => setRescheduleForm(prev => ({ ...prev, date: e.target.value }))}
@@ -1366,21 +1348,21 @@ const submitCancellation = async () => {
             />
           </div>
 
-          <div className="patient-dashboard-form-group">
+          <div className={styles["patient-dashboard-form-group"]}>
             <label>New Time</label>
             <input
               type="time"
-              className="patient-dashboard-input"
+              className={styles["patient-dashboard-input"]}
               value={rescheduleForm.time}
               onChange={(e) => setRescheduleForm(prev => ({ ...prev, time: e.target.value }))}
               required
             />
           </div>
 
-          <div className="patient-dashboard-form-group">
+          <div className={styles["patient-dashboard-form-group"]}>
             <label>Reason for Rescheduling (Optional)</label>
             <textarea
-              className="patient-dashboard-textarea"
+              className={styles["patient-dashboard-textarea"]}
               placeholder="Please provide a reason for rescheduling..."
               value={rescheduleForm.reason}
               onChange={(e) => setRescheduleForm(prev => ({ ...prev, reason: e.target.value }))}
@@ -1390,9 +1372,9 @@ const submitCancellation = async () => {
         </div>
       </div>
 
-      <div className="patient-dashboard-modal-actions">
+      <div className={styles["patient-dashboard-modal-actions"]}>
         <button 
-          className="patient-dashboard-secondary-btn"
+          className={styles["patient-dashboard-secondary-btn"]}
           onClick={() => {
             setRescheduleModal(false);
             setRescheduleForm({ date: '', time: '', reason: '' });
@@ -1401,11 +1383,11 @@ const submitCancellation = async () => {
           Cancel
         </button>
         <button 
-          className="patient-dashboard-primary-btn"
+          className={styles["patient-dashboard-primary-btn"]}
           onClick={submitReschedule}
           disabled={!rescheduleForm.date || !rescheduleForm.time}
         >
-          <Calendar className="patient-dashboard-btn-icon" />
+          <Calendar className={styles["patient-dashboard-btn-icon"]} />
           Reschedule Appointment
         </button>
       </div>
@@ -1415,12 +1397,12 @@ const submitCancellation = async () => {
 
 {/* Cancel Modal */}
 {cancelModal && (
-  <div className="patient-dashboard-modal-overlay">
-    <div className="patient-dashboard-modal cancel-modal">
-      <div className="patient-dashboard-modal-header">
+  <div className={styles["patient-dashboard-modal-overlay"]}>
+    <div className={`${styles["patient-dashboard-modal"]} cancel-modal`}>
+      <div className={styles["patient-dashboard-modal-header"]}>
         <h3>Cancel Appointment</h3>
         <button 
-          className="patient-dashboard-modal-close"
+          className={styles["patient-dashboard-modal-close"]}
           onClick={() => {
             setCancelModal(false);
             setCancelReason('');
@@ -1430,7 +1412,7 @@ const submitCancellation = async () => {
         </button>
       </div>
       
-      <div className="patient-dashboard-modal-content">
+      <div className={styles["patient-dashboard-modal-content"]}>
         {selectedAppointment && (
           <div className="appointment-details">
             <h4>Appointment to Cancel</h4>
@@ -1446,10 +1428,10 @@ const submitCancellation = async () => {
           <p>Are you sure you want to cancel this appointment? This action cannot be undone.</p>
         </div>
 
-        <div className="patient-dashboard-form-group">
+        <div className={styles["patient-dashboard-form-group"]}>
           <label>Reason for Cancellation (Optional)</label>
           <textarea
-            className="patient-dashboard-textarea"
+            className={styles["patient-dashboard-textarea"]}
             placeholder="Please provide a reason for cancelling..."
             value={cancelReason}
             onChange={(e) => setCancelReason(e.target.value)}
@@ -1458,9 +1440,9 @@ const submitCancellation = async () => {
         </div>
       </div>
 
-      <div className="patient-dashboard-modal-actions">
+      <div className={styles["patient-dashboard-modal-actions"]}>
         <button 
-          className="patient-dashboard-secondary-btn"
+          className={styles["patient-dashboard-secondary-btn"]}
           onClick={() => {
             setCancelModal(false);
             setCancelReason('');
@@ -1469,10 +1451,10 @@ const submitCancellation = async () => {
           Keep Appointment
         </button>
         <button 
-          className="patient-dashboard-danger-btn"
+          className={styles["patient-dashboard-danger-btn"]}
           onClick={submitCancellation}
         >
-          <X className="patient-dashboard-btn-icon" />
+          <X className={styles["patient-dashboard-btn-icon"]} />
           Cancel Appointment
         </button>
       </div>

@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Eye, EyeOff, Mail, Lock, Heart, AlertCircle, CheckCircle } from 'lucide-react';
-import '../../assets/styles/patient/Login.css';
+import { 
+  Eye, EyeOff, Mail, Lock, Heart, AlertCircle, CheckCircle, 
+  Menu, X, Leaf, Brain, ChevronRight,Stethoscope,  Users 
+} from 'lucide-react';
+import styles from  '../../assets/styles/patient/Login.module.css';
 
 const PatientLogin = () => {
   const navigate = useNavigate();
@@ -14,8 +17,9 @@ const PatientLogin = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [validationErrors, setValidationErrors] = useState({});
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-    const API_BASE_URL = `${process.env.REACT_APP_BACKEND_URL}/api`;
+  const API_BASE_URL = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
   // Handle input changes
   const handleInputChange = (e) => {
@@ -108,125 +112,247 @@ const PatientLogin = () => {
     setShowPassword(!showPassword);
   };
 
+  // Handle navigation
+  const handleNavigation = (path) => {
+    navigate(path);
+    setIsMenuOpen(false);
+  };
+
   return (
-    <div className="user-login-main-container">
-      <div className="user-login-background-overlay"></div>
+    <div className={styles["patient-login-container"]}>
+      <div className={styles["patient-login-background-overlay"]}></div>
       
-      <div className="user-login-content-wrapper">
-        {/* Left Side - Branding */}
-        <div className="user-login-branding-section">
-          <div className="user-login-branding-content">
-            <div className="user-login-logo-container">
-              <Heart className="user-login-logo-icon" />
-              <h1 className="user-login-brand-title">Smart Healthcare</h1>
+      {/* Header */}
+      <header className={styles["patient-login-header"]}>
+        <div className={styles["patient-login-nav-container"]}>
+          <div className={styles["patient-login-nav-wrapper"]}>
+            <div className={styles["patient-login-logo"]}>
+              <div className={styles["patient-login-logo-icon"]}>
+                <Heart className={styles["patient-login-logo-heart"]} />
+              </div>
+              <h1 className={styles["patient-login-logo-text"]} onClick={() => handleNavigation('/')}>AYUMATE</h1>
             </div>
-            <p className="user-login-brand-subtitle">
-              Your health, our priority. Connect with specialists and manage your healthcare journey.
+
+            {/* Desktop Navigation */}
+            <nav className={styles["patient-login-desktop-nav"]}>
+              <button 
+                onClick={() => handleNavigation('/dosha')}
+                className={styles["patient-login-nav-link"]}
+              >
+                Prakriti Check
+              </button>
+              <button 
+                onClick={() => handleNavigation('/chatBot')}
+                className={styles["patient-login-nav-link"]}
+              >
+                AI Symptom Checker
+              </button>
+              <div className={styles["patient-login-auth-buttons"]}>
+                <button 
+                  onClick={() => handleNavigation('/doctor-login')}
+                  className={styles["patient-login-login-btn"]}
+                >
+                  Doctor Login
+                </button>
+                <button 
+                  onClick={() => handleNavigation('/admin-login')}
+                  className={styles["patient-login-admin-btn"]}
+                >
+                  Admin
+                </button>
+              </div>
+            </nav>
+
+            {/* Mobile Menu Button */}
+            <button 
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className={styles["patient-login-mobile-menu-btn"]}
+            >
+              {isMenuOpen ? <X className={styles["patient-login-menu-icon"]} /> : <Menu className={styles["patient-login-menu-icon"]} />}
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Navigation */}
+        {isMenuOpen && (
+          <div className={styles["patient-login-mobile-nav"]}>
+            <div className={styles["patient-login-mobile-nav-container"]}>
+              <button 
+                onClick={() => handleNavigation('/dosha')}
+                className={styles["patient-login-mobile-nav-link"]}
+              >
+                Prakriti Check
+              </button>
+              <button 
+                onClick={() => handleNavigation('/chatBot')}
+                className={styles["patient-login-mobile-nav-link"]}
+              >
+                AI Symptom Checker
+              </button>
+              <div className={styles["patient-login-mobile-auth"]}>
+                <button 
+                  onClick={() => handleNavigation('/patient-register')}
+                  className={styles["patient-login-mobile-register"]}
+                >
+                  Patient Register
+                </button>
+                <button 
+                  onClick={() => handleNavigation('/doctor-login')}
+                  className={styles["patient-login-mobile-login"]}
+                >
+                  Doctor Login
+                </button>
+                <button 
+                  onClick={() => handleNavigation('/doctor-register')}
+                  className={styles["patient-login-mobile-register"]}
+                >
+                  Doctor Register
+                </button>
+                <button 
+                  onClick={() => handleNavigation('/admin-login')}
+                  className={styles["patient-login-mobile-admin"]}
+                >
+                  Admin Login
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </header>
+      
+      <div className={styles["patient-login-content-wrapper"]}>
+        {/* Left Side - Branding */}
+        <div className={styles["patient-login-branding-section"]}>
+          <div className={styles["patient-login-branding-content"]}>
+            <div className={styles["patient-login-brand-logo-container"]}>
+              <Heart className={styles["patient-login-brand-logo-icon"]} />
+              <h1 className={styles["patient-login-brand-title"]}>Smart Healthcare</h1>
+            </div>
+            <p className={styles["patient-login-brand-subtitle"]}>
+              Your health, our priority. Connect with specialists and manage your healthcare journey through personalized Ayurvedic care.
             </p>
-            <div className="user-login-features-list">
-              <div className="user-login-feature-item">
-                <CheckCircle className="user-login-feature-icon" />
+            <div className={styles["patient-login-features-list"]}>
+              <div className={styles["patient-login-feature-item"]}>
+                <CheckCircle className={styles["patient-login-feature-icon"]} />
                 <span>AI-powered symptom analysis</span>
               </div>
-              <div className="user-login-feature-item">
-                <CheckCircle className="user-login-feature-icon" />
+              <div className={styles["patient-login-feature-item"]}>
+                <CheckCircle className={styles["patient-login-feature-icon"]} />
+                <span>Personalized Prakriti assessment</span>
+              </div>
+              <div className={styles["patient-login-feature-item"]}>
+                <CheckCircle className={styles["patient-login-feature-icon"]} />
                 <span>Easy appointment booking</span>
               </div>
-              <div className="user-login-feature-item">
-                <CheckCircle className="user-login-feature-icon" />
+              <div className={styles["patient-login-feature-item"]}>
+                <CheckCircle className={styles["patient-login-feature-icon"]} />
                 <span>Secure medical records</span>
+              </div>
+            </div>
+            
+            {/* Quick Stats */}
+            <div className={styles["patient-login-stats-grid"]}>
+              <div className={`${styles["patient-login-stat-card"]} ${styles["patient-login-stat-green"]}`}>
+                <Users className={styles["patient-login-stat-icon"]} />
+                <div className={styles["patient-login-stat-number"]}>10K+</div>
+                <div className={styles["patient-login-stat-label"]}>Happy Patients</div>
+              </div>
+              <div className={`${styles["patient-login-stat-card"]} ${styles["patient-login-stat-blue"]}`}>
+                <Stethoscope className={styles["patient-login-stat-icon"]} />
+                <div className={styles["patient-login-stat-number"]}>500+</div>
+                <div className={styles["patient-login-stat-label"]}>Expert Doctors</div>
               </div>
             </div>
           </div>
         </div>
 
         {/* Right Side - Login Form */}
-        <div className="user-login-form-section">
-          <div className="user-login-form-container">
-            <div className="user-login-header">
-              <h2 className="user-login-title">Welcome Back</h2>
-              <p className="user-login-subtitle">
-                Sign in to your patient account to continue
+        <div className={styles["patient-login-form-section"]}>
+          <div className={styles["patient-login-form-container"]}>
+            <div className={styles["patient-login-form-header"]}>
+              <h2 className={styles["patient-login-form-title"]}>Welcome Back</h2>
+              <p className={styles["patient-login-form-subtitle"]}>
+                Sign in to your patient account to continue your health journey
               </p>
             </div>
 
             {/* Success Message */}
             {success && (
-              <div className="user-login-alert user-login-alert-success">
-                <CheckCircle className="user-login-alert-icon" />
+              <div className={`${styles["patient-login-alert"]} ${styles["patient-login-alert-success"]}`}>
+                <CheckCircle className={styles["patient-login-alert-icon"]} />
                 <span>{success}</span>
               </div>
             )}
 
             {/* Error Message */}
             {error && (
-              <div className="user-login-alert user-login-alert-error">
-                <AlertCircle className="user-login-alert-icon" />
+              <div className={`${styles["patient-login-alert"]} ${styles["patient-login-alert-error"]}`}>
+                <AlertCircle className={styles["patient-login-alert-icon"]} />
                 <span>{error}</span>
               </div>
             )}
 
-            <form onSubmit={handleSubmit} className="user-login-form">
+            <form onSubmit={handleSubmit} className={styles["patient-login-form"]}>
               {/* Email Field */}
-              <div className="user-login-form-group">
-                <label htmlFor="email" className="user-login-label">
+              <div className={styles["patient-login-form-group"]}>
+                <label htmlFor="email" className={styles["patient-login-label"]}>
                   Email Address
                 </label>
-                <div className="user-login-input-wrapper">
-                  <Mail className="user-login-input-icon" />
+                <div className={styles["patient-login-input-wrapper"]}>
+                  <Mail className={styles["patient-login-input-icon"]} />
                   <input
                     type="email"
                     id="email"
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
-                    className={`user-login-input ${validationErrors.email ? 'user-login-input-error' : ''}`}
+                    className={`${styles["patient-login-input"]} ${validationErrors.email ? styles["patient-login-input-error"] : ''}`}
                     placeholder="Enter your email address"
                     autoComplete="email"
                   />
                 </div>
                 {validationErrors.email && (
-                  <span className="user-login-error-text">{validationErrors.email}</span>
+                  <span className={styles["patient-login-error-text"]}>{validationErrors.email}</span>
                 )}
               </div>
 
               {/* Password Field */}
-              <div className="user-login-form-group">
-                <label htmlFor="password" className="user-login-label">
+              <div className={styles["patient-login-form-group"]}>
+                <label htmlFor="password" className={styles["patient-login-label"]}>
                   Password
                 </label>
-                <div className="user-login-input-wrapper">
-                  <Lock className="user-login-input-icon" />
+                <div className={styles["patient-login-input-wrapper"]}>
+                  <Lock className={styles["patient-login-input-icon"]} />
                   <input
                     type={showPassword ? 'text' : 'password'}
                     id="password"
                     name="password"
                     value={formData.password}
                     onChange={handleInputChange}
-                    className={`user-login-input ${validationErrors.password ? 'user-login-input-error' : ''}`}
+                    className={`${styles["patient-login-input"]} ${validationErrors.password ? styles["patient-login-input-error"] : ''}`}
                     placeholder="Enter your password"
                     autoComplete="current-password"
                   />
                   <button
                     type="button"
                     onClick={togglePasswordVisibility}
-                    className="user-login-password-toggle"
+                    className={styles["patient-login-password-toggle"]}
                   >
                     {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                   </button>
                 </div>
                 {validationErrors.password && (
-                  <span className="user-login-error-text">{validationErrors.password}</span>
+                  <span className={styles["patient-login-error-text"]}>{validationErrors.password}</span>
                 )}
               </div>
 
               {/* Remember Me & Forgot Password */}
-              <div className="user-login-form-options">
-                <label className="user-login-checkbox-wrapper">
-                  <input type="checkbox" className="user-login-checkbox" />
-                  <span className="user-login-checkbox-label">Remember me</span>
+              <div className={styles["patient-login-form-options"]}>
+                <label className={styles["patient-login-checkbox-wrapper"]}>
+                  <input type="checkbox" className={styles["patient-login-checkbox"]} />
+                  <span className={styles["patient-login-checkbox-label"]}>Remember me</span>
                 </label>
-                <Link to="/forgot-password" className="user-login-forgot-link">
+                <Link to="/forgot-password" className={styles["patient-login-forgot-link"]}>
                   Forgot password?
                 </Link>
               </div>
@@ -235,11 +361,11 @@ const PatientLogin = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className={`user-login-submit-btn ${loading ? 'user-login-submit-btn-loading' : ''}`}
+                className={`${styles["patient-login-submit-btn"]} ${loading ? styles["patient-login-submit-btn-loading"] : ''}`}
               >
                 {loading ? (
                   <>
-                    <div className="user-login-spinner"></div>
+                    <div className={styles["patient-login-spinner"]}></div>
                     <span>Signing in...</span>
                   </>
                 ) : (
@@ -249,31 +375,106 @@ const PatientLogin = () => {
             </form>
 
             {/* Sign Up Link */}
-            <div className="user-login-signup-prompt">
+            <div className={styles["patient-login-signup-prompt"]}>
               <p>
                 Don't have an account?{' '}
-                <Link to="/register" className="user-login-signup-link">
+                <Link to="/patient-register" className={styles["patient-login-signup-link"]}>
                   Sign up for free
                 </Link>
               </p>
             </div>
 
             {/* Role Switch Links */}
-            <div className="user-login-role-switch">
-              <p className="user-login-role-text">Sign in as:</p>
-              <div className="user-login-role-links">
-                <Link to="/doctor-login" className="user-login-role-link">
+            <div className={styles["patient-login-role-switch"]}>
+              <p className={styles["patient-login-role-text"]}>Sign in as:</p>
+              <div className={styles["patient-login-role-links"]}>
+                <Link to="/doctor-login" className={styles["patient-login-role-link"]}>
                   Doctor
                 </Link>
-                <span className="user-login-role-divider">|</span>
-                <Link to="/admin-login" className="user-login-role-link">
+                <span className={styles["patient-login-role-divider"]}>|</span>
+                <Link to="/admin-login" className={styles["patient-login-role-link"]}>
                   Admin
                 </Link>
               </div>
             </div>
+
+            {/* Quick Action Buttons */}
+            <div className={styles["patient-login-quick-actions"]}>
+              <button 
+                onClick={() => handleNavigation('/dosha')}
+                className={`${styles["patient-login-quick-action-btn"]} ${styles["patient-login-quick-action-green"]}`}
+              >
+                <Leaf className={styles["patient-login-quick-icon"]} />
+                <span>Check Your Prakriti</span>
+                <ChevronRight className={styles["patient-login-quick-arrow"]} />
+              </button>
+              <button 
+                onClick={() => handleNavigation('/chatBot')}
+                className={`${styles["patient-login-quick-action-btn"]} ${styles["patient-login-quick-action-blue"]}`}
+              >
+                <Brain className={styles["patient-login-quick-icon"]} />
+                <span>AI Health Check</span>
+                <ChevronRight className={styles["patient-login-quick-arrow"]} />
+              </button>
+            </div>
           </div>
         </div>
       </div>
+
+      {/* Footer */}
+      <footer className={styles["patient-login-footer"]}>
+        <div className={styles["patient-login-footer-container"]}>
+          <div className={styles["patient-login-footer-content"]}>
+            <div className={styles["patient-login-footer-brand"]}>
+              <div className={styles["patient-login-footer-logo"]}>
+                <div className={styles["patient-login-footer-logo-icon"]}>
+                  <Heart className={styles["patient-login-footer-heart"]} />
+                </div>
+                <h3 className={styles["patient-login-footer-title"]}>AYUMATE</h3>
+              </div>
+              <p className={styles["patient-login-footer-desc"]}>
+                Your comprehensive Ayurvedic health companion, combining ancient wisdom with modern technology for optimal wellness.
+              </p>
+            </div>
+
+            <div className={styles["patient-login-footer-links"]}>
+              <h4 className={styles["patient-login-footer-heading"]}>Quick Links</h4>
+              <ul className={styles["patient-login-footer-list"]}>
+                <li><button onClick={() => handleNavigation('/dosha')} className={styles["patient-login-footer-link"]}>Prakriti Assessment</button></li>
+                <li><button onClick={() => handleNavigation('/chatBot')} className={styles["patient-login-footer-link"]}>AI Symptom Checker</button></li>
+                <li><button onClick={() => handleNavigation('/patient-register')} className={styles["patient-login-footer-link"]}>Patient Portal</button></li>
+                <li><button onClick={() => handleNavigation('/doctor-register')} className={styles["patient-login-footer-link"]}>Doctor Portal</button></li>
+              </ul>
+            </div>
+
+            <div className={styles["patient-login-footer-features"]}>
+              <h4 className={styles["patient-login-footer-heading"]}>Features</h4>
+              <ul className={styles["patient-login-footer-list"]}>
+                <li className={styles["patient-login-footer-item"]}>Medical Records Storage</li>
+                <li className={styles["patient-login-footer-item"]}>Doctor Appointments</li>
+                <li className={styles["patient-login-footer-item"]}>Smart Consultations</li>
+                <li className={styles["patient-login-footer-item"]}>Health Analytics</li>
+              </ul>
+            </div>
+
+            <div className={styles["patient-login-footer-contact"]}>
+              <h4 className={styles["patient-login-footer-heading"]}>Support</h4>
+              <ul className={styles["patient-login-footer-list"]}>
+                <li className={styles["patient-login-footer-item"]}>24/7 Customer Support</li>
+                <li className={styles["patient-login-footer-item"]}>Help Center</li>
+                <li className={styles["patient-login-footer-item"]}>Privacy Policy</li>
+                <li className={styles["patient-login-footer-item"]}>Terms of Service</li>
+              </ul>
+            </div>
+          </div>
+
+          <div className={styles["patient-login-footer-bottom"]}>
+            <p className={styles["patient-login-copyright"]}>
+              © 2025 AYUMATE. All rights reserved. Empowering health through technology and tradition.
+            </p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };

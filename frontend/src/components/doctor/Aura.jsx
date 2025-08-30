@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { 
   Heart, Menu, X
 } from 'lucide-react';
-import "../../assets/styles/doctor/Aura.css";
+import styles from "../../assets/styles/doctor/Aura.module.css";
 
 const VoiceConsultation = ({ appointmentId, patientInfo, onClose }) => {
   const navigate = useNavigate();
@@ -69,7 +69,6 @@ const VoiceConsultation = ({ appointmentId, patientInfo, onClose }) => {
     recognition.maxAlternatives = 1;
 
     recognition.onstart = () => {
-        console.log('Speech recognition started');
         setIsRecording(true);
         setError('');
         startDurationTimer();
@@ -105,7 +104,6 @@ const VoiceConsultation = ({ appointmentId, patientInfo, onClose }) => {
     };
 
     recognition.onend = () => {
-        console.log('Speech recognition ended');
         setIsRecording(false);
         stopDurationTimer();
     };
@@ -176,9 +174,6 @@ const VoiceConsultation = ({ appointmentId, patientInfo, onClose }) => {
         doctorReport: data.doctorReport
       });
       setDetectedLanguages(data.detectedLanguages || []);
-      
-      console.log('Reports generated successfully');
-      console.log('Detected languages:', data.detectedLanguages);
 
     } catch (error) {
       console.error('Error processing transcript:', error);
@@ -364,48 +359,48 @@ const VoiceConsultation = ({ appointmentId, patientInfo, onClose }) => {
   };
 
   return (
-    <div className="aura-container">
+    <div className={styles["aura-container"]}>
       {/* Header */}
-      <header className="aura-header">
-        <div className="aura-nav-container">
-          <div className="aura-nav-wrapper">
-            <div className="aura-logo">
-              <div className="aura-logo-icon">
-                <Heart className="aura-logo-heart" />
+      <header className={styles["aura-header"]}>
+        <div className={styles["aura-nav-container"]}>
+          <div className={styles["aura-nav-wrapper"]}>
+            <div className={styles["aura-logo"]}>
+              <div className={styles["aura-logo-icon"]}>
+                <Heart className={styles["aura-logo-heart"]} />
               </div>
-              <h1 className="aura-logo-text">AYUMATE</h1>
+              <h1 className={styles["logo-text"]} onClick={() => handleNavigation('/')}>AYUMATE</h1>
             </div>
 
             {/* Desktop Navigation */}
-            <nav className="aura-desktop-nav">
+            <nav className={styles["aura-desktop-nav"]}>
               <button 
                 onClick={() => handleNavigation('/dosha')}
-                className="aura-nav-link"
+                className={styles["aura-nav-link"]}
               >
                 Prakriti Check
               </button>
               <button 
                 onClick={() => handleNavigation('/chatBot')}
-                className="aura-nav-link"
+                className={styles["aura-nav-link"]}
               >
                 AI Symptom Checker
               </button>
-              <div className="aura-auth-buttons">
+              <div className={styles["aura-auth-buttons"]}>
                 <button 
                   onClick={() => handleNavigation('/patient-login')}
-                  className="aura-login-btn"
+                  className={styles["aura-login-btn"]}
                 >
                   Patient Login
                 </button>
                 <button 
                   onClick={() => handleNavigation('/doctor-login')}
-                  className="aura-login-btn"
+                  className={styles["aura-login-btn"]}
                 >
                   Doctor Login
                 </button>
                 <button 
                   onClick={() => handleNavigation('/admin-login')}
-                  className="aura-admin-btn"
+                  className={styles["aura-admin-btn"]}
                 >
                   Admin
                 </button>
@@ -415,45 +410,45 @@ const VoiceConsultation = ({ appointmentId, patientInfo, onClose }) => {
             {/* Mobile Menu Button */}
             <button 
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="aura-mobile-menu-btn"
+              className={styles["aura-mobile-menu-btn"]}
             >
-              {isMenuOpen ? <X className="aura-menu-icon" /> : <Menu className="aura-menu-icon" />}
+              {isMenuOpen ? <X className={styles["aura-menu-icon"]} /> : <Menu className={styles["aura-menu-icon"]} />}
             </button>
           </div>
         </div>
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="aura-mobile-nav">
-            <div className="aura-mobile-nav-container">
+          <div className={styles["aura-mobile-nav"]}>
+            <div className={styles["aura-mobile-nav-container"]}>
               <button 
                 onClick={() => handleNavigation('/dosha')}
-                className="aura-mobile-nav-link"
+                className={styles["aura-mobile-nav-link"]}
               >
                 Prakriti Check
               </button>
               <button 
                 onClick={() => handleNavigation('/chatBot')}
-                className="aura-mobile-nav-link"
+                className={styles["aura-mobile-nav-link"]}
               >
                 AI Symptom Checker
               </button>
-              <div className="aura-mobile-auth">
+              <div className={styles["aura-mobile-auth"]}>
                 <button 
                   onClick={() => handleNavigation('/patient-login')}
-                  className="aura-mobile-login"
+                  className={styles["aura-mobile-login"]}
                 >
                   Patient Login
                 </button>
                 <button 
                   onClick={() => handleNavigation('/doctor-login')}
-                  className="aura-mobile-login"
+                  className={styles["aura-mobile-login"]}
                 >
                   Doctor Login
                 </button>
                 <button 
                   onClick={() => handleNavigation('/admin-login')}
-                  className="aura-mobile-admin"
+                  className={styles["aura-mobile-admin"]}
                 >
                   Admin Login
                 </button>
@@ -464,51 +459,51 @@ const VoiceConsultation = ({ appointmentId, patientInfo, onClose }) => {
       </header>
 
       {/* Main Voice Consultation Content */}
-      <main className="aura-main-content">
-        <div className="aura-voice-consultation">
+      <main className={styles["aura-main-content"]}>
+        <div className={styles["aura-voice-consultation"]}>
           {/* Header Info */}
-          <div className="aura-consultation-header">
-            <div className="aura-header-info">
-              <h1 className="aura-title">
+          <div className={styles["aura-consultation-header"]}>
+            <div className={styles["aura-header-info"]}>
+              <h1 className={styles["aura-title"]}>
                 Voice Consultation - {patientInfo?.name}
               </h1>
-              <p className="aura-subtitle">
+              <p className={styles["aura-subtitle"]}>
                 Real-time multilingual medical consultation recording
               </p>
-              <div className="aura-connection-status">
-                <span className={`aura-status-indicator ${geminiStatus}`}>
+              <div className={styles["aura-connection-status"]}>
+                <span className={`${styles["aura-status-indicator"]} ${styles[geminiStatus]}`}>
                   {isLoadingConnection ? '⏳' : geminiStatus === 'connected' ? '✅' : '❌'}
                 </span>
-                <span className="aura-status-text">
+                <span className={styles["aura-status-text"]}>
                   AI Service: {isLoadingConnection ? 'Checking...' : geminiStatus}
                 </span>
               </div>
             </div>
-            <button onClick={onClose} className="aura-close-btn">
+            <button onClick={onClose} className={styles["aura-close-btn"]}>
               Close Consultation
             </button>
           </div>
 
           {/* Recording Section */}
-          <div className="aura-recording-section">
-            <h2 className="aura-section-title">Record Consultation</h2>
+          <div className={styles["aura-recording-section"]}>
+            <h2 className={styles["aura-section-title"]}>Record Consultation</h2>
             
             {/* Recording Button */}
-            <div className="aura-recording-controls">
+            <div className={styles["aura-recording-controls"]}>
               <button
                 onClick={toggleRecording}
-                className={`aura-record-btn ${isRecording ? 'recording' : ''}`}
+                className={`${styles["aura-record-btn"]} ${isRecording ? styles["recording"] : ''}`}
                 disabled={geminiStatus !== 'connected'}
               >
                 {isRecording ? '⏹️' : '🎤'}
               </button>
               
-              <div className="aura-recording-status">
-                <p className="aura-recording-text">
+              <div className={styles["aura-recording-status"]}>
+                <p className={styles["aura-recording-text"]}>
                   {isRecording ? 'Recording...' : 'Click to Start Recording'}
                 </p>
                 {isRecording && (
-                  <p className="aura-recording-duration">
+                  <p className={styles["aura-recording-duration"]}>
                     {formatDuration(recordingDuration)}
                   </p>
                 )}
@@ -516,16 +511,16 @@ const VoiceConsultation = ({ appointmentId, patientInfo, onClose }) => {
             </div>
 
             {/* Language Support Info */}
-            <div className="aura-language-info">
+            <div className={styles["aura-language-info"]}>
               <p>🌐 Multilingual Support: English, Hindi, Marathi - Speak naturally in any language</p>
             </div>
 
             {/* Action Buttons */}
-            <div className="aura-action-buttons">
+            <div className={styles["aura-action-buttons"]}>
               <button
                 onClick={processTranscript}
                 disabled={!transcript.trim() || isProcessing || isRecording}
-                className="aura-btn aura-btn-primary"
+                className={`${styles["aura-btn"]} ${styles["aura-btn-primary"]}`}
               >
                 {isProcessing ? '🤖 Processing with AI...' : '📋 Generate Reports'}
               </button>
@@ -533,7 +528,7 @@ const VoiceConsultation = ({ appointmentId, patientInfo, onClose }) => {
               <button
                 onClick={getConsultationSummary}
                 disabled={!transcript.trim() || isProcessing || isRecording}
-                className="aura-btn aura-btn-secondary"
+                className={`${styles["aura-btn"]} ${styles["aura-btn-secondary"]}`}
               >
                 📄 Quick Summary
               </button>
@@ -541,7 +536,7 @@ const VoiceConsultation = ({ appointmentId, patientInfo, onClose }) => {
               <button
                 onClick={clearTranscript}
                 disabled={isRecording}
-                className="aura-btn aura-btn-warning"
+                className={`${styles["aura-btn"]} ${styles["aura-btn-warning"]}`}
               >
                 🗑️ Clear
               </button>
@@ -550,24 +545,24 @@ const VoiceConsultation = ({ appointmentId, patientInfo, onClose }) => {
 
           {/* Error Display */}
           {error && (
-            <div className="aura-error">
+            <div className={styles["aura-error"]}>
               <strong>Error:</strong> {error}
             </div>
           )}
 
           {/* Live Transcript */}
-          <div className="aura-transcript-section">
-            <h3 className="aura-transcript-header">
+          <div className={styles["aura-transcript-section"]}>
+            <h3 className={styles["aura-transcript-header"]}>
               📝 Live Transcript
               {detectedLanguages.length > 0 && (
-                <span className="aura-language-tag">
+                <span className={styles["aura-language-tag"]}>
                   {detectedLanguages.join(', ')}
                 </span>
               )}
             </h3>
-            <div className="aura-transcript-box">
+            <div className={styles["aura-transcript-box"]}>
             {transcript || interimTranscript ? (
-                <p className="aura-transcript-text">
+                <p className={styles["aura-transcript-text"]}>
                 {transcript}
                 {interimTranscript && (
                     <span style={{ color: '#888', fontStyle: 'italic' }}>
@@ -576,7 +571,7 @@ const VoiceConsultation = ({ appointmentId, patientInfo, onClose }) => {
                 )}
                 </p>
             ) : (
-                <p className="aura-transcript-placeholder">
+                <p className={styles["aura-transcript-placeholder"]}>
                 {isRecording 
                     ? 'Listening... Speak in English, Hindi, or Marathi'
                     : 'Transcript will appear here when you start recording...'
@@ -588,34 +583,34 @@ const VoiceConsultation = ({ appointmentId, patientInfo, onClose }) => {
 
           {/* Reports Section */}
           {reports && (
-            <div className="aura-reports-section">
-              <div className="aura-reports-header">
+            <div className={styles["aura-reports-section"]}>
+              <div className={styles["aura-reports-header"]}>
                 <h2>Generated Reports</h2>
-                <div className="aura-report-actions">
-                  <button onClick={exportReports} className="aura-btn aura-btn-success">
+                <div className={styles["aura-report-actions"]}>
+                  <button onClick={exportReports} className={`${styles["aura-btn"]} ${styles["aura-btn-success"]}`}>
                     💾 Export JSON
                   </button>
-                  <button onClick={printPatientReport} className="aura-btn aura-btn-info">
+                  <button onClick={printPatientReport} className={`${styles["aura-btn"]} ${styles["aura-btn-info"]}`}>
                     🖨️ Print Patient Report
                   </button>
                 </div>
               </div>
 
-              <div className="aura-reports-grid">
+              <div className={styles["aura-reports-grid"]}>
                 {/* Patient Report */}
-                <div className="aura-report-card aura-patient-report">
-                  <div className="aura-report-header">
+                <div className={`${styles["aura-report-card"]} ${styles["aura-patient-report"]}`}>
+                  <div className={styles["aura-report-header"]}>
                     <h3>👤 Patient Report</h3>
                     {!editingPatientReport ? (
-                      <button onClick={startEditingPatientReport} className="aura-btn aura-btn-edit">
+                      <button onClick={startEditingPatientReport} className={`${styles["aura-btn"]} ${styles["aura-btn-edit"]}`}>
                         ✏️ Edit
                       </button>
                     ) : (
-                      <div className="aura-edit-buttons">
-                        <button onClick={saveEditedPatientReport} className="aura-btn aura-btn-save">
+                      <div className={styles["aura-edit-buttons"]}>
+                        <button onClick={saveEditedPatientReport} className={`${styles["aura-btn"]} ${styles["aura-btn-save"]}`}>
                           ✓ Save
                         </button>
-                        <button onClick={() => setEditingPatientReport(false)} className="aura-btn aura-btn-cancel">
+                        <button onClick={() => setEditingPatientReport(false)} className={`${styles["aura-btn"]} ${styles["aura-btn-cancel"]}`}>
                           ✗ Cancel
                         </button>
                       </div>
@@ -623,38 +618,38 @@ const VoiceConsultation = ({ appointmentId, patientInfo, onClose }) => {
                   </div>
 
                   {editingPatientReport ? (
-                    <div className="aura-edit-form">
-                      <div className="aura-form-group">
+                    <div className={styles["aura-edit-form"]}>
+                      <div className={styles["aura-form-group"]}>
                         <label>Chief Complaint:</label>
                         <textarea
                           value={editedPatientReport.chiefComplaint}
                           onChange={(e) => updateEditedField('chiefComplaint', e.target.value)}
-                          className="aura-textarea"
+                          className={styles["aura-textarea"]}
                         />
                       </div>
                       
-                      <div className="aura-form-group">
+                      <div className={styles["aura-form-group"]}>
                         <label>Diagnosis:</label>
                         <textarea
                           value={editedPatientReport.diagnosis}
                           onChange={(e) => updateEditedField('diagnosis', e.target.value)}
-                          className="aura-textarea"
+                          className={styles["aura-textarea"]}
                         />
                       </div>
 
-                      <div className="aura-form-group">
+                      <div className={styles["aura-form-group"]}>
                         <label>Symptoms:</label>
                         {editedPatientReport.symptoms.map((symptom, index) => (
-                          <div key={index} className="aura-array-item">
+                          <div key={index} className={styles["aura-array-item"]}>
                             <input
                               type="text"
                               value={symptom}
                               onChange={(e) => updateEditedArrayField('symptoms', index, e.target.value)}
-                              className="aura-input"
+                              className={styles["aura-input"]}
                             />
                             <button
                               onClick={() => removeArrayItem('symptoms', index)}
-                              className="aura-btn aura-btn-remove"
+                              className={`${styles["aura-btn"]} ${styles["aura-btn-remove"]}`}
                             >
                               ✗
                             </button>
@@ -662,25 +657,25 @@ const VoiceConsultation = ({ appointmentId, patientInfo, onClose }) => {
                         ))}
                         <button
                           onClick={() => addArrayItem('symptoms')}
-                          className="aura-btn aura-btn-add"
+                          className={`${styles["aura-btn"]} ${styles["aura-btn-add"]}`}
                         >
                           + Add Symptom
                         </button>
                       </div>
 
-                      <div className="aura-form-group">
+                      <div className={styles["aura-form-group"]}>
                         <label>Lifestyle Recommendations:</label>
                         {editedPatientReport.lifestyle.map((item, index) => (
-                          <div key={index} className="aura-array-item">
+                          <div key={index} className={styles["aura-array-item"]}>
                             <input
                               type="text"
                               value={item}
                               onChange={(e) => updateEditedArrayField('lifestyle', index, e.target.value)}
-                              className="aura-input"
+                              className={styles["aura-input"]}
                             />
                             <button
                               onClick={() => removeArrayItem('lifestyle', index)}
-                              className="aura-btn aura-btn-remove"
+                              className={`${styles["aura-btn"]} ${styles["aura-btn-remove"]}`}
                             >
                               ✗
                             </button>
@@ -688,43 +683,43 @@ const VoiceConsultation = ({ appointmentId, patientInfo, onClose }) => {
                         ))}
                         <button
                           onClick={() => addArrayItem('lifestyle')}
-                          className="aura-btn aura-btn-add"
+                          className={`${styles["aura-btn"]} ${styles["aura-btn-add"]}`}
                         >
                           + Add Recommendation
                         </button>
                       </div>
 
-                      <div className="aura-form-group">
+                      <div className={styles["aura-form-group"]}>
                         <label>Next Visit:</label>
                         <input
                           type="text"
                           value={editedPatientReport.nextVisit}
                           onChange={(e) => updateEditedField('nextVisit', e.target.value)}
-                          className="aura-input"
+                          className={styles["aura-input"]}
                         />
                       </div>
 
-                      <div className="aura-form-group">
+                      <div className={styles["aura-form-group"]}>
                         <label>Emergency Instructions:</label>
                         <textarea
                           value={editedPatientReport.emergencyInstructions}
                           onChange={(e) => updateEditedField('emergencyInstructions', e.target.value)}
-                          className="aura-textarea"
+                          className={styles["aura-textarea"]}
                         />
                       </div>
                     </div>
                   ) : (
-                    <div className="aura-report-content">
-                      <div className="aura-report-item">
+                    <div className={styles["aura-report-content"]}>
+                      <div className={styles["aura-report-item"]}>
                         <strong>Visit Date:</strong> {reports.patientReport.visitDate}
                       </div>
-                      <div className="aura-report-item">
+                      <div className={styles["aura-report-item"]}>
                         <strong>Chief Complaint:</strong> {reports.patientReport.chiefComplaint}
                       </div>
-                      <div className="aura-report-item">
+                      <div className={styles["aura-report-item"]}>
                         <strong>Diagnosis:</strong> {reports.patientReport.diagnosis}
                       </div>
-                      <div className="aura-report-item">
+                      <div className={styles["aura-report-item"]}>
                         <strong>Symptoms:</strong>
                         <ul>
                           {reports.patientReport.symptoms.map((symptom, index) => (
@@ -733,10 +728,10 @@ const VoiceConsultation = ({ appointmentId, patientInfo, onClose }) => {
                         </ul>
                       </div>
                       {reports.patientReport.prescriptions.length > 0 && (
-                        <div className="aura-report-item">
+                        <div className={styles["aura-report-item"]}>
                           <strong>Prescriptions:</strong>
                           {reports.patientReport.prescriptions.map((prescription, index) => (
-                            <div key={index} className="aura-prescription">
+                            <div key={index} className={styles["aura-prescription"]}>
                               <div><strong>{prescription.medication}</strong></div>
                               <div>Dosage: {prescription.dosage}</div>
                               <div>Frequency: {prescription.frequency}</div>
@@ -746,7 +741,7 @@ const VoiceConsultation = ({ appointmentId, patientInfo, onClose }) => {
                           ))}
                         </div>
                       )}
-                      <div className="aura-report-item">
+                      <div className={styles["aura-report-item"]}>
                         <strong>Lifestyle Recommendations:</strong>
                         <ul>
                           {reports.patientReport.lifestyle.map((item, index) => (
@@ -754,10 +749,10 @@ const VoiceConsultation = ({ appointmentId, patientInfo, onClose }) => {
                           ))}
                         </ul>
                       </div>
-                      <div className="aura-report-item">
+                      <div className={styles["aura-report-item"]}>
                         <strong>Next Visit:</strong> {reports.patientReport.nextVisit}
                       </div>
-                      <div className="aura-report-item">
+                      <div className={styles["aura-report-item"]}>
                         <strong>Emergency Instructions:</strong> {reports.patientReport.emergencyInstructions}
                       </div>
                     </div>
@@ -765,41 +760,41 @@ const VoiceConsultation = ({ appointmentId, patientInfo, onClose }) => {
                 </div>
 
                 {/* Doctor Report */}
-                <div className="aura-report-card aura-doctor-report">
-                  <div className="aura-report-header">
+                <div className={`${styles["aura-report-card"]} ${styles["aura-doctor-report"]}`}>
+                  <div className={styles["aura-report-header"]}>
                     <h3>🩺 Doctor Report (Internal)</h3>
                   </div>
 
-                  <div className="aura-report-content">
-                    <div className="aura-clinical-notes">
+                  <div className={styles["aura-report-content"]}>
+                    <div className={styles["aura-clinical-notes"]}>
                       <h4>SOAP Notes</h4>
-                      <div className="aura-soap-item">
+                      <div className={styles["aura-soap-item"]}>
                         <strong>Subjective:</strong> {reports.doctorReport.clinicalNotes.subjective}
                       </div>
-                      <div className="aura-soap-item">
+                      <div className={styles["aura-soap-item"]}>
                         <strong>Objective:</strong> {reports.doctorReport.clinicalNotes.objective}
                       </div>
-                      <div className="aura-soap-item">
+                      <div className={styles["aura-soap-item"]}>
                         <strong>Assessment:</strong> {reports.doctorReport.clinicalNotes.assessment}
                       </div>
-                      <div className="aura-soap-item">
+                      <div className={styles["aura-soap-item"]}>
                         <strong>Plan:</strong> {reports.doctorReport.clinicalNotes.plan}
                       </div>
                     </div>
 
-                    <div className="aura-behavioral-analysis">
+                    <div className={styles["aura-behavioral-analysis"]}>
                       <h4>Behavioral Analysis</h4>
-                      <div className="aura-analysis-item">
+                      <div className={styles["aura-analysis-item"]}>
                         <strong>Emotional State:</strong> {reports.doctorReport.behavioralAnalysis.emotionalState}
                       </div>
-                      <div className="aura-analysis-item">
+                      <div className={styles["aura-analysis-item"]}>
                         <strong>Compliance:</strong> {reports.doctorReport.behavioralAnalysis.compliance}
                       </div>
-                      <div className="aura-analysis-item">
+                      <div className={styles["aura-analysis-item"]}>
                         <strong>Communication:</strong> {reports.doctorReport.behavioralAnalysis.communication}
                       </div>
                       {reports.doctorReport.behavioralAnalysis.redFlags.length > 0 && (
-                        <div className="aura-analysis-item aura-red-flags">
+                        <div className={`${styles["aura-analysis-item"]} ${styles["aura-red-flags"]}`}>
                           <strong>Red Flags:</strong>
                           <ul>
                             {reports.doctorReport.behavioralAnalysis.redFlags.map((flag, index) => (
@@ -808,21 +803,21 @@ const VoiceConsultation = ({ appointmentId, patientInfo, onClose }) => {
                           </ul>
                         </div>
                       )}
-                      <div className="aura-analysis-item">
+                      <div className={styles["aura-analysis-item"]}>
                         <strong>Family Dynamics:</strong> {reports.doctorReport.behavioralAnalysis.familyDynamics}
                       </div>
                     </div>
 
                     {reports.doctorReport.therapyConsiderations.recommended && (
-                      <div className="aura-therapy-considerations">
+                      <div className={styles["aura-therapy-considerations"]}>
                         <h4>Therapy Considerations</h4>
-                        <div className="aura-therapy-item">
+                        <div className={styles["aura-therapy-item"]}>
                           <strong>Type:</strong> {reports.doctorReport.therapyConsiderations.type}
                         </div>
-                        <div className="aura-therapy-item">
+                        <div className={styles["aura-therapy-item"]}>
                           <strong>Frequency:</strong> {reports.doctorReport.therapyConsiderations.frequency}
                         </div>
-                        <div className="aura-therapy-item">
+                        <div className={styles["aura-therapy-item"]}>
                           <strong>Focus Areas:</strong>
                           <ul>
                             {reports.doctorReport.therapyConsiderations.focusAreas.map((area, index) => (
@@ -830,7 +825,7 @@ const VoiceConsultation = ({ appointmentId, patientInfo, onClose }) => {
                             ))}
                           </ul>
                         </div>
-                        <div className="aura-therapy-item">
+                        <div className={styles["aura-therapy-item"]}>
                           <strong>Goals:</strong>
                           <ul>
                             {reports.doctorReport.therapyConsiderations.goals.map((goal, index) => (
@@ -841,14 +836,14 @@ const VoiceConsultation = ({ appointmentId, patientInfo, onClose }) => {
                       </div>
                     )}
 
-                    <div className="aura-additional-notes">
-                      <div className="aura-note-item">
+                    <div className={styles["aura-additional-notes"]}>
+                      <div className={styles["aura-note-item"]}>
                         <strong>Risk Assessment:</strong> {reports.doctorReport.riskAssessment}
                       </div>
-                      <div className="aura-note-item">
+                      <div className={styles["aura-note-item"]}>
                         <strong>Language Notes:</strong> {reports.doctorReport.languageNotes}
                       </div>
-                      <div className="aura-note-item">
+                      <div className={styles["aura-note-item"]}>
                         <strong>Internal Notes:</strong> {reports.doctorReport.internalNotes}
                       </div>
                     </div>
@@ -861,55 +856,55 @@ const VoiceConsultation = ({ appointmentId, patientInfo, onClose }) => {
       </main>
 
       {/* Footer */}
-      <footer className="aura-footer">
-        <div className="aura-footer-container">
-          <div className="aura-footer-content">
-            <div className="aura-footer-brand">
-              <div className="aura-footer-logo">
-                <div className="aura-logo-icon">
-                  <Heart className="aura-footer-heart" />
+      <footer className={styles["aura-footer"]}>
+        <div className={styles["aura-footer-container"]}>
+          <div className={styles["aura-footer-content"]}>
+            <div className={styles["aura-footer-brand"]}>
+              <div className={styles["aura-footer-logo"]}>
+                <div className={styles["aura-logo-icon"]}>
+                  <Heart className={styles["aura-footer-heart"]} />
                 </div>
-                <h3 className="aura-footer-title">AYUMATE</h3>
+                <h3 className={styles["aura-footer-title"]}>AYUMATE</h3>
               </div>
-              <p className="aura-footer-desc">
+              <p className={styles["aura-footer-desc"]}>
                 Your comprehensive Ayurvedic health companion, combining ancient wisdom with modern technology for optimal wellness.
               </p>
             </div>
 
-            <div className="aura-footer-links">
-              <h4 className="aura-footer-heading">Quick Links</h4>
-              <ul className="aura-footer-list">
-                <li><button onClick={() => handleNavigation('/dosha')} className="aura-footer-link">Prakriti Assessment</button></li>
-                <li><button onClick={() => handleNavigation('/chatBot')} className="aura-footer-link">AI Symptom Checker</button></li>
-                <li><button onClick={() => handleNavigation('/patient-register')} className="aura-footer-link">Patient Portal</button></li>
-                <li><button onClick={() => handleNavigation('/doctor-register')} className="aura-footer-link">Doctor Portal</button></li>
+            <div className={styles["aura-footer-links"]}>
+              <h4 className={styles["aura-footer-heading"]}>Quick Links</h4>
+              <ul className={styles["aura-footer-list"]}>
+                <li><button onClick={() => handleNavigation('/dosha')} className={styles["aura-footer-link"]}>Prakriti Assessment</button></li>
+                <li><button onClick={() => handleNavigation('/chatBot')} className={styles["aura-footer-link"]}>AI Symptom Checker</button></li>
+                <li><button onClick={() => handleNavigation('/patient-register')} className={styles["aura-footer-link"]}>Patient Portal</button></li>
+                <li><button onClick={() => handleNavigation('/doctor-register')} className={styles["aura-footer-link"]}>Doctor Portal</button></li>
               </ul>
             </div>
 
-            <div className="aura-footer-features">
-              <h4 className="aura-footer-heading">Features</h4>
-              <ul className="aura-footer-list">
-                <li className="aura-footer-item">Medical Records Storage</li>
-                <li className="aura-footer-item">Doctor Appointments</li>
-                <li className="aura-footer-item">Smart Consultations</li>
-                <li className="aura-footer-item">Health Analytics</li>
+            <div className={styles["aura-footer-features"]}>
+              <h4 className={styles["aura-footer-heading"]}>Features</h4>
+              <ul className={styles["aura-footer-list"]}>
+                <li className={styles["aura-footer-item"]}>Medical Records Storage</li>
+                <li className={styles["aura-footer-item"]}>Doctor Appointments</li>
+                <li className={styles["aura-footer-item"]}>Smart Consultations</li>
+                <li className={styles["aura-footer-item"]}>Health Analytics</li>
               </ul>
             </div>
 
-            <div className="aura-footer-contact">
-              <h4 className="aura-footer-heading">Support</h4>
-              <ul className="aura-footer-list">
-                <li className="aura-footer-item">24/7 Customer Support</li>
-                <li className="aura-footer-item">Help Center</li>
-                <li className="aura-footer-item">Privacy Policy</li>
-                <li className="aura-footer-item">Terms of Service</li>
+            <div className={styles["aura-footer-contact"]}>
+              <h4 className={styles["aura-footer-heading"]}>Support</h4>
+              <ul className={styles["aura-footer-list"]}>
+                <li className={styles["aura-footer-item"]}>24/7 Customer Support</li>
+                <li className={styles["aura-footer-item"]}>Help Center</li>
+                <li className={styles["aura-footer-item"]}>Privacy Policy</li>
+                <li className={styles["aura-footer-item"]}>Terms of Service</li>
               </ul>
             </div>
           </div>
 
-          <div className="aura-footer-bottom">
-            <p className="aura-copyright">
-              © 2024 AYUMATE. All rights reserved. Empowering health through technology and tradition.
+          <div className={styles["aura-footer-bottom"]}>
+            <p className={styles["aura-copyright"]}>
+              © 2025 AYUMATE. All rights reserved. Empowering health through technology and tradition.
             </p>
           </div>
         </div>

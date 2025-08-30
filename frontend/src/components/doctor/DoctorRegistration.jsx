@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   Heart, Stethoscope, Menu, X, UserCheck, Brain, CheckCircle, 
-  ChevronRight, Users, Star, Activity, Leaf, Eye, EyeOff
+  ChevronRight, Users, Activity, Eye, EyeOff
 } from 'lucide-react';
-import '../../assets/styles/doctor/DoctorRegistration.css';
+import styles from '../../assets/styles/doctor/DoctorRegistration.module.css';
 
 const DoctorRegistration = () => {
   const [currentStep, setCurrentStep] = useState(1); // 1: Registration Form, 2: OTP Verification, 3: Pending Approval
@@ -238,48 +238,48 @@ const DoctorRegistration = () => {
   };
 
   return (
-    <div className="doctor-registration-container">
+    <div className={styles["doctor-registration-container"]}>
       {/* Header */}
-      <header className="doctor-header">
-        <div className="doctor-nav-container">
-          <div className="doctor-nav-wrapper">
-            <div className="doctor-logo" onClick={() => handleNavigation('/')}>
-              <div className="doctor-logo-icon">
-                <Heart className="doctor-logo-heart" />
+      <header className={styles["doctor-header"]}>
+        <div className={styles["doctor-nav-container"]}>
+          <div className={styles["doctor-nav-wrapper"]}>
+            <div className={styles["doctor-logo"]} onClick={() => handleNavigation('/')}>
+              <div className={styles["doctor-logo-icon"]}>
+                <Heart className={styles["doctor-logo-heart"]} />
               </div>
-              <h1 className="doctor-logo-text">AYUMATE</h1>
+              <h1 className={styles["doctor-logo-text"]} onClick={() => handleNavigation('/')}>AYUMATE</h1>
             </div>
 
             {/* Desktop Navigation */}
-            <nav className="doctor-desktop-nav">
+            <nav className={styles["doctor-desktop-nav"]}>
               <button 
                 onClick={() => handleNavigation('/dosha')}
-                className="doctor-nav-link"
+                className={styles["doctor-nav-link"]}
               >
                 Prakriti Check
               </button>
               <button 
                 onClick={() => handleNavigation('/chatBot')}
-                className="doctor-nav-link"
+                className={styles["doctor-nav-link"]}
               >
                 AI Symptom Checker
               </button>
-              <div className="doctor-auth-buttons">
+              <div className={styles["doctor-auth-buttons"]}>
                 <button 
                   onClick={() => handleNavigation('/patient-login')}
-                  className="doctor-login-btn"
+                  className={styles["doctor-login-btn"]}
                 >
                   Patient Login
                 </button>
                 <button 
                   onClick={() => handleNavigation('/doctor-login')}
-                  className="doctor-login-btn"
+                  className={styles["doctor-login-btn"]}
                 >
                   Doctor Login
                 </button>
                 <button 
                   onClick={() => handleNavigation('/admin-login')}
-                  className="doctor-admin-btn"
+                  className={styles["doctor-admin-btn"]}
                 >
                   Admin
                 </button>
@@ -289,51 +289,51 @@ const DoctorRegistration = () => {
             {/* Mobile Menu Button */}
             <button 
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="doctor-mobile-menu-btn"
+              className={styles["doctor-mobile-menu-btn"]}
             >
-              {isMenuOpen ? <X className="doctor-menu-icon" /> : <Menu className="doctor-menu-icon" />}
+              {isMenuOpen ? <X className={styles["doctor-menu-icon"]} /> : <Menu className={styles["doctor-menu-icon"]} />}
             </button>
           </div>
         </div>
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="doctor-mobile-nav">
-            <div className="doctor-mobile-nav-container">
+          <div className={styles["doctor-mobile-nav"]}>
+            <div className={styles["doctor-mobile-nav-container"]}>
               <button 
                 onClick={() => handleNavigation('/dosha')}
-                className="doctor-mobile-nav-link"
+                className={styles["doctor-mobile-nav-link"]}
               >
                 Prakriti Check
               </button>
               <button 
                 onClick={() => handleNavigation('/chatBot')}
-                className="doctor-mobile-nav-link"
+                className={styles["doctor-mobile-nav-link"]}
               >
                 AI Symptom Checker
               </button>
-              <div className="doctor-mobile-auth">
+              <div className={styles["doctor-mobile-auth"]}>
                 <button 
                   onClick={() => handleNavigation('/patient-login')}
-                  className="doctor-mobile-login"
+                  className={styles["doctor-mobile-login"]}
                 >
                   Patient Login
                 </button>
                 <button 
                   onClick={() => handleNavigation('/patient-register')}
-                  className="doctor-mobile-register"
+                  className={styles["doctor-mobile-register"]}
                 >
                   Patient Register
                 </button>
                 <button 
                   onClick={() => handleNavigation('/doctor-login')}
-                  className="doctor-mobile-login"
+                  className={styles["doctor-mobile-login"]}
                 >
                   Doctor Login
                 </button>
                 <button 
                   onClick={() => handleNavigation('/admin-login')}
-                  className="doctor-mobile-admin"
+                  className={styles["doctor-mobile-admin"]}
                 >
                   Admin Login
                 </button>
@@ -344,45 +344,45 @@ const DoctorRegistration = () => {
       </header>
 
       {/* Main Content */}
-      <main className="doctor-main-content">
+      <main className={styles["doctor-main-content"]}>
         {/* Pending Approval Step */}
         {currentStep === 3 && (
-          <section className="doctor-approval-section">
-            <div className="doctor-approval-container">
-              <div className="doctor-approval-card">
-                <div className="doctor-success-icon">
-                  <CheckCircle className="success-check" />
+          <section className={styles["doctor-approval-section"]}>
+            <div className={styles["doctor-approval-container"]}>
+              <div className={styles["doctor-approval-card"]}>
+                <div className={styles["doctor-success-icon"]}>
+                  <CheckCircle className={styles["success-check"]} />
                 </div>
-                <h1 className="doctor-approval-title">Application Submitted Successfully!</h1>
-                <p className="doctor-approval-subtitle">Your doctor registration is under review</p>
+                <h1 className={styles["doctor-approval-title"]}>Application Submitted Successfully!</h1>
+                <p className={styles["doctor-approval-subtitle"]}>Your doctor registration is under review</p>
                 
-                <div className="doctor-approval-content">
-                  <div className="doctor-status-info">
+                <div className={styles["doctor-approval-content"]}>
+                  <div className={styles["doctor-status-info"]}>
                     <h3>What happens next?</h3>
-                    <div className="doctor-status-steps">
-                      <div className="doctor-status-step">
-                        <div className="step-icon">
-                          <Users className="step-icon-svg" />
+                    <div className={styles["doctor-status-steps"]}>
+                      <div className={styles["doctor-status-step"]}>
+                        <div className={styles["step-icon"]}>
+                          <Users className={styles["step-icon-svg"]} />
                         </div>
-                        <div className="step-content">
+                        <div className={styles["step-content"]}>
                           <h4>Application Review</h4>
                           <p>Our admin team will review your application and credentials</p>
                         </div>
                       </div>
-                      <div className="doctor-status-step">
-                        <div className="step-icon">
-                          <Activity className="step-icon-svg" />
+                      <div className={styles["doctor-status-step"]}>
+                        <div className={styles["step-icon"]}>
+                          <Activity className={styles["step-icon-svg"]} />
                         </div>
-                        <div className="step-content">
+                        <div className={styles["step-content"]}>
                           <h4>Processing Time</h4>
                           <p>This process typically takes 1-3 business days</p>
                         </div>
                       </div>
-                      <div className="doctor-status-step">
-                        <div className="step-icon">
-                          <CheckCircle className="step-icon-svg" />
+                      <div className={styles["doctor-status-step"]}>
+                        <div className={styles["step-icon"]}>
+                          <CheckCircle className={styles["step-icon-svg"]} />
                         </div>
-                        <div className="step-content">
+                        <div className={styles["step-content"]}>
                           <h4>Approval Notification</h4>
                           <p>You'll receive an email notification once reviewed</p>
                         </div>
@@ -390,25 +390,25 @@ const DoctorRegistration = () => {
                     </div>
                   </div>
 
-                  <div className="doctor-contact-info">
+                  <div className={styles["doctor-contact-info"]}>
                     <h3>Need assistance?</h3>
                     <p>If you have any questions about your application status, please contact our support team.</p>
                   </div>
 
-                  <div className="doctor-approval-actions">
+                  <div className={styles["doctor-approval-actions"]}>
                     <button 
                       onClick={() => handleNavigation('/')}
-                      className="doctor-home-button"
+                      className={styles["doctor-home-button"]}
                     >
-                      <Heart className="btn-icon" />
+                      <Heart className={styles["btn-icon"]} />
                       Return to Homepage
                     </button>
                     
                     <button 
                       onClick={() => handleNavigation('/doctor/login')}
-                      className="doctor-login-button"
+                      className={styles["doctor-login-button"]}
                     >
-                      <Stethoscope className="btn-icon" />
+                      <Stethoscope className={styles["btn-icon"]} />
                       Try Login (if approved)
                     </button>
                   </div>
@@ -420,20 +420,20 @@ const DoctorRegistration = () => {
 
         {/* OTP Verification Step */}
         {currentStep === 2 && (
-          <section className="doctor-otp-section">
-            <div className="doctor-otp-container">
-              <div className="doctor-otp-card">
-                <div className="doctor-otp-header">
-                  <div className="doctor-otp-icon">
-                    <Brain className="otp-brain-icon" />
+          <section className={styles["doctor-otp-section"]}>
+            <div className={styles["doctor-otp-container"]}>
+              <div className={styles["doctor-otp-card"]}>
+                <div className={styles["doctor-otp-header"]}>
+                  <div className={styles["doctor-otp-icon"]}>
+                    <Brain className={styles["otp-brain-icon"]} />
                   </div>
-                  <h1 className="doctor-otp-title">Verify Your Email</h1>
-                  <p className="doctor-otp-subtitle">Enter the 6-digit code sent to {formData.email}</p>
+                  <h1 className={styles["doctor-otp-title"]}>Verify Your Email</h1>
+                  <p className={styles["doctor-otp-subtitle"]}>Enter the 6-digit code sent to {formData.email}</p>
                 </div>
 
-                <form onSubmit={handleOtpSubmit} className="doctor-otp-form">
-                  <div className="doctor-otp-input-group">
-                    <label htmlFor="otp" className="doctor-otp-label">Verification Code</label>
+                <form onSubmit={handleOtpSubmit} className={styles["doctor-otp-form"]}>
+                  <div className={styles["doctor-otp-input-group"]}>
+                    <label htmlFor="otp" className={styles["doctor-otp-label"]}>Verification Code</label>
                     <input
                       type="text"
                       id="otp"
@@ -442,21 +442,21 @@ const DoctorRegistration = () => {
                       onChange={handleOtpChange}
                       placeholder="Enter 6-digit code"
                       maxLength="6"
-                      className="doctor-otp-input"
+                      className={styles["doctor-otp-input"]}
                       disabled={loading}
                       autoComplete="one-time-code"
                     />
                   </div>
 
-                  <div className="doctor-timer-section">
+                  <div className={styles["doctor-timer-section"]}>
                     {!canResendOtp ? (
-                      <p className="doctor-timer-text">Code expires in: {formatTime(otpTimer)}</p>
+                      <p className={styles["doctor-timer-text"]}>Code expires in: {formatTime(otpTimer)}</p>
                     ) : (
                       <button
                         type="button"
                         onClick={handleResendOtp}
                         disabled={loading}
-                        className="doctor-resend-button"
+                        className={styles["doctor-resend-button"]}
                       >
                         Resend Code
                       </button>
@@ -464,22 +464,22 @@ const DoctorRegistration = () => {
                   </div>
 
                   {error && (
-                    <div className="doctor-error-message">
+                    <div className={styles["doctor-error-message"]}>
                       <p>{error}</p>
                     </div>
                   )}
 
                   {success && (
-                    <div className="doctor-success-message">
+                    <div className={styles["doctor-success-message"]}>
                       <p>{success}</p>
                     </div>
                   )}
 
-                  <div className="doctor-otp-actions">
+                  <div className={styles["doctor-otp-actions"]}>
                     <button 
                       type="submit" 
                       disabled={loading || otp.length !== 6}
-                      className="doctor-verify-button"
+                      className={styles["doctor-verify-button"]}
                     >
                       {loading ? 'Verifying...' : 'Verify & Submit Application'}
                     </button>
@@ -488,7 +488,7 @@ const DoctorRegistration = () => {
                       type="button" 
                       onClick={() => setCurrentStep(1)}
                       disabled={loading}
-                      className="doctor-back-button"
+                      className={styles["doctor-back-button"]}
                     >
                       Back to Registration
                     </button>
@@ -501,32 +501,32 @@ const DoctorRegistration = () => {
 
         {/* Registration Form Step */}
         {currentStep === 1 && (
-          <section className="doctor-form-section">
-            <div className="doctor-form-container">
-              <div className="doctor-form-header">
-                <div className="doctor-form-icon">
-                  <Stethoscope className="form-stethoscope-icon" />
+          <section className={styles["doctor-form-section"]}>
+            <div className={styles["doctor-form-container"]}>
+              <div className={styles["doctor-form-header"]}>
+                <div className={styles["doctor-form-icon"]}>
+                  <Stethoscope className={styles["form-stethoscope-icon"]} />
                 </div>
-                <h1 className="doctor-form-title">Doctor Registration</h1>
-                <p className="doctor-form-subtitle">Join our Smart Healthcare Portal as a medical professional</p>
-                <div className="doctor-form-note">
-                  <CheckCircle className="note-icon" />
+                <h1 className={styles["doctor-form-title"]}>Doctor Registration</h1>
+                <p className={styles["doctor-form-subtitle"]}>Join our Smart Healthcare Portal as a medical professional</p>
+                <div className={styles["doctor-form-note"]}>
+                  <CheckCircle className={styles["note-icon"]} />
                   <p><strong>Note:</strong> Your application will be reviewed by our admin team before approval</p>
                 </div>
               </div>
 
-              <form onSubmit={handleSubmit} className="doctor-registration-form">
+              <form onSubmit={handleSubmit} className={styles["doctor-registration-form"]}>
                 
                 {/* Personal Information Section */}
-                <div className="doctor-form-section-card">
-                  <div className="doctor-section-header">
-                    <UserCheck className="section-icon" />
-                    <h2 className="section-title">Personal Information</h2>
+                <div className={styles["doctor-form-section-card"]}>
+                  <div className={styles["doctor-section-header"]}>
+                    <UserCheck className={styles["section-icon"]} />
+                    <h2 className={styles["section-title"]}>Personal Information</h2>
                   </div>
                   
-                  <div className="doctor-form-grid">
-                    <div className="doctor-input-group">
-                      <label htmlFor="firstName" className="doctor-label">First Name *</label>
+                  <div className={styles["doctor-form-grid"]}>
+                    <div className={styles["doctor-input-group"]}>
+                      <label htmlFor="firstName" className={styles["doctor-label"]}>First Name *</label>
                       <input
                         type="text"
                         id="firstName"
@@ -535,13 +535,13 @@ const DoctorRegistration = () => {
                         onChange={handleChange}
                         required
                         disabled={loading}
-                        className="doctor-input"
+                        className={styles["doctor-input"]}
                         placeholder="Enter your first name"
                       />
                     </div>
                     
-                    <div className="doctor-input-group">
-                      <label htmlFor="lastName" className="doctor-label">Last Name *</label>
+                    <div className={styles["doctor-input-group"]}>
+                      <label htmlFor="lastName" className={styles["doctor-label"]}>Last Name *</label>
                       <input
                         type="text"
                         id="lastName"
@@ -550,14 +550,14 @@ const DoctorRegistration = () => {
                         onChange={handleChange}
                         required
                         disabled={loading}
-                        className="doctor-input"
+                        className={styles["doctor-input"]}
                         placeholder="Enter your last name"
                       />
                     </div>
                   </div>
 
-                  <div className="doctor-input-group">
-                    <label htmlFor="email" className="doctor-label">Email Address *</label>
+                  <div className={styles["doctor-input-group"]}>
+                    <label htmlFor="email" className={styles["doctor-label"]}>Email Address *</label>
                     <input
                       type="email"
                       id="email"
@@ -566,15 +566,15 @@ const DoctorRegistration = () => {
                       onChange={handleChange}
                       required
                       disabled={loading}
-                      className="doctor-input"
+                      className={styles["doctor-input"]}
                       placeholder="your.email@example.com"
                     />
                   </div>
 
-                  <div className="doctor-form-grid">
-                    <div className="doctor-input-group">
-                      <label htmlFor="password" className="doctor-label">Password *</label>
-                      <div className="doctor-password-input">
+                  <div className={styles["doctor-form-grid"]}>
+                    <div className={styles["doctor-input-group"]}>
+                      <label htmlFor="password" className={styles["doctor-label"]}>Password *</label>
+                      <div className={styles["doctor-password-input"]}>
                         <input
                           type={showPassword ? "text" : "password"}
                           id="password"
@@ -583,23 +583,23 @@ const DoctorRegistration = () => {
                           onChange={handleChange}
                           required
                           disabled={loading}
-                          className="doctor-input"
+                          className={styles["doctor-input"]}
                           minLength="6"
                           placeholder="Minimum 6 characters"
                         />
                         <button
                           type="button"
                           onClick={() => setShowPassword(!showPassword)}
-                          className="doctor-password-toggle"
+                          className={styles["doctor-password-toggle"]}
                         >
-                          {showPassword ? <EyeOff className="eye-icon" /> : <Eye className="eye-icon" />}
+                          {showPassword ? <EyeOff className={styles["eye-icon"]} /> : <Eye className={styles["eye-icon"]} />}
                         </button>
                       </div>
                     </div>
                     
-                    <div className="doctor-input-group">
-                      <label htmlFor="confirmPassword" className="doctor-label">Confirm Password *</label>
-                      <div className="doctor-password-input">
+                    <div className={styles["doctor-input-group"]}>
+                      <label htmlFor="confirmPassword" className={styles["doctor-label"]}>Confirm Password *</label>
+                      <div className={styles["doctor-password-input"]}>
                         <input
                           type={showConfirmPassword ? "text" : "password"}
                           id="confirmPassword"
@@ -608,23 +608,23 @@ const DoctorRegistration = () => {
                           onChange={handleChange}
                           required
                           disabled={loading}
-                          className="doctor-input"
+                          className={styles["doctor-input"]}
                           minLength="6"
                           placeholder="Confirm your password"
                         />
                         <button
                           type="button"
                           onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                          className="doctor-password-toggle"
+                          className={styles["doctor-password-toggle"]}
                         >
-                          {showConfirmPassword ? <EyeOff className="eye-icon" /> : <Eye className="eye-icon" />}
+                          {showConfirmPassword ? <EyeOff className={styles["eye-icon"]} /> : <Eye className={styles["eye-icon"]} />}
                         </button>
                       </div>
                     </div>
                   </div>
 
-                  <div className="doctor-input-group">
-                    <label htmlFor="phone" className="doctor-label">Phone Number *</label>
+                  <div className={styles["doctor-input-group"]}>
+                    <label htmlFor="phone" className={styles["doctor-label"]}>Phone Number *</label>
                     <input
                       type="tel"
                       id="phone"
@@ -633,21 +633,21 @@ const DoctorRegistration = () => {
                       onChange={handleChange}
                       required
                       disabled={loading}
-                      className="doctor-input"
+                      className={styles["doctor-input"]}
                       placeholder="+1234567890"
                     />
                   </div>
                 </div>
 
                 {/* Professional Information Section */}
-                <div className="doctor-form-section-card">
-                  <div className="doctor-section-header">
-                    <Stethoscope className="section-icon" />
-                    <h2 className="section-title">Professional Information</h2>
+                <div className={styles["doctor-form-section-card"]}>
+                  <div className={styles["doctor-section-header"]}>
+                    <Stethoscope className={styles["section-icon"]} />
+                    <h2 className={styles["section-title"]}>Professional Information</h2>
                   </div>
                   
-                  <div className="doctor-input-group">
-                    <label htmlFor="licenseNumber" className="doctor-label">Medical License Number *</label>
+                  <div className={styles["doctor-input-group"]}>
+                    <label htmlFor="licenseNumber" className={styles["doctor-label"]}>Medical License Number *</label>
                     <input
                       type="text"
                       id="licenseNumber"
@@ -656,14 +656,14 @@ const DoctorRegistration = () => {
                       onChange={handleChange}
                       required
                       disabled={loading}
-                      className="doctor-input"
+                      className={styles["doctor-input"]}
                       placeholder="Enter your medical license number"
                     />
                   </div>
 
-                  <div className="doctor-form-grid">
-                    <div className="doctor-input-group">
-                      <label htmlFor="specialization" className="doctor-label">Specialization *</label>
+                  <div className={styles["doctor-form-grid"]}>
+                    <div className={styles["doctor-input-group"]}>
+                      <label htmlFor="specialization" className={styles["doctor-label"]}>Specialization *</label>
                       <select
                         id="specialization"
                         name="specialization"
@@ -671,7 +671,7 @@ const DoctorRegistration = () => {
                         onChange={handleChange}
                         required
                         disabled={loading}
-                        className="doctor-select"
+                        className={styles["doctor-select"]}
                       >
                         <option value="">Select Specialization</option>
                         {specializations.map((spec) => (
@@ -680,8 +680,8 @@ const DoctorRegistration = () => {
                       </select>
                     </div>
                     
-                    <div className="doctor-input-group">
-                      <label htmlFor="experienceYears" className="doctor-label">Years of Experience</label>
+                    <div className={styles["doctor-input-group"]}>
+                      <label htmlFor="experienceYears" className={styles["doctor-label"]}>Years of Experience</label>
                       <input
                         type="number"
                         id="experienceYears"
@@ -689,7 +689,7 @@ const DoctorRegistration = () => {
                         value={formData.experienceYears}
                         onChange={handleChange}
                         disabled={loading}
-                        className="doctor-input"
+                        className={styles["doctor-input"]}
                         min="0"
                         max="50"
                         placeholder="e.g., 5"
@@ -697,8 +697,8 @@ const DoctorRegistration = () => {
                     </div>
                   </div>
 
-                  <div className="doctor-input-group">
-                    <label htmlFor="qualification" className="doctor-label">Qualification *</label>
+                  <div className={styles["doctor-input-group"]}>
+                    <label htmlFor="qualification" className={styles["doctor-label"]}>Qualification *</label>
                     <textarea
                       id="qualification"
                       name="qualification"
@@ -706,14 +706,14 @@ const DoctorRegistration = () => {
                       onChange={handleChange}
                       required
                       disabled={loading}
-                      className="doctor-textarea"
+                      className={styles["doctor-textarea"]}
                       rows="3"
                       placeholder="e.g., MBBS, MD Internal Medicine, Fellowship in Cardiology"
                     />
                   </div>
 
-                  <div className="doctor-input-group">
-                    <label htmlFor="consultationFee" className="doctor-label">Consultation Fee (₹)</label>
+                  <div className={styles["doctor-input-group"]}>
+                    <label htmlFor="consultationFee" className={styles["doctor-label"]}>Consultation Fee (₹)</label>
                     <input
                       type="number"
                       id="consultationFee"
@@ -721,36 +721,36 @@ const DoctorRegistration = () => {
                       value={formData.consultationFee}
                       onChange={handleChange}
                       disabled={loading}
-                      className="doctor-input"
+                      className={styles["doctor-input"]}
                       min="0"
                       step="50"
                       placeholder="e.g., 500"
                     />
                   </div>
 
-                  <div className="doctor-input-group">
-                    <label htmlFor="bio" className="doctor-label">Professional Bio</label>
+                  <div className={styles["doctor-input-group"]}>
+                    <label htmlFor="bio" className={styles["doctor-label"]}>Professional Bio</label>
                     <textarea
                       id="bio"
                       name="bio"
                       value={formData.bio}
                       onChange={handleChange}
                       disabled={loading}
-                      className="doctor-textarea"
+                      className={styles["doctor-textarea"]}
                       rows="4"
                       placeholder="Brief description of your medical practice, expertise, and approach to patient care"
                     />
                   </div>
 
-                  <div className="doctor-input-group">
-                    <label htmlFor="clinicAddress" className="doctor-label">Clinic/Hospital Address</label>
+                  <div className={styles["doctor-input-group"]}>
+                    <label htmlFor="clinicAddress" className={styles["doctor-label"]}>Clinic/Hospital Address</label>
                     <textarea
                       id="clinicAddress"
                       name="clinicAddress"
                       value={formData.clinicAddress}
                       onChange={handleChange}
                       disabled={loading}
-                      className="doctor-textarea"
+                      className={styles["doctor-textarea"]}
                       rows="3"
                       placeholder="Enter your clinic or hospital address"
                     />
@@ -758,31 +758,31 @@ const DoctorRegistration = () => {
                 </div>
 
                 {/* Terms and Conditions */}
-                <div className="doctor-terms-section">
-                  <h3 className="doctor-terms-title">Terms and Conditions</h3>
-                  <div className="doctor-terms-list">
-                    <div className="doctor-term-item">
-                      <CheckCircle className="check-icon" />
+                <div className={styles["doctor-terms-section"]}>
+                  <h3 className={styles["doctor-terms-title"]}>Terms and Conditions</h3>
+                  <div className={styles["doctor-terms-list"]}>
+                    <div className={styles["doctor-term-item"]}>
+                      <CheckCircle className={styles["check-icon"]} />
                       <span>I certify that all information provided is accurate and complete</span>
                     </div>
-                    <div className="doctor-term-item">
-                      <CheckCircle className="check-icon" />
+                    <div className={styles["doctor-term-item"]}>
+                      <CheckCircle className={styles["check-icon"]} />
                       <span>I hold a valid medical license to practice in my jurisdiction</span>
                     </div>
-                    <div className="doctor-term-item">
-                      <CheckCircle className="check-icon" />
+                    <div className={styles["doctor-term-item"]}>
+                      <CheckCircle className={styles["check-icon"]} />
                       <span>I agree to provide professional medical services through this platform</span>
                     </div>
-                    <div className="doctor-term-item">
-                      <CheckCircle className="check-icon" />
+                    <div className={styles["doctor-term-item"]}>
+                      <CheckCircle className={styles["check-icon"]} />
                       <span>I understand that my application will be reviewed by the admin team</span>
                     </div>
-                    <div className="doctor-term-item">
-                      <CheckCircle className="check-icon" />
+                    <div className={styles["doctor-term-item"]}>
+                      <CheckCircle className={styles["check-icon"]} />
                       <span>I agree to maintain patient confidentiality and follow medical ethics</span>
                     </div>
-                    <div className="doctor-term-item">
-                      <CheckCircle className="check-icon" />
+                    <div className={styles["doctor-term-item"]}>
+                      <CheckCircle className={styles["check-icon"]} />
                       <span>I agree to the platform's terms of service and privacy policy</span>
                     </div>
                   </div>
@@ -790,32 +790,32 @@ const DoctorRegistration = () => {
 
                 {/* Error and Success Messages */}
                 {error && (
-                  <div className="doctor-error-message">
+                  <div className={styles["doctor-error-message"]}>
                     <p>{error}</p>
                   </div>
                 )}
 
                 {success && (
-                  <div className="doctor-success-message">
+                  <div className={styles["doctor-success-message"]}>
                     <p>{success}</p>
                   </div>
                 )}
 
                 {/* Form Actions */}
-                <div className="doctor-form-actions">
+                <div className={styles["doctor-form-actions"]}>
                   <button 
                     type="submit" 
                     disabled={loading || !formData.email || !formData.password || !formData.firstName || !formData.lastName || !formData.licenseNumber || !formData.specialization || !formData.qualification}
-                    className="doctor-register-button"
+                    className={styles["doctor-register-button"]}
                   >
                     {loading ? (
                       <>
-                        <div className="loading-spinner"></div>
+                        <div className={styles["loading-spinner"]}></div>
                         Sending OTP...
                       </>
                     ) : (
                       <>
-                        <Stethoscope className="btn-icon" />
+                        <Stethoscope className={styles["btn-icon"]} />
                         Register & Send OTP
                       </>
                     )}
@@ -823,16 +823,16 @@ const DoctorRegistration = () => {
                   
                   <button 
                     type="button" 
-                    onClick={() => handleNavigation('/doctor/login')}
+                    onClick={() => handleNavigation('/doctor-login')}
                     disabled={loading}
-                    className="doctor-login-redirect-button"
+                    className={styles["doctor-login-redirect-button"]}
                   >
                     Already registered? Login
-                    <ChevronRight className="btn-icon" />
+                    <ChevronRight className={styles["btn-icon"]} />
                   </button>
                 </div>
 
-                <div className="doctor-form-footer">
+                <div className={styles["doctor-form-footer"]}>
                   <p>
                     By registering, you agree to our Terms of Service and Privacy Policy. 
                     Your application will be reviewed by our admin team within 1-3 business days.
@@ -845,55 +845,55 @@ const DoctorRegistration = () => {
       </main>
 
       {/* Footer */}
-      <footer className="doctor-footer">
-        <div className="doctor-footer-container">
-          <div className="doctor-footer-content">
-            <div className="doctor-footer-brand">
-              <div className="doctor-footer-logo">
-                <div className="doctor-logo-icon">
-                  <Heart className="doctor-footer-heart" />
+      <footer className={styles["doctor-footer"]}>
+        <div className={styles["doctor-footer-container"]}>
+          <div className={styles["doctor-footer-content"]}>
+            <div className={styles["doctor-footer-brand"]}>
+              <div className={styles["doctor-footer-logo"]}>
+                <div className={styles["doctor-logo-icon"]}>
+                  <Heart className={styles["doctor-footer-heart"]} />
                 </div>
-                <h3 className="doctor-footer-title">AYUMATE</h3>
+                <h3 className={styles["doctor-footer-title"]}>AYUMATE</h3>
               </div>
-              <p className="doctor-footer-desc">
+              <p className={styles["doctor-footer-desc"]}>
                 Your comprehensive Ayurvedic health companion, combining ancient wisdom with modern technology for optimal wellness.
               </p>
             </div>
 
-            <div className="doctor-footer-links">
-              <h4 className="doctor-footer-heading">Quick Links</h4>
-              <ul className="doctor-footer-list">
-                <li><button onClick={() => handleNavigation('/dosha')} className="doctor-footer-link">Prakriti Assessment</button></li>
-                <li><button onClick={() => handleNavigation('/chatBot')} className="doctor-footer-link">AI Symptom Checker</button></li>
-                <li><button onClick={() => handleNavigation('/patient-register')} className="doctor-footer-link">Patient Portal</button></li>
-                <li><button onClick={() => handleNavigation('/doctor-register')} className="doctor-footer-link">Doctor Portal</button></li>
+            <div className={styles["doctor-footer-links"]}>
+              <h4 className={styles["doctor-footer-heading"]}>Quick Links</h4>
+              <ul className={styles["doctor-footer-list"]}>
+                <li><button onClick={() => handleNavigation('/dosha')} className={styles["doctor-footer-link"]}>Prakriti Assessment</button></li>
+                <li><button onClick={() => handleNavigation('/chatBot')} className={styles["doctor-footer-link"]}>AI Symptom Checker</button></li>
+                <li><button onClick={() => handleNavigation('/patient-register')} className={styles["doctor-footer-link"]}>Patient Portal</button></li>
+                <li><button onClick={() => handleNavigation('/doctor-register')} className={styles["doctor-footer-link"]}>Doctor Portal</button></li>
               </ul>
             </div>
 
-            <div className="doctor-footer-features">
-              <h4 className="doctor-footer-heading">Features</h4>
-              <ul className="doctor-footer-list">
-                <li className="doctor-footer-item">Medical Records Storage</li>
-                <li className="doctor-footer-item">Doctor Appointments</li>
-                <li className="doctor-footer-item">Smart Consultations</li>
-                <li className="doctor-footer-item">Health Analytics</li>
+            <div className={styles["doctor-footer-features"]}>
+              <h4 className={styles["doctor-footer-heading"]}>Features</h4>
+              <ul className={styles["doctor-footer-list"]}>
+                <li className={styles["doctor-footer-item"]}>Medical Records Storage</li>
+                <li className={styles["doctor-footer-item"]}>Doctor Appointments</li>
+                <li className={styles["doctor-footer-item"]}>Smart Consultations</li>
+                <li className={styles["doctor-footer-item"]}>Health Analytics</li>
               </ul>
             </div>
 
-            <div className="doctor-footer-contact">
-              <h4 className="doctor-footer-heading">Support</h4>
-              <ul className="doctor-footer-list">
-                <li className="doctor-footer-item">24/7 Customer Support</li>
-                <li className="doctor-footer-item">Help Center</li>
-                <li className="footer-item">Privacy Policy</li>
-                <li className="footer-item">Terms of Service</li>
+            <div className={styles["doctor-footer-contact"]}>
+              <h4 className={styles["doctor-footer-heading"]}>Support</h4>
+              <ul className={styles["doctor-footer-list"]}>
+                <li className={styles["doctor-footer-item"]}>24/7 Customer Support</li>
+                <li className={styles["doctor-footer-item"]}>Help Center</li>
+                <li className={styles["footer-item"]}>Privacy Policy</li>
+                <li className={styles["footer-item"]}>Terms of Service</li>
               </ul>
             </div>
           </div>
 
-          <div className="footer-bottom">
-            <p className="copyright">
-              © 2024 AYUMATE. All rights reserved. Empowering health through technology and tradition.
+          <div className={styles["footer-bottom"]}>
+            <p className={styles["copyright"]}>
+              © 2025 AYUMATE. All rights reserved. Empowering health through technology and tradition.
             </p>
           </div>
         </div>
