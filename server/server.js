@@ -5,7 +5,6 @@ import helmet from 'helmet';
 import hpp from 'hpp';
 import rateLimit from 'express-rate-limit';
 import compression from 'compression';
-import morgan from 'morgan';
 
 // Routes
 import ChatBotRoutes from './routes/ChatBotRoutes.js';
