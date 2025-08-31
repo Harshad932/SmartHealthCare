@@ -188,29 +188,29 @@ const generateAISuggestion = async (symptoms, severity, duration, conversationHi
     }
 
     // Create a detailed medical prompt with context
-    const medicalPrompt = `As a medical AI assistant, analyze these symptoms and provide helpful suggestions:
+    const medicalPrompt = `Please help me understand these symptoms:
 
-Current Symptoms: ${symptoms}
-Severity (1-10): ${severity}
-Duration: ${duration}
-${contextPrompt}
-${userInfo.isAuthenticated ? '' : '\n[Note: This is an anonymous consultation - consider suggesting registration for better health tracking and personalized recommendations]'}
+        Symptoms: ${symptoms}
+        Severity: ${severity}/10
+        Duration: ${duration}
+        ${contextPrompt}
+        ${userInfo.isAuthenticated ? '' : '\n[This is an anonymous consultation - you might want to mention benefits of registering for better health tracking]'}
 
-Please provide:
-1. Brief analysis of the symptoms${userInfo.isAuthenticated && conversationHistory.length > 0 ? ' considering previous history' : ''}
-2. General health recommendations
-3. When to seek medical attention
-4. Self-care suggestions if applicable
-${!userInfo.isAuthenticated ? '5. Brief mention of benefits of creating an account for better health tracking and personalized care' : ''}
+        Please provide a friendly, conversational response that includes:
+        - What these symptoms might mean${userInfo.isAuthenticated && conversationHistory.length > 0 ? ' considering my history' : ''}
+        - General advice for feeling better
+        - When I should see a doctor
+        - Simple self-care tips if appropriate
+        ${!userInfo.isAuthenticated ? '- Brief mention of how registering could help track my health better' : ''}
 
-Important: This is for informational purposes only and not a substitute for professional medical advice.`;
+        Please keep your response conversational and easy to understand, not clinical or formal.`;
 
     // Define models to try in order (fallback strategy)
     const models = [
-      "mixtral-8x7b-32768",      
-      "llama3-70b-8192",           
-      "llama3-8b-8192",           
-      "gemma-7b-it",               
+      "llama-3.1-70b-versatile",      
+      "llama-3.1-8b-instant",           
+      "mixtral-8x7b-32768",           
+      "gemma2-9b-it",               
     ];
 
     
@@ -226,8 +226,10 @@ Important: This is for informational purposes only and not a substitute for prof
           model: model,
           messages: [
             { 
+  
               role: "system", 
-              content: "You are a helpful medical AI assistant. Provide informative, accurate, and empathetic responses about health symptoms. Always remind users that your advice is for informational purposes only and cannot replace professional medical consultation."
+              content: "You are a friendly, helpful medical assistant. Provide clear, conversational responses about health symptoms. Keep your tone warm and accessible, not clinical or academic. Format responses in easy-to-read paragraphs, not tables or lists. Always remind users this is for information only and cannot replace professional medical care."
+              
             },
             { role: "user", content: medicalPrompt }
           ],

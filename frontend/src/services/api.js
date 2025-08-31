@@ -1,7 +1,7 @@
 // client/src/services/api.js
 import axios from 'axios';
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+const API_BASE_URL = process.env.REACT_APP_BACKEND_URL;
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -23,7 +23,7 @@ export const doshaAPI = {
   // Get the initial question
   getInitialQuestion: async () => {
     try {
-      const response = await api.get('/dosha/initial-question');
+      const response = await api.get('api/dosha/initial-question');
       return response.data;
     } catch (error) {
       throw new Error('Failed to fetch initial question');
@@ -33,7 +33,7 @@ export const doshaAPI = {
   // Get the next question based on previous answers
   getNextQuestion: async (answers, currentQuestionNumber) => {
     try {
-      const response = await api.post('/dosha/next-question', {
+      const response = await api.post('api/dosha/next-question', {
         answers,
         currentQuestionNumber,
       });
@@ -46,7 +46,7 @@ export const doshaAPI = {
   // Analyze dosha type based on all answers
   analyzeDoshaType: async (answers) => {
     try {
-      const response = await api.post('/dosha/analyze', {
+      const response = await api.post('api/dosha/analyze', {
         answers,
       });
       return response.data;
