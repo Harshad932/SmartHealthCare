@@ -869,7 +869,7 @@ const DoctorDashboard = () => {
         }}
       >
         <div className={styles["doctor-dashboard-logo"]}>
-          <h2>Smart Healthcare</h2>
+          <h2>Ayumate</h2>
           <p>Doctor Portal</p>
         </div>
         

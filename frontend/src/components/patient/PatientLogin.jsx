@@ -226,7 +226,7 @@ const PatientLogin = () => {
           <div className={styles["patient-login-branding-content"]}>
             <div className={styles["patient-login-brand-logo-container"]}>
               <Heart className={styles["patient-login-brand-logo-icon"]} />
-              <h1 className={styles["patient-login-brand-title"]}>Smart Healthcare</h1>
+              <h1 className={styles["patient-login-brand-title"]}>Ayumate</h1>
             </div>
             <p className={styles["patient-login-brand-subtitle"]}>
               Your health, our priority. Connect with specialists and manage your healthcare journey through personalized Ayurvedic care.

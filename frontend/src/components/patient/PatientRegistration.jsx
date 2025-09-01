@@ -411,7 +411,7 @@ const PatientRegistration = () => {
                   <h1 className={styles["hero-title"]}>
                     <span className={styles["hero-highlight"]}>Patient Registration</span>
                   </h1>
-                  <p className={styles["hero-subtitle"]}>Create your account to access the Smart Healthcare Portal</p>
+                  <p className={styles["hero-subtitle"]}>Create your account to access the Ayumate</p>
                 </div>
 
                 <form onSubmit={handleSubmit} className={styles["registration-form"]}>

@@ -864,7 +864,7 @@ const AdminDashboard = () => {
         <div className={styles["admin-dashboard-sidebar-header"]}>
           <div className={styles["admin-dashboard-logo"]}>
             <Heart className={styles["admin-dashboard-logo-icon"]} />
-            <span className={styles["admin-dashboard-logo-text"]}>Smart Healthcare</span>
+            <span className={styles["admin-dashboard-logo-text"]}>Ayumate</span>
           </div>
           <button 
             className={styles["admin-dashboard-sidebar-toggle"]}
